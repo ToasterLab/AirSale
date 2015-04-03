@@ -1,20 +1,5 @@
 <?php
-ob_start();
-echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
-$servername = "mysql.hostinger.co.uk";
-$username = "u814771946_root";
-$password = "_MYsql";
-$db = "u814771946_root";
-$table = 'Entry'.base64_decode($_COOKIE['auth']);
-setcookie('debug','0',time()+30*85400,'/');
-$debug=$_COOKIE['debug'];
-function setElement($element_name,$element_value)
-{
-	echo '<p id="'.$element_name.'" style="display:none">'.$element_value.'</p>';
-}
-
-
-$conn = mysqli_connect($servername, $username, $password,$db);
+include('/home/u979434920/public_html/header/airsale.php');
 
 $sql = "SELECT user,password,country FROM user_list";
 $result = mysqli_query($conn, $sql);
@@ -68,13 +53,13 @@ if (mysqli_num_rows($result) > 0) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href='/css/bootstrap.min.css'>
-<link rel="stylesheet" href='/css/gryphon.css'>
-<script src="/js/jquery-1.11.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/gryphon.js"></script>
-<script src="/js/classie.js"></script>
-<script src="/js/airsale.js"></script>
+<link rel="stylesheet" href='/airsale/css/bootstrap.min.css'>
+<link rel="stylesheet" href='/airsale/css/gryphon.css'>
+<script src="/airsale/js/jquery-1.11.0.min.js"></script>
+<script src="/airsale/js/bootstrap.min.js"></script>
+<script src="/airsale/js/gryphon.js"></script>
+<script src="/airsale/js/classie.js"></script>
+<script src="/airsale/js/airsale.js"></script>
 <title>AirSale ADMIN Control panel</title>
 </head>
 <body>
@@ -135,7 +120,7 @@ function updateTicketTable(approved)
 				cell = row.insertCell();
 				cell.innerHTML = getElement('flightNumber'.concat( String(i)));
 				cell = row.insertCell();
-				cell.innerHTML = '<a class="btn" href="/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
+				cell.innerHTML = '<a class="btn" href="/airsale/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
 				cell = row.insertCell();
 				cell.innerHTML = "<a class='btn btn-default' onClick='approve(".concat( getElement('id'.concat(String(i))),")'>Approve</a>");
 			}
@@ -160,7 +145,7 @@ function updateTicketTable(approved)
 				cell = row.insertCell();
 				cell.innerHTML = getElement('flightNumber'.concat( String(i)));
 				cell = row.insertCell();
-				cell.innerHTML = '<a class="btn" href="/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
+				cell.innerHTML = '<a class="btn" href="/airsale/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
 				cell = row.insertCell();
 				if(!Number( getElement('isApproved'.concat( String(i)))))
 				cell.innerHTML = "<a class='btn btn-default' onClick='approve(".concat( getElement('id'.concat(String(i))),")'>Approve</a>");
@@ -198,24 +183,24 @@ $(document).ready(function(e) {
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.html' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/airsale/home.html' class='navbar-brand'> AirSale</a>
         </div>
         
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/airsale/profile.php' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li><a href='/airsale/airsale/explore.php' class='btn'> Explore</a> </li>
+                    <li><a href='/airsale/airsale/my_history.php' class='btn'>Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'> Publish new item</a> </li>
-                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li><a href='/airsale/airsale/publish.php' class='btn'> Publish new item</a> </li>
+                    <li><a href='/airsale/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
                 </ul>
             
             </li>
@@ -240,7 +225,7 @@ $(document).ready(function(e) {
             
             <div style='display:none' id='intro-div'>
             <br>
-            <form action='/admin/intro_push.php' role='form' method="post">
+            <form action='/airsale/admin/intro_push.php' role='form' method="post">
             	<label>Description paragraphs/pointers in the database</label><br><br>
                 <textarea class='form-control' rows="10" id='parag' name='paragraphs'></textarea><br><br>
             	<button type='submit' class='btn btn-lg'>Submit</button>

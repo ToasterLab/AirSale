@@ -1,20 +1,5 @@
 <?php
-ob_start();
-echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
-$servername = "mysql.hostinger.co.uk";
-$username = "u814771946_root";
-$password = "_MYsql";
-$db = "u814771946_root";
-$table = 'Entry'.base64_decode($_COOKIE['auth']);
-setcookie('debug','0',time()+30*85400,'/');
-$debug=$_COOKIE['debug'];
-function setElement($element_name,$element_value)
-{
-	echo '<p id="'.$element_name.'" style="display:none">'.$element_value.'</p>';
-}
-
-
-$conn = mysqli_connect($servername, $username, $password,$db);
+include('/home/u979434920/public_html/header/airsale.php');
 
 $sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
 $result = mysqli_query($conn, $sql);
@@ -77,13 +62,13 @@ if (mysqli_num_rows($result) > 0) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href='/css/bootstrap.min.css'>
-<link rel="stylesheet" href='/css/gryphon.css'>
-<script src="/js/jquery-1.11.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/gryphon.js"></script>
-<script src="/js/classie.js"></script>
-<script src="/js/airsale.js"></script>
+<link rel="stylesheet" href='/airsale/css/bootstrap.min.css'>
+<link rel="stylesheet" href='/airsale/css/gryphon.css'>
+<script src="/airsale/js/jquery-1.11.0.min.js"></script>
+<script src="/airsale/js/bootstrap.min.js"></script>
+<script src="/airsale/js/gryphon.js"></script>
+<script src="/airsale/js/classie.js"></script>
+<script src="/airsale/js/airsale.js"></script>
 <script src='/js/jquery.sticky.js'></script>
 <title>Editing step 3 information</title>
 </head>
@@ -98,24 +83,24 @@ if (mysqli_num_rows($result) > 0) {
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.html' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/airsale/home.html' class='navbar-brand'> AirSale</a>
         </div>
         
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/airsale/profile.php' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li ><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li ><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li ><a href='/airsale/airsale/explore.php' class='btn'> Explore</a> </li>
+                    <li ><a href='/airsale/airsale/my_history.php' class='btn'>Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown active'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/publish.php' class='btn'> Sell new items</a> </li>
-                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li class="active"><a href='/airsale/airsale/publish.php' class='btn'> Sell new items</a> </li>
+                    <li><a href='/airsale/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
                 </ul>
             
             </li>
@@ -137,16 +122,16 @@ if (mysqli_num_rows($result) > 0) {
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
+            <a href="/airsale/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 3: Update my contact details</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+            <a href="/airsale/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
             </div>
         </div>
         <br>
@@ -160,10 +145,10 @@ if (mysqli_num_rows($result) > 0) {
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
-        <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
+        <a href="/airsale/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+        <a href="/airsale/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 3: Update my contact details</a>
-        <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+        <a href="/airsale/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
         </div>
     </div>
     </center>
@@ -172,7 +157,7 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/publish_edit_push.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/airsale/airsale/publish_edit_push.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. Compulsory fileds are marked with an asterisk (*)</label><br><br></center>
     
     	<div class='col-md-3 form-group'>
