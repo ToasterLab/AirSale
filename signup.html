@@ -89,7 +89,8 @@ function formValidate()
 <div class='jumbotron' style="padding-top:100pt">
     <h1> Sign-up for AirSale!<br></h1>
     <div class='container'>
-      <form role="form" action="/airsale/signup.php" method="post"  onSubmit="return formValidate();">
+      <form role="form" action="/airsale/header/airsale.php" method="post"  onSubmit="return formValidate();">
+      <input type='hidden' name='action' value="signup">
       <div class='row'>
         <div class="form-group col-lg-4">
           <label>User name:</label>
@@ -125,19 +126,6 @@ function formValidate()
         <div class="form-group">
           <label>Current country of residence:</label>
           <input class="form-control" name="country" placeholder="Enter country of residence" id='country'>
-        </div>
-        
-        <div class="form-group">
-          <label>Method of identity validation:</label>
-          <select class='form-control' name='identity_method'>
-          	<option value='Passport'> Passport number</option>
-            <option value='IC'> Identity Card (IC) </option>          
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label>Identity validation:</label>
-          <input class='form-control' name='identity' placeholder="Enter Passport/IC number" id='identity'>
         </div>
         
         <center>

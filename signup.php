@@ -1,5 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/header/airsale.php');
 
 //getting data from previous entry
 $password=mysqli_escape_string($conn,$_POST["password"]);

@@ -1,15 +1,18 @@
 <?php
 include('/home/u979434920/public_html/header/airsale.php');
+session_start();
 
 $UI_user=$_POST['user'];
 $UI_password = $_POST['password'];
-$sql = "SELECT user,password FROM user_list";
+$sql = "SELECT user,password FROM user_list WHERE password='$UI_password";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
-	setrawcookie('auth','',time()+1800);
-	while($row = mysqli_fetch_assoc($result)) {
-		if( ($UI_user == $row['user']) && ($UI_password==$row['password']) ) setrawcookie('auth',base64_encode($UI_user),time()+1800);
-	}
+		$row = mysqli_fetch_assoc($result);
+		$_SESSION['auth']=$row['user'];
+}
+else {
+	$_SESSION['auth']='';
+	echo '<script>location.replace(\'login_failed.html\')</script>';
 }
 
 ?>
@@ -25,15 +28,6 @@ if (mysqli_num_rows($result) > 0) {
 <script src="/airsale/js/bootstrap.min.js"></script>
 <script src="/airsale/js/gryphon.js"></script>
 <script src="/airsale/js/classie.js"></script>
-
-<script>
-$(document).ready(function(e) {
-    if(getCookie_raw('auth')!='') location.replace('/airsale/airsale/home.html');
-	if(getCookie_raw('auth')=='') location.replace('/login_failed.html');
-});
-
-</script>
-
 
 <title>AirSale SIGNUP</title>
 </head>
