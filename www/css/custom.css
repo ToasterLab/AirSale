@@ -1,0 +1,18 @@
+.main-icon{
+	font-size:40vw;
+}
+.thin{
+	font-weight:300;
+}
+.very-thin{
+	font-weight:200;
+}
+.no-bottom-margin{
+	margin-bottom:0;
+}
+.no-top-margin{
+	margin-top:0;
+}
+.some-empty-space-above{
+	margin-top:5vw;
+}
