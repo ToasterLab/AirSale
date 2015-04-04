@@ -1,19 +1,29 @@
 <div class="row some-empty-space-above">
-	<form class="col s12">
+	<form class="col s12" ng-submit="login()" ng-controller="loginController" name="loginForm" action="#">
 		<input class="hide" id="user_honeypot" type="text">
 		<input class="hide" id="pwd_honeypot" type="password">
+		<div class="input-field col s12" ng-show="user.error">
+			<div class="card-panel red darken-4">
+		        <span class="white-text">
+		        	<strong>Sorry!</strong>
+		        	Invalid password or username.
+		        </span>
+		    </div>
+	   	</div>
 		<div class="input-field col s12">
-        	<i class="mdi-action-account-circle prefix blue-text text-darken-1"></i>
-        	<input id="username" type="text" class="validate" autocomplete="off">
-        	<label for="username">Username</label>
-        </div>
-        <div class="input-field col s12">
-        	<i class="mdi-communication-vpn-key prefix blue-text text-darken-1"></i>
-        	<input id="password" type="password" class="validate" autocomplete="off">
-        	<label for="password">Password</label>
-        </div>
-        <div class="row center">
-        	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above">LOGIN<i class="mdi-content-send right"></i></a>
-        </div>
+                	<i class="mdi-action-account-circle prefix blue-text text-darken-1"></i>
+                	<input id="username" type="text" class="validate" autocomplete="off" ng-model="user.username">
+                	<label for="username">Username</label>
+                </div>
+                <div class="input-field col s12">
+                	<i class="mdi-communication-vpn-key prefix blue-text text-darken-1"></i>
+                	<input id="password" type="password" class="validate" autocomplete="off" ng-model="user.password">
+                	<label for="password">Password</label>
+                </div>
+                <div class="row center">
+                	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above" type="submit" ng-click="login()">
+                		LOGIN<i class="mdi-content-send right"></i>
+                	</a>
+                </div>
 	</form>
 </div>
