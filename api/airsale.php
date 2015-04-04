@@ -1105,7 +1105,7 @@ if($_POST['mobile'] == 1)
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 			$min_id = $row['min(id)'];
 	//		var_dump($row,$min_id,$max_id);
-			for($in=$min_id;  $min_id<= $in && $in <= $max_id; $in++)
+			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
 				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
 								publish1.arrivalDateTime,	publish1.flightCarrier,
@@ -1155,14 +1155,16 @@ if($_POST['mobile'] == 1)
 			'location'=>$row['location'],				'other'=>$row['other'],
 			'prefered'=>$row['prefered'] ));
 			
-						$arr=$arr + $arr_temp;
+						
+						$arr=$arr+ $arr_temp;
+						echo json_encode($arr_temp);
 						//var_dump($result,$row,$arr_temp,$arr,$min_id,$max_id,$in);
 						
 					}//while
 				}//if
 			}//for
 			
-			echo json_encode($arr);
+			
 			break;
 		}//case
 	}//switch
