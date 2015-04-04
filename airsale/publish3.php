@@ -1,33 +1,7 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 
-$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT name,price,account FROM publish2";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('itemName',base64_encode($row['name']));
-		setElement('itemPrice',base64_encode($row['price']));
-		}
-		$i++;
-	}
-}
+getPublishElements(1);getPublishElements(2);
 
 ?>
 <!doctype html>
@@ -130,7 +104,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish3_upload.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <input type='hidden' name="action" value='publish3'>
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. Compulsory fileds are marked with an asterisk (*)</label><br><br></center>
     
     	<div class='col-md-3 form-group'>
@@ -180,9 +155,9 @@ if (mysqli_num_rows($result) > 0) {
         
         
         <div class='form-group col-md-6' id='userPicture-div'>
-        <label>*Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+        <label>Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
         <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
-        <label for='picture-instruction' class='alert-danger'> Requirement for the picture: Face must be fully shown. Upper body and your arms must be visible in the picture. Your request to publish this item will be rejected if you fail to meet these requirements.</label>
+        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of yourself so that the customers can identify you. </label>
         </div>
         
     <div class='col-md-12'>
@@ -209,8 +184,8 @@ $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
 	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
 	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
-	document.getElementById('itemName-div').innerHTML = getElement('itemName');
-	document.getElementById('itemPrice-div').innerHTML = getElement('itemPrice');
+	document.getElementById('itemName-div').innerHTML = getElement('name');
+	document.getElementById('itemPrice-div').innerHTML = getElement('price');
 });
 
 function formValidation()
@@ -224,8 +199,6 @@ function formValidation()
 	else {$('#email-div').removeClass('has-error');error=0;}
 	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=1;}
 	else {$('#prefered-div').removeClass('has-error');error=0;}
-	if($('#userPicture').val()=='') {$('#userPicture-div').addClass('has-error');error=1;}
-	else {$('#userPicture-div').removeClass('has-error');error=0;}
 	
 	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
 	else return true;

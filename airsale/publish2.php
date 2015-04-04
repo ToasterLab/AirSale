@@ -1,19 +1,7 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 
-$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		}
-		$i++;
-	}
-}
+getPublishElements(1);
 
 ?>
 <!doctype html>
@@ -116,7 +104,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish2_upload.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+        <input type='hidden' name="action" value='publish2'>
     <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
     
     	<div class='col-md-6 form-group'>

@@ -1,34 +1,6 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
-
-$sql = "SELECT departureCountry,
-		arrivalCountry,
-		arrivalDateTime,
-		flightCarrier,
-		flightNumber,
-		fullName,
-		passport,
-		ticketName,
-		account,id FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('server-departureCountry',base64_encode($row['departureCountry']));
-		setElement('server-arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('server-arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		setElement('server-flightCarrier',base64_encode($row['flightCarrier']));
-		setElement('server-flightNumber',base64_encode($row['flightNumber']));
-		setElement('server-fullName',base64_encode($row['fullName']));
-		setElement('server-passport',base64_encode($row['passport']));
-		setElement('server-ticketName',base64_encode($row['ticketName']));
-		setElement('server-publish1id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
+include('/home/u979434920/public_html/airsale/api/airsale.php');
+getPublishElements(1);getPublishElements(2);getPublishElements(3);
 
 ?>
 
@@ -131,43 +103,40 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish_edit_push.php' method='POST' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='POST' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <input type='hidden' name="action" value='publish1_edit'>
+    <input type='hidden' name="edit_id" id='edit_id'>
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. ALL FIELDS ARE COMPULSORY</label><br><br></center>
     	<div class='col-md-6 form-group' id='departureCountry-div'>
         <label>Departure Country (Leaving FROM):</label>
-        <input class='form-control' type="text" name='departureCountry' id='departureCountry'>
+        <input class='form-control' type="text" name='departureCountry' id='departureCountry-form'>
         </div>
         
         <div class='col-md-3 form-group' id='arrivalCountry-div'>
         <label>Arrival Country (Arriving AT):</label>
-        <input class='form-control' type="text" name='arrivalCountry' id='arrivalCountry'>
+        <input class='form-control' type="text" name='arrivalCountry' id='arrivalCountry-form'>
         </div>
         
         <div class='col-md-3 form-group' id='arrivalDateTime-div'>
         <label>Arrival time (Format: YYYY-MM-DD HH:MM:SS):</label>
-        <input class='form-control' type="datetime" name='arrivalDateTime' id='arrivalDateTime' placeholder="eg. 2015-01-01 12:50:00">
+        <input class='form-control' type="datetime" name='arrivalDateTime' id='arrivalDateTime-form' placeholder="eg. 2015-01-01 12:50:00">
         </div>
         
         <div class='col-md-3 form-group' id='flightCarrier-div'>
         <label>Flight carrier:</label>
-        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
+        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier-form'>
         </div>
         
         <div class='col-md-3 form-group' id='flightNumber-div'>
         <label>Flight number:</label>
-        <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
+        <input class='form-control' type="text" name='flightNumber' id='flightNumber-form'>
         </div>
         
         <div class='col-md-6 form-group' id='fullName-div'>
         <label>Passenger FULL name (The passenger who is selling the item. This should be the account holder):</label>
-        <input class='form-control' type="text" name='fullName' id='fullName'>
+        <input class='form-control' type="text" name='fullName' id='fullName-form'>
         </div>
-        
-        <div class='col-md-6 form-group' id='passport-div'>
-        <label>Passenger passport number (This should match the one given at sign-up. This is solicited again for verification purposes):</label>
-        <input class='form-control' type="text" name='passport' id='passport'>
-        </div>
-        
+  
         <div class='col-md-6 form-group' id='airTicket-div'>
         <label>Picture of air-ticket (OR e-ticket) showing flight number, passenger's full name, departure country and departure time (Any picture format, preferably jpg, jpeg, png, that is SMALLER than 7MB):</label>
         <input class='form-control' type="file" name='airTicket' id='airTicket' accept="image/*">
@@ -200,22 +169,20 @@ $(document).ready(function(e) {
 function formValidation()
 {
 	error=0;
-	if($('#arrivalCountry').val()=='') {$('#arrivalCountry-div').addClass('has-error');error=1;}
+	if($('#arrivalCountry-form').val()=='') {$('#arrivalCountry-div').addClass('has-error');error=1;}
 	else {$('#arrivalCountry-div').removeClass('has-error');error=0;}
-	if($('#airTicket').val()=='') {$('#airTicket-div').addClass('has-error');error=1;}
+	if($('#airTicket-form').val()=='') {$('#airTicket-div').addClass('has-error');error=1;}
 	else {$('#airTicket-div').removeClass('has-error');error=0;}
-	if($('#arrivalDateTime').val()=='') {$('#arrivalDateTime-div').addClass('has-error');error=1;}
+	if($('#arrivalDateTime-form').val()=='') {$('#arrivalDateTime-div').addClass('has-error');error=1;}
 	else {$('#arrivalDateTime-div').removeClass('has-error');error=0;}
-	if($('#departureCountry').val()=='') {$('#departureCountry-div').addClass('has-error');error=1;}
+	if($('#departureCountry-form').val()=='') {$('#departureCountry-div').addClass('has-error');error=1;}
 	else {$('#departureCountry-div').removeClass('has-error');error=0;}
-	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
+	if($('#flightCarrier-form').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
 	else {$('#flightCarrier-div').removeClass('has-error');error=0;}
-	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
+	if($('#flightNumber-form').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
 	else {$('#flightNumber-div').removeClass('has-error');error=0;}
-	if($('#fullName').val()=='') {$('#fullName-div').addClass('has-error');error=1;}
+	if($('#fullName-form').val()=='') {$('#fullName-div').addClass('has-error');error=1;}
 	else {$('#fullName-div').removeClass('has-error');error=0;}
-	if($('#passport').val()=='') {$('#passport-div').addClass('has-error');error=1;}
-	else {$('#passport-div').removeClass('has-error');error=0;}
 	
 	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
 	else return true;
@@ -224,13 +191,12 @@ function formValidation()
 
 function formUpdate()
 {
-	document.getElementById('departureCountry').value = getElement('server-departureCountry');
-	document.getElementById('arrivalCountry').value = getElement('server-arrivalCountry');
-	document.getElementById('arrivalDateTime').value = getElement('server-arrivalDateTime');
-	document.getElementById('flightCarrier').value = getElement('server-flightCarrier');
-	document.getElementById('flightNumber').value = getElement('server-flightNumber');
-	document.getElementById('fullName').value = getElement('server-fullName');
-	document.getElementById('passport').value = getElement('server-passport');
+	document.getElementById('departureCountry-form').value = getElement('departureCountry');
+	document.getElementById('arrivalCountry-form').value = getElement('arrivalCountry');
+	document.getElementById('arrivalDateTime-form').value = getElement('arrivalDateTime');
+	document.getElementById('flightCarrier-form').value = getElement('flightCarrier');
+	document.getElementById('flightNumber-form').value = getElement('flightNumber');
+	document.getElementById('fullName-form').value = getElement('fullName');
 	
 }
 

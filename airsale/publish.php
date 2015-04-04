@@ -103,18 +103,19 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 	<div class='row'>
     <form action='/api/airsale.php' method='POST' onSubmit="return formValidation()" enctype="multipart/form-data" >
     <input type='hidden' name="action" value='publish1'>
+    
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. ALL FIELDS ARE COMPULSORY</label><br><br></center>
     	<div class='col-md-6 form-group' id='departureCountry-div'>
         <label>Departure Country (Leaving FROM):</label>
         <input class='form-control' type="text" name='departureCountry' id='departureCountry'>
         </div>
         
-        <div class='col-md-3 form-group' id='arrivalCountry-div'>
+        <div class='col-md-6 form-group' id='arrivalCountry-div'>
         <label>Arrival Country (Arriving AT):</label>
         <input class='form-control' type="text" name='arrivalCountry' id='arrivalCountry'>
         </div>
         
-        <div class='col-md-3 form-group' id='arrivalDateTime-div'>
+        <div class='col-md-6 form-group' id='arrivalDateTime-div'>
         <label>Arrival time (Format: YYYY-MM-DD HH:MM:SS):</label>
         <input class='form-control' type="datetime" name='arrivalDateTime' id='arrivalDateTime' placeholder="eg. 2015-01-01 12:50:00">
         </div>
@@ -134,10 +135,6 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         <input class='form-control' type="text" name='fullName' id='fullName'>
         </div>
         
-        <div class='col-md-6 form-group' id='passport-div'>
-        <label>Passenger passport number (This should match the one given at sign-up. This is solicited again for verification purposes):</label>
-        <input class='form-control' type="text" name='passport' id='passport'>
-        </div>
         
         <div class='col-md-6 form-group' id='airTicket-div'>
         <label>Picture of air-ticket (OR e-ticket) showing flight number, passenger's full name, departure country and departure time (Any picture format, preferably jpg, jpeg, png, that is SMALLER than 7MB):</label>
@@ -184,8 +181,6 @@ function formValidation()
 	else {$('#flightNumber-div').removeClass('has-error');error=0;}
 	if($('#fullName').val()=='') {$('#fullName-div').addClass('has-error');error=1;}
 	else {$('#fullName-div').removeClass('has-error');error=0;}
-	if($('#passport').val()=='') {$('#passport-div').addClass('has-error');error=1;}
-	else {$('#passport-div').removeClass('has-error');error=0;}
 	
 	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
 	else return true;

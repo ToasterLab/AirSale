@@ -1,59 +1,7 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 
-$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT name,price,account FROM publish2";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('itemName',base64_encode($row['name']));
-		setElement('itemPrice',base64_encode($row['price']));
-		}
-		$i++;
-	}
-}
-
-
-$sql = "SELECT number,
-		email,
-		location,
-		other,
-		prefered,
-		userPictureName,
-		account,id FROM publish3";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('server-number',base64_encode($row['number']));
-		setElement('server-email',base64_encode($row['email']));
-		setElement('server-location',base64_encode($row['location']));
-		setElement('server-other',base64_encode($row['other']));
-		setElement('server-prefered',base64_encode($row['prefered']));
-		setElement('server-userPictureName',base64_encode($row['userPictureName']));
-		setElement('server-publish3id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
+getPublishElements(1);getPublishElements(2);getPublishElements(3);
 
 
 ?>
@@ -157,7 +105,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish_edit_push.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <input type='hidden' name="action" value='publish3_edit'>
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. Compulsory fileds are marked with an asterisk (*)</label><br><br></center>
     
     	<div class='col-md-3 form-group'>
@@ -182,27 +131,27 @@ if (mysqli_num_rows($result) > 0) {
                 
         <div class='col-md-3 form-group' id='number-div'>
         <label>*Contact number</label>
-        <input class='form-control' type='text' name='number' id='number'>
+        <input class='form-control' type='text' name='number' id='number-form'>
         </div>
         
         <div class='col-md-3 form-group' id='email-div'>
         <label>*Contact email</label>
-        <input class='form-control' type='text' name='email' id='email'>
+        <input class='form-control' type='text' name='email' id='email-form'>
         </div>
         
         <div class='col-md-3 form-group' id='location-div'>
         <label>*Hand-over location</label>
-        <input type='text' class='form-control' name='location' id='location'>
+        <input type='text' class='form-control' name='location' id='location-form'>
         </div>
         
         <div class='form-group col-md-3' id='prefered-div'>
         <label>*Prefered method of contact</label>
-        <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
+        <input type='text' class='form-control' name='prefered' id='prefered-form' value="Message">
         </div>
         
         <div class='col-md-6 form-group' id='other-div'>
         <label>Other method to contact me(format: method-account)</label>
-        <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
+        <input type='text' class='form-control' name='other' id='other-form' placeholder="eg. MSN-a@a.com">
         </div>
         
         
@@ -236,23 +185,23 @@ $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
 	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
 	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
-	document.getElementById('itemName-div').innerHTML = getElement('itemName');
-	document.getElementById('itemPrice-div').innerHTML = getElement('itemPrice');
+	document.getElementById('itemName-div').innerHTML = getElement('name');
+	document.getElementById('itemPrice-div').innerHTML = getElement('price');
 	formUpdate();
 });
 
 function formValidation()
 {
 	error=0;
-	if($('#number').val()=='') {$('#number-div').addClass('has-error');error=1;}
+	if($('#number-form').val()=='') {$('#number-div').addClass('has-error');error=1;}
 	else {$('#number-div').removeClass('has-error');error=0;}
-	if($('#location').val()=='') {$('#location-div').addClass('has-error');error=1;}
+	if($('#location-form').val()=='') {$('#location-div').addClass('has-error');error=1;}
 	else {$('#location-div').removeClass('has-error');error=0;}
-	if($('#email').val()=='') {$('#email-div').addClass('has-error');error=1;}
+	if($('#email-form').val()=='') {$('#email-div').addClass('has-error');error=1;}
 	else {$('#email-div').removeClass('has-error');error=0;}
-	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=1;}
+	if($('#prefered-form').val()=='') {$('#prefered-div').addClass('has-error');error=1;}
 	else {$('#prefered-div').removeClass('has-error');error=0;}
-	if($('#userPicture').val()=='') {$('#userPicture-div').addClass('has-error');error=1;}
+	if($('#userPicture-form').val()=='') {$('#userPicture-div').addClass('has-error');error=1;}
 	else {$('#userPicture-div').removeClass('has-error');error=0;}
 	
 	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
@@ -262,11 +211,11 @@ function formValidation()
 
 function formUpdate()
 {
-	document.getElementById('number').value = getElement('server-number');
-	document.getElementById('email').value = getElement('server-email');
-	document.getElementById('location').value = getElement('server-location');
-	document.getElementById('other').value = getElement('server-other');
-	document.getElementById('prefered').value = getElement('server-prefered');
+	document.getElementById('number-form').value = getElement('number');
+	document.getElementById('email-form').value = getElement('email');
+	document.getElementById('location-form').value = getElement('location');
+	document.getElementById('other-form').value = getElement('other');
+	document.getElementById('prefered-form').value = getElement('prefered');
 }
 
 </script>

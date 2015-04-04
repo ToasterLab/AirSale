@@ -1,87 +1,7 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 
-$sql = "SELECT departureCountry,
-		arrivalCountry,
-		arrivalDateTime,
-		flightCarrier,
-		flightNumber,
-		fullName,
-		passport,
-		ticketName,
-		account,id FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('departureCountry',base64_encode($row['departureCountry']));
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		setElement('flightCarrier',base64_encode($row['flightCarrier']));
-		setElement('flightNumber',base64_encode($row['flightNumber']));
-		setElement('fullName',base64_encode($row['fullName']));
-		setElement('passport',base64_encode($row['passport']));
-		setElement('ticketName',base64_encode($row['ticketName']));
-		setElement('publish1id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT category,
-		name,
-		specifications,
-		price,
-		description,
-		itemPictureName,itemPictureName2,itemPictureName3,itemPictureName4,
-		account,id FROM publish2";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('category',base64_encode($row['category']));
-		setElement('name',base64_encode($row['name']));
-		setElement('specifications',base64_encode($row['specifications']));
-		setElement('price',base64_encode($row['price']));
-		setElement('description',base64_encode($row['description']));
-		setElement('itemPictureName',base64_encode($row['itemPictureName']));
-		setElement('itemPictureName2',base64_encode($row['itemPictureName2']));
-		setElement('itemPictureName3',base64_encode($row['itemPictureName3']));
-		setElement('itemPictureName4',base64_encode($row['itemPictureName4']));
-		setElement('publish2id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT number,
-		email,
-		location,
-		other,
-		prefered,
-		userPictureName,
-		account,id FROM publish3";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('number',base64_encode($row['number']));
-		setElement('email',base64_encode($row['email']));
-		setElement('location',base64_encode($row['location']));
-		setElement('other',base64_encode($row['other']));
-		setElement('prefered',base64_encode($row['prefered']));
-		setElement('userPictureName',base64_encode($row['userPictureName']));
-		setElement('publish3id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
+getPublishElements(1);getPublishElements(2);getPublishElements(3);
 
 ?>
 <!doctype html>
@@ -189,7 +109,8 @@ if (mysqli_num_rows($result) > 0) {
     
     <div class='row'>
     
-    <form enctype="multipart/form-data" action="/airsale/airsale/publish4_upload.php">
+    <form enctype="multipart/form-data" action="/api/airsale.php" method='post'>
+    <input type='hidden' name="action" value='publish4'>
     
     <div class='panel panel-default'>
     <div class='panel-heading'>
@@ -228,11 +149,6 @@ if (mysqli_num_rows($result) > 0) {
             <div class='col-md-6 form-group' id='fullName-div'>
             <label>Passenger FULL name (The passenger who is selling the item. This should be the account holder):</label>
             <p class='form-control form-control-static'  id='fullName-form'></p>
-            </div>
-            
-            <div class='col-md-6 form-group' id='passport-div'>
-            <label>Passenger passport number (This should match the one given at sign-up. This is solicited again for verification purposes):</label>
-            <p class='form-control form-control-static' id='passport-form'></p>
             </div>
             
             <div class='col-md-6 form-group'>
@@ -402,7 +318,6 @@ function formUpdate()
 	document.getElementById('flightCarrier-form').innerHTML = getElement('flightCarrier');
 	document.getElementById('flightNumber-form').innerHTML = getElement('flightNumber');
 	document.getElementById('fullName-form').innerHTML = getElement('fullName');
-	document.getElementById('passport-form').innerHTML = getElement('passport');
 	
 	document.getElementById('category-form').innerHTML = getElement('category');
 	document.getElementById('name-form').innerHTML = getElement('name');
@@ -429,7 +344,7 @@ function editPublish(edit_handle)
 	//edit_handle points to which Publish is to be edited.
 	setCookie('edit_id',getElement('publish'.concat(String(edit_handle),'id')),1);
 	setCookie('edit_handle', String(edit_handle) ,1);
-	location.replace('/airsale/airsale/publish'.concat( String(edit_handle),'_edit.php')  );
+	location.replace('/airsale/publish'.concat( String(edit_handle),'_edit.php')  );
 }
 
 

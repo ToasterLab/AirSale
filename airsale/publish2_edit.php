@@ -1,47 +1,6 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
-
-$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT category,
-		name,
-		specifications,
-		price,
-		description,
-		itemPictureName,
-		account,id FROM publish2";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('server-category',base64_encode($row['category']));
-		setElement('server-name',base64_encode($row['name']));
-		setElement('server-specifications',base64_encode($row['specifications']));
-		setElement('server-price',base64_encode($row['price']));
-		setElement('server-description',base64_encode($row['description']));
-		setElement('server-itemPictureName',base64_encode($row['itemPictureName']));
-		setElement('server-publish2id',base64_encode($row['id']));
-		}
-		$i++;
-	}
-}
-
-
-
+include('/home/u979434920/public_html/airsale/api/airsale.php');
+getPublishElements(1);getPublishElements(2);getPublishElements(3);
 ?>
 <!doctype html>
 <html>
@@ -143,7 +102,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish_edit_push.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <input type='hidden' name="action" value='publish2_edit'>
     <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
     
     	<div class='col-md-6 form-group'>
@@ -158,7 +118,7 @@ if (mysqli_num_rows($result) > 0) {
                 
         <div class='col-md-3 form-group' id='category-div'>
         <label>*Category of item</label>
-        <select class='form-control' name='category' id='category'>
+        <select class='form-control' name='category' id='category-form'>
         	<option value='cosmetics'>Cosmetics</option>
             <option value='cosmetics-makeup'>Cosmetics-makeup</option>
             <option value='electronics'>Electronics</option>
@@ -167,22 +127,22 @@ if (mysqli_num_rows($result) > 0) {
         
         <div class='col-md-3 form-group' id='name-div'>
         <label>*Name of item</label>
-        <input class='form-control' type='text' name='name' id='name'>
+        <input class='form-control' type='text' name='name' id='name-form'>
         </div>
         
         <div class='col-md-4 form-group' id='specifications-div'>
         <label>*Specifications of item(Volume, brand, etc)</label>
-        <input type='text' class='form-control' name='specifications' id='specifications'>
+        <input type='text' class='form-control' name='specifications' id='specifications-form'>
         </div>
         
         <div class='col-md-2 form-group' id='price-div'>
         <label>*Price</label>
-        <input type='text' class='form-control' name='price' id='price'>
+        <input type='text' class='form-control' name='price' id='price-form'>
         </div>
         
         <div class='form-group col-md-12' id='description-div'>
         <label>*Description of the item</label>
-        <textarea rows="10" class='form-control' name='description' id='description'></textarea>
+        <textarea rows="10" class='form-control' name='description' id='description-form'></textarea>
         </div>
         
         <div class='form-group col-md-12'>
@@ -220,15 +180,15 @@ $(document).ready(function(e) {
 function formValidation()
 {
 	error=0;
-	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=1;}
+	if($('#category-form').val()=='') {$('#category-div').addClass('has-error');error=1;}
 	else {$('#category-div').removeClass('has-error');error=0;}
-	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=1;}
+	if($('#name-form').val()=='') {$('#name-div').addClass('has-error');error=1;}
 	else {$('#name-div').removeClass('has-error');error=0;}
-	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
+	if($('#specifications-form').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
 	else {$('#specifications-div').removeClass('has-error');error=0;}
-	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=1;}
+	if($('#price-form').val()=='') {$('#price-div').addClass('has-error');error=1;}
 	else {$('#price-div').removeClass('has-error');error=0;}
-	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=1;}
+	if($('#description-form').val()=='') {$('#description-div').addClass('has-error');error=1;}
 	else {$('#description-div').removeClass('has-error');error=0;}
 	
 	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
@@ -238,11 +198,11 @@ function formValidation()
 
 function formUpdate()
 {
-	document.getElementById('category').selected = getElement('server-category');
-	document.getElementById('name').value = getElement('server-name');
-	document.getElementById('specifications').value = getElement('server-specifications');
-	document.getElementById('price').value = getElement('server-price');
-	document.getElementById('description').value = getElement('server-description');
+	document.getElementById('category-form').selected = getElement('category');
+	document.getElementById('name-form').value = getElement('name');
+	document.getElementById('specifications-form').value = getElement('specifications');
+	document.getElementById('price-form').value = getElement('price');
+	document.getElementById('description-form').value = getElement('description');
 	
 }
 

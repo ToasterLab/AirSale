@@ -130,7 +130,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/airsale/airsale/publish2_photo_upload.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <input type='hidden' name='action' value="publish2_photo">
     <br><br>
     	<div class='col-md-3 form-group'>
         <label>Arrival Country (Last entry):</label>
