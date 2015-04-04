@@ -1,7 +1,33 @@
 <?php
-include('/home/u979434920/public_html/airsale/api/airsale.php');
+include('/home/u979434920/public_html/header/airsale.php');
 
-getPublishElements(1);
+$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
+$result = mysqli_query($conn, $sql);
+$i=1;
+if (mysqli_num_rows($result) > 0) {
+	while($row = mysqli_fetch_assoc($result)) {
+		if($row['account'] == base64_decode($_COOKIE['auth']) )
+		{
+		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
+		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
+		}
+		$i++;
+	}
+}
+
+$sql = "SELECT name,price,account FROM publish2";
+$result = mysqli_query($conn, $sql);
+$i=1;
+if (mysqli_num_rows($result) > 0) {
+	while($row = mysqli_fetch_assoc($result)) {
+		if($row['account'] == base64_decode($_COOKIE['auth']) )
+		{
+		setElement('itemName',base64_encode($row['name']));
+		setElement('itemPrice',base64_encode($row['price']));
+		}
+		$i++;
+	}
+}
 
 ?>
 <!doctype html>
@@ -59,7 +85,7 @@ getPublishElements(1);
 
 <div>
 	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head3' style="display:none"> Selling an item<br></h1>
+    <h1 id='head3' style="display:none"> Editing item information<br></h1>
     </div>
 </div>
 
@@ -70,13 +96,13 @@ getPublishElements(1);
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
-            <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
+            <a href="/airsale/publish2_edit.php" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+            <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
             </div>
             <div class='btn-group'>
             <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
@@ -93,9 +119,9 @@ getPublishElements(1);
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
-        <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+        <a href="/airsale/publish2_edit.php" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
+        <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
         <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
         </div>
     </div>
@@ -106,51 +132,47 @@ getPublishElements(1);
 <div class='container'>
 	<div class='row'>
     <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
-        <input type='hidden' name="action" value='publish2'>
-    <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
-    
-    	<div class='col-md-6 form-group'>
+    <input type='hidden' name='action' value="publish2_photo">
+    <br><br>
+    	<div class='col-md-3 form-group'>
         <label>Arrival Country (Last entry):</label>
         <p class='form-control-static form-control' id='arrivalCountry-div'></p>
         </div>
         
-        <div class='col-md-6 form-group'>
+        <div class='col-md-3 form-group'>
         <label>Arrival Time (Last entry):</label>
         <p class='form-control-static form-control' id='arrivalDateTime-div'></p>
         </div>
-                
-        <div class='col-md-3 form-group' id='category-div'>
-        <label>*Category of item</label>
-        <select class='form-control' name='category'>
-        	<option value='cosmetics'>Cosmetics</option>
-            <option value='cosmetics-makeup'>Cosmetics-makeup</option>
-            <option value='electronics'>Electronics</option>
-        </select>
+        
+        <div class='col-md-3 form-group'>
+        <label>Item name (Last entry):</label>
+        <p class='form-control-static form-control' id='itemName-div'></p>
         </div>
         
-        <div class='col-md-3 form-group' id='name-div'>
-        <label>*Name of item</label>
-        <input class='form-control' type='text' name='name' id='name'>
+        <div class='col-md-3 form-group'>
+        <label>Price (Last entry):</label>
+        <p class='form-control-static form-control' id='itemPrice-div'></p>
+        </div>
+        <br>
+        
+        <div class='alert-warning' style="margin-top:40pt">
+        <h3> Warning: The TOTAL file size (all three added) must not exeed 8 MB<br>
+		Note: You can upload a maximum of 4 photos, including the one uploaded before.</h3>
         </div>
         
-        <div class='col-md-4 form-group' id='specifications-div'>
-        <label>*Specifications of item(Volume, brand, etc)</label>
-        <input type='text' class='form-control' name='specifications' id='specifications'>
-        </div>
-        
-        <div class='col-md-2 form-group' id='price-div'>
-        <label>*Price</label>
-        <input type='text' class='form-control' name='price' id='price'>
-        </div>
-        
-        <div class='form-group col-md-12' id='description-div'>
-        <label>*Description of the item</label>
-        <textarea rows="10" class='form-control' name='description' id='description'></textarea>
-        </div>
-        
-        <div class='form-group col-md-12'>
+        <div class='form-group col-md-4'>
         <label>Picture of the item (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
-        <input class='form-control' type='file' name='itemPicture' accept="image/*">
+        <input class='form-control' type='file' name='itemPicture2' accept="image/*">
+        </div>
+        
+        <div class='form-group col-md-4'>
+        <label>Picture of the item (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+        <input class='form-control' type='file' name='itemPicture3' accept="image/*">
+        </div>
+        
+        <div class='form-group col-md-4'>
+        <label>Picture of the item (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+        <input class='form-control' type='file' name='itemPicture4' accept="image/*">
         </div>
         
     <br><br> 
@@ -177,6 +199,8 @@ $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
 	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
 	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
+	document.getElementById('itemName-div').innerHTML = getElement('itemName');
+	document.getElementById('itemPrice-div').innerHTML = getElement('itemPrice');
 });
 
 function formValidation()

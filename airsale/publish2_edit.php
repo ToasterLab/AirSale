@@ -9,6 +9,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href='/css/b.css'>
 <link rel="stylesheet" href='/css/gryphon.css'>
+<link rel="stylesheet" href='/css/gry2.css'>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/b.js"></script>
 <script src="/js/gryphon.js"></script>
@@ -37,15 +38,15 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li ><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li ><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li ><a href='/airsale/explore.php' class='btn'><i class='fa fa-search'></i> Explore</a> </li>
+                    <li ><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown active'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/publish.php' class='btn'> Sell new items</a> </li>
-                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li class="active"><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
             
             </li>
@@ -56,7 +57,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 
 <div>
 	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head3' style="display:none"> Selling an item<br></h1>
+    <h1 id='head3' style="display:none"> Editing item information<br></h1>
     </div>
 </div>
 
@@ -67,13 +68,13 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+            <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
             </div>
             <div class='btn-group'>
             <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
@@ -90,9 +91,9 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+        <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
         <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
         </div>
     </div>
@@ -152,7 +153,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
         
     <br><br> 
     <center>
-    <input type='submit' class='btn btn-lg btn-default' onClick="setCookie('destination','3',1);"> <br><br>
+    <input type='submit' class='btn btn-lg btn-default' "> <br><br>
     </center>
     </form>
     

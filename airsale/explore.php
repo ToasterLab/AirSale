@@ -39,15 +39,15 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <li class='dropdown active'>
             <a class="dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li class="active"><a href='/airsale/explore.php' class='btn'><i class='fa fa-search'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'> Sell new items</a> </li>
-                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
             
             </li>
@@ -58,7 +58,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 <div>
 	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head3' style="display:none"> Exploring AirSale<br></h1>
+    <h1 id='head3' style="display:none"><i class='fa fa-search'></i> Exploring AirSale<br></h1>
     </div>
 </div>
 

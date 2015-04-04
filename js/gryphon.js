@@ -147,7 +147,7 @@ function getCookie_raw(cname) {
 
 function getCookie(cname) {
     var raw=getCookie_raw(cname);
-	var data = base64_decode(raw);
+	var data = (raw);
 	return data;
 }
 
@@ -155,13 +155,12 @@ function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
-	cvalue = base64_encode(cvalue);
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+    document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/ ";
 }
 
 function setSessionCookie(cname, cvalue) {
-	cvalue = base64_encode(cvalue);
-    document.cookie = cname + "=" + cvalue;
+    document.cookie = cname + "=" + cvalue + "; "+ "; path=/ ";
+
 }
 
 function deleteCookie(cname)

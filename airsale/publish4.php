@@ -11,6 +11,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href='/css/b.css'>
 <link rel="stylesheet" href='/css/gryphon.css'>
+<link rel="stylesheet" href='/css/gry2.css'>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/b.js"></script>
 <script src="/js/gryphon.js"></script>
@@ -39,15 +40,15 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li ><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li ><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li ><a href='/airsale/explore.php' class='btn'><i class='fa fa-search'></i> Explore</a> </li>
+                    <li ><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown active'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/publish.php' class='btn'> Sell new items</a> </li>
-                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li class="active"><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
             
             </li>
@@ -167,7 +168,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
         <a class='btn btn-warning ' onClick="editPublish(2)">Edit</a>
         </div>
         <div class='btn-group'>
-        <a class='btn btn-success' href='/airsale/publish2_photo.php'>Add more photos</a>
+        <a class='btn btn-success' href='/airsale/publish2_photo_edit.php'>Add more photos</a>
         </div>
     </div>
     </center>
@@ -341,9 +342,6 @@ function formUpdate()
 
 function editPublish(edit_handle)
 {
-	//edit_handle points to which Publish is to be edited.
-	setCookie('edit_id',getElement('publish'.concat(String(edit_handle),'id')),1);
-	setCookie('edit_handle', String(edit_handle) ,1);
 	location.replace('/airsale/publish'.concat( String(edit_handle),'_edit.php')  );
 }
 

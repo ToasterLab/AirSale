@@ -21,6 +21,7 @@ if (mysqli_num_rows($result) > 0) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href='/css/b.css'>
 <link rel="stylesheet" href='/css/gryphon.css'>
+<link rel="stylesheet" href='/css/gry2.css'>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/b.js"></script>
 <script src="/js/gryphon.js"></script>
