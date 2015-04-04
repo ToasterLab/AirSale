@@ -181,7 +181,8 @@ function deleteAllCookies() {
 
 function getElement(element_name)
 {
-	return base64_decode(document.getElementById(element_name).innerHTML);
+	if(document.getElementById(element_name))
+	return (document.getElementById(element_name).innerHTML);
 }
 
 

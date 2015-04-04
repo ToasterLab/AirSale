@@ -7,14 +7,14 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href='/css/bootstrap.min.css'>
+<link rel="stylesheet" href='/css/b.css'>
 <link rel="stylesheet" href='/css/gryphon.css'>
 <script src="/js/jquery-1.11.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+<script src="/js/b.js"></script>
 <script src="/js/gryphon.js"></script>
 <script src="/js/classie.js"></script>
 <script src="/js/airsale.js"></script>
-<script src='/js/jquery.sticky.js'></script>
+<script src='/js/j2.js'></script>
 <title>Selling new items</title>
 </head>
 <body>
