@@ -89,13 +89,13 @@ if (mysqli_num_rows($result) > 0) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href='/airsale/css/bootstrap.min.css'>
-<link rel="stylesheet" href='/airsale/css/gryphon.css'>
-<script src="/airsale/js/jquery-1.11.0.min.js"></script>
-<script src="/airsale/js/bootstrap.min.js"></script>
-<script src="/airsale/js/gryphon.js"></script>
-<script src="/airsale/js/classie.js"></script>
-<script src="/airsale/js/airsale.js"></script>
+<link rel="stylesheet" href='/css/bootstrap.min.css'>
+<link rel="stylesheet" href='/css/gryphon.css'>
+<script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/gryphon.js"></script>
+<script src="/js/classie.js"></script>
+<script src="/js/airsale.js"></script>
 <script src='/js/jquery.sticky.js'></script>
 <title>Step 4 and you are done!</title>
 </head>
@@ -110,24 +110,24 @@ if (mysqli_num_rows($result) > 0) {
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/airsale/home.html' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
         </div>
         
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li ><a href='/airsale/airsale/explore.php' class='btn'> Explore</a> </li>
-                    <li ><a href='/airsale/airsale/my_history.php' class='btn'>Past Purchases</a></li>
+                	<li ><a href='/airsale/explore.php' class='btn'> Explore</a> </li>
+                    <li ><a href='/airsale/my_history.php' class='btn'>Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown active'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/airsale/publish.php' class='btn'> Sell new items</a> </li>
-                    <li><a href='/airsale/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
+                	<li class="active"><a href='/airsale/publish.php' class='btn'> Sell new items</a> </li>
+                    <li><a href='/airsale/explore_destination.php' class='btn'>Explore destination airport</a></li>
                 </ul>
             
             </li>
@@ -149,13 +149,13 @@ if (mysqli_num_rows($result) > 0) {
     <div class='panel-body' style="background-color:#EEEEEE">
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
+            <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 4: Strike a deal!</a>
@@ -172,9 +172,9 @@ if (mysqli_num_rows($result) > 0) {
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
-        <a href="/airsale/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+        <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
+        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 4: Strike a deal!</a>
         </div>
     </div>
@@ -251,7 +251,7 @@ if (mysqli_num_rows($result) > 0) {
         <a class='btn btn-warning ' onClick="editPublish(2)">Edit</a>
         </div>
         <div class='btn-group'>
-        <a class='btn btn-success' href='/airsale/airsale/publish2_photo.php'>Add more photos</a>
+        <a class='btn btn-success' href='/airsale/publish2_photo.php'>Add more photos</a>
         </div>
     </div>
     </center>

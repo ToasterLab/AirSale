@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href='/airsale/css/bootstrap.min.css'>
-<link rel="stylesheet" href='/airsale/css/gryphon.css'>
-<script src="/airsale/js/jquery-1.11.0.min.js"></script>
-<script src="/airsale/js/bootstrap.min.js"></script>
-<script src="/airsale/js/gryphon.js"></script>
-<script src="/airsale/js/classie.js"></script>
+<link rel="stylesheet" href='/css/bootstrap.min.css'>
+<link rel="stylesheet" href='/css/gryphon.css'>
+<script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/gryphon.js"></script>
+<script src="/js/classie.js"></script>
 <title>AirSale LOGIN</title>
 </head>
 <body>
@@ -26,7 +26,7 @@
         
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li class='active'> <a href='/airsale/login.html'> Login here</a></li>
+            <li class='active'> <a href='/login.html'> Login here</a></li>
         	</ul>
         </div>
     </div>
@@ -36,7 +36,7 @@
 <div class='jumbotron' style="padding-top:100pt">
     <h1> Log-in to AirSale<br></h1>
     <div class='container'>
-      <form role="form" action="/airsale/header/airsale.php" method="post" >
+      <form role="form" action='/api/airsale.php' method="post" >
       <input type='hidden' name="action" value='login'>
       <div class='row'>
         <div class="form-group col-md-6">
@@ -52,7 +52,7 @@
         <center>
         <button type="submit" class="btn btn-default btn-lg">Submit</button>
         <label> <br>
-		<a href="/airsale/signup.html" class='btn'>Sign up for an account here</a></label>
+		<a href="/signup.html" class='btn'>Sign up for an account here</a></label>
         </center>
       </form>
       </div>
