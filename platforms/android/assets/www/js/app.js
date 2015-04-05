@@ -86,19 +86,29 @@ airSale.config(function($routeProvider) {
 });
 
 airSale.factory('bgData', [function() {
-  var imptInfo = {
-    isLogged: false,
-    userId: ''
-  };
-  return imptInfo;
+    var persistentData = {
+        isLoggedIn: false, 
+        userId: null
+    };
+    return {
+        checkIfLoggedIn: function(){
+            return persistentData.isLoggedIn
+        },
+        changeLoginStatus: function(newStatus){
+            persistentData.isLoggedIn = newStatus;
+        },
+        getUserId: function(){
+            return persistentData.userId
+        },
+        setUserId: function(hereIsAUserId){
+            persistentData.userId = hereIsAUserId
+        }
+    };
 }]);
 
 airSale.controller('mainController', ["$scope","$http","$location","bgData",
     function($scope,$http,$location,bgData) {
-        $scope.message = 'Test Message';
-        $scope.isLoggedIn = bgData.isLoggedIn
-        //http://stackoverflow.com/questions/20933502/how-to-toggle-angularjs-ng-show-without-rootscope
-        //http://stackoverflow.com/questions/19137695/angularjs-how-to-access-global-variables-outside-of-controller
+        $scope.isLoggedIn = bgData.checkIfLoggedIn;
     }
 ]);
 
@@ -115,7 +125,27 @@ airSale.controller('itemController',
             },
             config
         ).success(function(data){
-            console.log(data)
+            data.forEach(function(value, key, newData) {
+                switch(value.result.preferred){
+                    case 'Message':
+                        newData[key].result.contact = "sms:"+newData[key].result.number
+                        break;
+
+                    case 'WhatsApp':
+                        newData[key].result.contact = "whatsapp://send"
+                        break;
+
+                    case 'Call':
+                        newData[key].result.contact = "tel:"+newData[key].result.number
+                        break;
+
+                    default:
+                        newData[key].result.contact = "mailto:"+newData[key].result.email
+                        break;
+                }
+                newData[key].result.arrivalDateTime = new Date(newData[key].result.arrivalDateTime)
+            });
+            $scope.items = data
         });
     }
 ]);
@@ -139,14 +169,13 @@ airSale.controller('loginController',
             }
             $http.post(apiURL, $scope.toSend, config)
             .success(function(data,status,header){
-                console.log(data)
                 if(data == "failed"){
-                    bgData.isLogged = false;
+                    bgData.changeLoginStatus(false);
                     $scope.user.error = true;
                 } else {
                     $scope.user.error = false;
-                    bgData.isLogged = true;
-                    bgData.userId = data;
+                    bgData.changeLoginStatus(true);
+                    bgData.setUserId(data);
                     $location.path("/items"); 
                 }
             });
@@ -173,10 +202,12 @@ airSale.directive('centerise', [function(){
 
 //authentication on route change
 airSale.run(['$rootScope', '$location', 'bgData', function ($rootScope, $location, bgData) {
-    $rootScope.$on('$routeChangeStart', function (event) {
-        if (bgData.isLoggedIn == true) {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        if(typeof next.templateUrl === 'undefined'){
+            $location.path("/");
+        } else if (!bgData.checkIfLoggedIn() && next.templateUrl != "pages/home.html" && next.templateUrl != "pages/register.html") {
             console.log("not logged in")
-            $location.path( "/login" );
+            $location.path("/login");
         }
     });
 

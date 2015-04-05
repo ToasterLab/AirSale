@@ -1,28 +1,48 @@
 <div class="container">
-	<div class="card small ">
+    <div class="card small" ng-repeat="item in items">
         <div class="card-image waves-effect waves-block waves-light">
-          <img class="activator" src="img/macbook.jpg">
+            <img class="activator" ng-src="http://airsale.lalx.org/airsale/items/{{item.result.itemPictureName}}">
         </div>
         <div class="card-content">
-        	<span class="card-title activator grey-text text-darken-4">Macbook Air <i class="mdi-navigation-more-vert right"></i></span>
-        	<p><a href="#">Contact Seller</a></p>
+            <span class="card-title activator grey-text text-darken-4">
+                {{item.result.name}}
+                <i class="mdi-navigation-more-vert right"></i>
+            </span>
+            <p class="flow-text a-bit-of-empty-space-below">
+                <i class="mdi-action-home"></i>
+                {{item.result.location}}
+            </p>
+            <a href="{{item.result.contact}}">Contact Seller</a>
         </div>
         <div class="card-reveal">
-        	<span class="card-title grey-text text-darken-4">$699 <i class="mdi-navigation-close right"></i></span>
-        	<p>The new MacBook Air features fourth-generation Intel Core processors and all-day battery life, yet it's still incredibly thin and light.</p>
-        </div>
-    </div>
-    <div class="card small">
-        <div class="card-image waves-effect waves-block waves-light">
-          <img class="activator" src="img/nexus6.jpg">
-        </div>
-        <div class="card-content">
-        	<span class="card-title activator grey-text text-darken-4">Nexus 6 <i class="mdi-navigation-more-vert right"></i></span>
-        	<p><a href="#">Contact Seller</a></p>
-        </div>
-        <div class="card-reveal">
-        	<span class="card-title grey-text text-darken-4">$599 <i class="mdi-navigation-close right"></i></span>
-        	<p>The Google Nexus 6 by Motorola smartphone offers more space to explore with a 6” AMOLED Quad HD display, power to multi-task with 3GB Ram and a 13 MP camera.</p>
+            <span class="card-title grey-text text-darken-4">
+                {{item.result.price | currency}}
+                <i class="mdi-navigation-close right"></i>
+            </span>
+            <p class="flow-text">
+                {{item.result.description}}
+            </p>
+
+            <hr />
+
+            <h3 class="header grey-text">{{item.result.fullName}}</h3>
+            <div class="row">
+                <div class="col s3">
+                    <p class="flow-text no-bottom-margin">
+                        {{item.result.flightNumber}}
+                    </p>
+                </div>
+                <div class="col s9">
+                    <p class="flow-text no-bottom-margin">
+                        {{item.result.departureCountry}} to {{item.result.arrivalCountry}}
+                    </p>
+                </div>
+            </div>
+            <div class="row no-bottom-margin">
+                <p class="grey-text no-bottom-margin no-top-margin right-align">
+                    {{item.result.arrivalDateTime | date:"EEE h:mm a, d MMM, y"}}
+                </p>
+            </div>
         </div>
     </div>
 </div>
