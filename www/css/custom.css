@@ -1,3 +1,11 @@
+html{
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .main-icon{
 	font-size:40vw;
 }
@@ -17,5 +25,11 @@
 	margin-top:5vw;
 }
 .a-bit-of-empty-space-below{
-	margin-bottom:3vw;
+	margin-bottom:3vw !important;
+}
+a.md-action-button{
+	position:fixed;
+	bottom:7vw;
+	right:7vw;
+	z-index:99;
 }

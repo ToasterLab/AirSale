@@ -80,6 +80,12 @@ airSale.config(function($routeProvider) {
             title       : 'Register'
         })
 
+        .when('/create',{
+            templateUrl : 'pages/create.html',
+            controller  : 'createController',
+            title       : 'New Item'
+        })
+
         .otherwise({
             redirectTo: '/'
         });;
@@ -109,6 +115,15 @@ airSale.factory('bgData', [function() {
 airSale.controller('mainController', ["$scope","$http","$location","bgData",
     function($scope,$http,$location,bgData) {
         $scope.isLoggedIn = bgData.checkIfLoggedIn;
+        $scope.gotoLogin = function(){
+            $location.path("/register"); 
+        };
+    }
+]);
+
+airSale.controller('createController', ["$scope","$http","$location","bgData",
+    function($scope,$http,$location,bgData){
+        
     }
 ]);
 
@@ -183,9 +198,41 @@ airSale.controller('loginController',
     }]
 );
 
-airSale.controller('registerController', function($scope) {
-    $scope.message = 'Test Message';
-});
+airSale.controller('registerController',
+    ["$scope","$http","$location","$timeout","bgData", 
+    function($scope, $http, $location, $timeout, bgData){
+        $scope.user = {}
+        $scope.toSend = {
+            mobile: "1",
+            action: "signup",
+            user: {}
+        }
+
+        //https://github.com/Hendrixer/ngFx
+        $scope.register = function() {    
+            $scope.toSend.user = $scope.user.username
+            $scope.toSend.password = $scope.user.password
+            $scope.toSend.email = $scope.user.email
+            $scope.toSend.country = $scope.user.country
+            config = {
+                withCredentials: true
+            }
+            $http.post(apiURL, $scope.toSend, config)
+            .success(function(data,status,header){
+                console.log(data)
+                if(data == "failed-user name exists"){
+                    bgData.changeLoginStatus(false);
+                    $scope.user.error = true;
+                } else {
+                    $scope.user.error = false;
+                    bgData.changeLoginStatus(true);
+                    bgData.setUserId(data);
+                    $location.path("/items"); 
+                }
+            });
+        };
+    }]
+);
 
 airSale.directive('centerise', [function(){
 	return {

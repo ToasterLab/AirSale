@@ -1,4 +1,9 @@
-<div class="container">
+<div class="container some-empty-space-above">
+    <!-- Such float, much material -->
+     <a class="btn-floating btn-large waves-effect waves-light blue darken-1 md-action-button">
+        <i class="mdi-content-add"></i>
+    </a>
+    <!-- cardz -->
     <div class="card small" ng-repeat="item in items">
         <div class="card-image waves-effect waves-block waves-light">
             <img class="activator" ng-src="http://airsale.lalx.org/airsale/items/{{item.result.itemPictureName}}">
@@ -25,7 +30,7 @@
 
             <hr />
 
-            <h3 class="header grey-text">{{item.result.fullName}}</h3>
+            <h3 class="header grey-text very-thin no-bottom-margin">{{item.result.fullName}}</h3>
             <div class="row">
                 <div class="col s3">
                     <p class="flow-text no-bottom-margin">
