@@ -1,6 +1,5 @@
 <?php
 include('/home/u979434920/public_html/airsale/api/airsale.php');
-getProfileElements();
 ?>
 
 
@@ -40,7 +39,7 @@ getProfileElements();
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-search'></i> Explore</a> </li>
+                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
                     <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
@@ -69,7 +68,7 @@ getProfileElements();
     	<div class='panel panel-default'>
         	<div class='panel-body'>
             <form action='../api/airsale.php' enctype="multipart/form-data" method='POST' onSubmit="return validateForm()">
-            <input type='hidden' name='action' value='profile_entry'>
+            <input type='hidden' name='action' value='profile_update'>
             <label> If you need to update any field, edit the corresponding field. Others will not be affected. </label>
             <div class='row'>
               <div class='col-md-4'>
@@ -124,11 +123,15 @@ getProfileElements();
 
 <script>
 $(document).ready(function(e) {
+	var JArray;
     document.getElementById('head1').innerHTML = "<span class='glyphicon glyphicon-user'></span>".concat(getCookie('auth'));
 	document.getElementById('name-form').innerHTML = getCookie('auth');
-	document.getElementById('id-form').innerHTML = getElement('id');
-	document.getElementById('email-form').value = getElement('email');
-	document.getElementById('country-form').value = getElement('country');
+	$.post('http://airsale.lalx.org/api/airsale.php',{mobile:1,action:'user_profile'},function(data) {
+	JArray=$.parseJSON(data);	
+	document.getElementById('id-form').innerHTML = JArray["id"];
+	document.getElementById('email-form').value = JArray["email"];
+	document.getElementById('country-form').value = JArray["country"];
+	});
 	window.setInterval(function() {validateFormRealTime()},100);
 });
 

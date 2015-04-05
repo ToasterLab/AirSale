@@ -39,7 +39,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <li class='dropdown active'>
             <a class="dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/explore.php' class='btn'><i class='fa fa-search'></i> Explore</a> </li>
+                	<li class="active"><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
                     <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
@@ -58,14 +58,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 <div>
 	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head3' style="display:none"><i class='fa fa-search'></i> Exploring AirSale<br></h1>
+    <h1 id='head3' style="display:none"><i class='fa fa-shopping-cart'></i> Exploring AirSale<br></h1>
     </div>
 </div>
 
 
 <div class='container' >
 
-	<div class='row visible-md visible-lg' id='sticky'>
+	<div class='visible-md visible-lg' id='sticky'>
+    <div class='panel panel-success'>
+    <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group' style="z-index:12">
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-dollar'></i> Sort by prices<span class='caret'></span></button>
@@ -89,11 +91,25 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             	<li> <a class='btn' id=''><i class='fa fa-forward'></i> From the closest to today to latest</a></li>
                 <li> <a class='btn' id=''><i class='fa fa-backward'></i> From the latest to closest</a></li>
             </ul>
+            </div>            
+        </div><br>
+     	<div>
+            <div class='input-group input-group-lg'>
+            <span class='input-group-addon'><i class='fa fa-search'></i></span>
+            <input class='form-control input-lg' id='search_field' type='search' onChange="search_routine_handle();">
+            <span class='input-group-btn'>
+            <button type='button' class='btn btn-default btn-lg' id='search_btn'  onClick="search_routine_handle();">Search</button>
+            </span>
             </div>
-        </div>
+      	</div>
+        
+    </div>
     </div>
     
-    <div class='row visible-sm visible-xs'>
+    </div>
+    
+    <div class='visible-sm visible-xs'>
+    <div class='row'>
     <center>
         <div class='btn-group btn-group-vertical' role='group'>
             <div class='btn-group'>
@@ -118,11 +134,26 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             	<li> <a class='btn' id=''><i class='fa fa-forward'></i> From the closest to today to latest</a></li>
                 <li> <a class='btn' id=''><i class='fa fa-backward'></i> From the latest to closest</a></li>
             </ul>
-            </div>
+            
         </div>
+        <div class='btn-group'>
+            <div class='input-group'>
+            <span class='input-group-addon'><i class='fa fa-search'></i></span>
+            <input class='form-control' id='search_field_mobile' type='search' onChange="search_routine_handle();">
+            <span class='input-group-btn'>
+            <button type='button' class='btn btn-default' id='search_btn'  onClick="search_routine_handle();">Search</button>
+            </span>
+            </div>
+      	</div> 
+        
+        </div>
+        
+        
+        
         </center>
     </div>
     
+    </div>
 </div>
 
 <div class='container' style="text-align:center; padding-top:20pt">    
@@ -152,38 +183,17 @@ $(document).ready(function(e) {
 	
 	$('#sticky').sticky({topSpacing:100});
 	display_data();
-	window.setTimeout(function() {
-	$('[data-toggle="popover"]').popover();}, 3000);
 });
 
 function display_data()
 {
 	var table=document.getElementById('display_table');
 	var cell,row;
-	var JArray;
 	$.post('../api/airsale.php',{concise:'1',action:'explore'},function(data){
 			JArray = $.parseJSON(data);
-			for(i=1;JArray[i];i++)
+			for(i=0;JArray[i]!=null;i++)
 			{
-				//get the variables
-				/*
-				flightNumber=getElement( 'flightNumber'.concat(String(i)));
-				arrivalCountry=getElement( 'arrivalCountry'.concat(String(i)));
-				arrivalDateTime=getElement( 'arrivalDateTime'.concat(String(i)));
-				item_id = getElement( 'item_id'.concat(String(i)));
-				name = getElement('name'.concat(item_id));
-				price= getElement('price'.concat(item_id));
-				description= getElement('description'.concat(item_id));
-				itemPictureName= getElement('itemPictureName'.concat(item_id));
-				itemPictureName2= getElement('itemPictureName2'.concat(item_id));
-				itemPictureName3= getElement('itemPictureName3'.concat(item_id));
-				itemPictureName4= getElement('itemPictureName4'.concat(item_id));
-				number = getElement('number'.concat(item_id));
-				email= getElement('email'.concat(item_id));
-				account_name=  getElement('account_name'.concat(item_id));
-				*/
-				
-				item_id				=			JArray[i]["result"]["item_id"];
+				item_id				=			JArray[i]["item_id"];
 				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
 				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
 				arrivalDateTime 	= 			JArray[i]["result"]["arrivalDateTime"];
@@ -196,6 +206,7 @@ function display_data()
 				
 				//put them into the table
 				row = table.insertRow();
+				row.id = "row_" + name.replace(/\s/g, '');
 				cell = row.insertCell();
 				img = document.createElement('img');
 				img.src = './items/'.concat(itemPictureName);
@@ -239,10 +250,28 @@ function display_data()
 				action2_tag.setAttribute('title','Contact seller');
 				action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
 				cell.appendChild(action2_tag);
-			}//for closing bracket
+			}//'for' closing bracket
+			$('[data-toggle="popover"]').popover();
+			window.setInterval(function() {search_routine_handle();},100);
 		});
+}
+
+
+function search_routine_handle()
+{
+	if(JArray!=null)
+	for(_i=0;JArray[_i]!=null;_i++)
+	{
+		name				= 			JArray[_i]['result']['name'];
+		flightNumber 		= 			JArray[_i]["result"]["flightNumber"];
+		arrivalCountry 		=	 		JArray[_i]["result"]["arrivalCountry"];
+		arrivalDateTime 	= 			JArray[_i]["result"]["arrivalDateTime"];
 		
-		
+	if(name.indexOf( $('#search_field').val() ) == (-1) && arrivalCountry.indexOf( $('#search_field').val() ) == (-1) &&	flightNumber.indexOf( $('#search_field').val() ) == (-1) && arrivalDateTime.indexOf( $('#search_field').val() ) == (-1) || 
+	(name.indexOf( $('#search_field_mobile').val() ) == (-1) && arrivalCountry.indexOf( $('#search_field_mobile').val() ) == (-1) &&	flightNumber.indexOf( $('#search_field_mobile').val() ) == (-1) && arrivalDateTime.indexOf( $('#search_field_mobile').val() ) == (-1)))
+		$('#row_'+JArray[_i]['result']['name'].replace(/\s/g, '')).css({display:'none'});
+	else $('#row_'+JArray[_i]['result']['name'].replace(/\s/g, '')).css({display:' '});
+	}
 }
 
 </script>

@@ -130,27 +130,8 @@ function getPublishElements($publish_id)
 	}
 }
 
-function getProfileElements()
-{
-	session_start();
-	$servername = "mysql.hostinger.co.uk";
-	$username = "u979434920_asale";
-	$password = "_MYsql";
-	$db = "u979434920_asale";
-	$conn = mysqli_connect($servername, $username, $password,$db);
-	$user=$_SESSION['auth'];
-	$mysql = "SELECT user,password,email,country,id FROM user_list WHERE user='$user' ";
-	$result = mysqli_query($conn,$mysql);
-	$row=mysqli_fetch_assoc($result);
-	setElement('user',$row['user']);
-//	setElement('password',$row['password']);
-	setElement('email',$row['email']);
-	setElement('country',$row['country']);
-	setElement('id',$row['id']);
-}
 
-
-if($_POST['mobile'] != 1 && $_POST['concise'] != 1)
+if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	echo '<script>location.replace(\'../login_failed.html\')</script>';
@@ -565,168 +546,6 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1)
 			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
 		}
 		
-		case 'explore':
-		{
-			$sql = "SELECT departureCountry,
-					arrivalCountry,
-					arrivalDateTime,
-					flightCarrier,
-					flightNumber,
-					fullName,
-					account,id,item_id FROM publish1";
-			$result = mysqli_query($conn, $sql);
-			$i=1;
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					
-					{
-					setElement('departureCountry'.$i,($row['departureCountry']));
-					setElement('arrivalCountry'.$i,($row['arrivalCountry']));
-					setElement('arrivalDateTime'.$i,($row['arrivalDateTime']));
-					setElement('flightCarrier'.$i,($row['flightCarrier']));
-					setElement('flightNumber'.$i,($row['flightNumber']));
-					setElement('fullName'.$i,($row['fullName']));
-					setElement('publish1id'.$i,($row['id']));
-					setElement('item_id'.$i,($row['item_id']));
-					
-					}
-					$i++;
-				}
-			}
-			setElement('numberOfItems',$i);
-			$sql = "SELECT category,
-					name,
-					specifications,
-					price,
-					description,
-					itemPictureName,itemPictureName2,itemPictureName3,itemPictureName4,
-					account,id,item_id FROM publish2 ";
-			$result = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					
-					{
-					setElement('category'.$row['item_id'],($row['category']));
-					setElement('name'.$row['item_id'],($row['name']));
-					setElement('specifications'.$row['item_id'],($row['specifications']));
-					setElement('price'.$row['item_id'],($row['price']));
-					setElement('description'.$row['item_id'],($row['description']));
-					setElement('itemPictureName'.$row['item_id'],($row['itemPictureName']));
-					setElement('itemPictureName2'.$row['item_id'],($row['itemPictureName2']));
-					setElement('itemPictureName3'.$row['item_id'],($row['itemPictureName3']));
-					setElement('itemPictureName4'.$row['item_id'],($row['itemPictureName4']));
-					setElement('publish2id'.$row['item_id'],($row['id']));
-					}
-				}
-			}
-			
-			
-			$sql = "SELECT number,
-					email,
-					location,
-					other,
-					prefered,
-					account,id,item_id FROM publish3";
-			$result = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					
-					{
-					setElement('number'.$row['item_id'],($row['number']));
-					setElement('email'.$row['item_id'],($row['email']));
-					setElement('location'.$row['item_id'],($row['location']));
-					setElement('other'.$row['item_id'],($row['other']));
-					setElement('prefered'.$row['item_id'],($row['prefered']));
-					setElement('publish3id'.$row['item_id'],($row['id']));
-					setElement('account'.$row['item_id'],($row['account']));
-					}
-				}
-			}
-			
-			break;
-		}
-		
-		case 'seller_history':
-		{
-			$sql = "SELECT departureCountry,
-					arrivalCountry,
-					arrivalDateTime,
-					flightCarrier,
-					flightNumber,
-					fullName,
-					account,id,item_id FROM publish1";
-			$result = mysqli_query($conn, $sql);
-			$i=1;
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					if($row['account'] == $_SESSION['auth'])
-					{
-					setElement('departureCountry'.$i,($row['departureCountry']));
-					setElement('arrivalCountry'.$i,($row['arrivalCountry']));
-					setElement('arrivalDateTime'.$i,($row['arrivalDateTime']));
-					setElement('flightCarrier'.$i,($row['flightCarrier']));
-					setElement('flightNumber'.$i,($row['flightNumber']));
-					setElement('fullName'.$i,($row['fullName']));
-					setElement('publish1id'.$i,($row['id']));
-					setElement('item_id'.$i,($row['item_id']));
-					
-					}
-					$i++;
-				}
-			}
-			setElement('numberOfItems',$i);
-			$sql = "SELECT category,
-					name,
-					specifications,
-					price,
-					description,
-					itemPictureName,itemPictureName2,itemPictureName3,itemPictureName4,
-					account,id,item_id FROM publish2 ";
-			$result = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					if($row['account'] == $_SESSION['auth'])
-					{
-					setElement('category'.$row['item_id'],($row['category']));
-					setElement('name'.$row['item_id'],($row['name']));
-					setElement('specifications'.$row['item_id'],($row['specifications']));
-					setElement('price'.$row['item_id'],($row['price']));
-					setElement('description'.$row['item_id'],($row['description']));
-					setElement('itemPictureName'.$row['item_id'],($row['itemPictureName']));
-					setElement('itemPictureName2'.$row['item_id'],($row['itemPictureName2']));
-					setElement('itemPictureName3'.$row['item_id'],($row['itemPictureName3']));
-					setElement('itemPictureName4'.$row['item_id'],($row['itemPictureName4']));
-					setElement('publish2id'.$row['item_id'],($row['id']));
-					}
-				}
-			}
-			
-			
-			$sql = "SELECT number,
-					email,
-					location,
-					other,
-					prefered,
-					account,id,item_id FROM publish3";
-			$result = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($result) > 0) {
-				while($row = mysqli_fetch_assoc($result)) {
-					if($row['account'] == $_SESSION['auth'])
-					{
-					setElement('number'.$row['item_id'],($row['number']));
-					setElement('email'.$row['item_id'],($row['email']));
-					setElement('location'.$row['item_id'],($row['location']));
-					setElement('other'.$row['item_id'],($row['other']));
-					setElement('prefered'.$row['item_id'],($row['prefered']));
-					setElement('publish3id'.$row['item_id'],($row['id']));
-					setElement('account'.$row['item_id'],($row['account']));
-					}
-				}
-			}
-			
-			break;
-		}
-		
 		case 'setSession(item_id)viaCookie(edit_item_id)':
 		{
 			$_SESSION['item_id'] = $_COOKIE['edit_item_id'];
@@ -734,7 +553,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1)
 			break;
 		}
 		
-		case 'profile_entry':
+		case 'profile_update':
 		{
 			if($_POST['password'] != '')
 			{
@@ -765,7 +584,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1)
 	}
 }
 
-if($_POST['mobile'] == 1 || $_POST['concise']== 1)
+if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSONGet']== 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	die('please login');
@@ -1204,7 +1023,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1)
 					
 					while($row = mysqli_fetch_assoc($result)) 
 					{
-						$arr[$in] = array(
+						$arr[] = array(
 						'item_id'=>$in,	
 						'result'=>array( 
 						
@@ -1278,7 +1097,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1)
 					{
 						if($row['account']==$_SESSION['auth'])
 						{
-						$arr[$in] = array(
+						$arr[] = array(
 						'item_id'=>$in,	
 						'result'=>array( 
 						
@@ -1352,11 +1171,6 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1)
 			$mysql = "SELECT user,password,email,country,id FROM user_list WHERE user='$user' ";
 			$result = mysqli_query($conn,$mysql);
 			$row=mysqli_fetch_assoc($result);
-			setElement('user',$row['user']);
-		//	setElement('password',$row['password']);
-			setElement('email',$row['email']);
-			setElement('country',$row['country']);
-			setElement('id',$row['id']);
 			echo json_encode( array('user'=>$row['user'],
 									'email'=>$row['email'],
 									'country'=>$row['country'],
