@@ -1,4 +1,5 @@
-<?php header('Access-Control-Allow-Origin: *');
+<?php 
+header('Access-Control-Allow-Credentials:true');
 /*
 © 2015 LALX Singapore programmed by Li Xi together with Huey Lee
 Access URL: airsale.lalx.org/api/airsale.php
@@ -149,7 +150,7 @@ function getProfileElements()
 }
 
 
-if($_POST['mobile'] != 1)
+if($_POST['mobile'] != 1 && $_POST['concise'] != 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	echo '<script>location.replace(\'../login_failed.html\')</script>';
@@ -645,73 +646,6 @@ if($_POST['mobile'] != 1)
 			break;
 		}
 		
-		case 'exploreJSON_Get':
-		{
-			$sql = "SELECT max(id) FROM item_id";
-			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$max_id = $row['max(id)'];
-			
-			$sql = "SELECT min(id) FROM item_id";
-			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$min_id = $row['min(id)'];
-			for($in=$min_id;  $min_id<= $in && $in <= $max_id; $in++)
-			{
-				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
-								publish1.arrivalDateTime,	publish1.flightCarrier,
-								publish1.flightNumber,		publish1.fullName,
-								
-								
-								publish2.category,			publish2.name,
-								publish2.specifications,	publish2.price,
-								publish2.description,		publish2.itemPictureName,
-								publish2.itemPictureName2,	publish2.itemPictureName3,
-								publish2.itemPictureName4,	
-								
-								publish3.number,			publish3.email,
-								publish3.location,			publish3.other,
-								publish3.prefered		
-								
-								
-						FROM	publish1 
-						INNER JOIN publish2 ON publish1.item_id = publish2.item_id
-						INNER JOIN publish3 ON publish1.item_id = publish3.item_id
-						WHERE publish1.item_id = '$in'
-						";
-				$result = mysqli_query($conn, $sql);
-				if (mysqli_num_rows($result) > 0) 
-				{
-					$arr=array();
-					
-					while($row = mysqli_fetch_assoc($result)) 
-					{
-						$arr_temp =array(
-						'item_id'=>$in,	
-						'result'=>array( 
-						
-			'departureCountry'=>$row['departureCountry'],	'arrivalCountry'=>$row['arrivalCountry'],
-			'arrivalDateTime'=>$row['arrivalDateTime'],		'flightCarrier'=>$row['flightCarrier'],
-			'flightNumber'=>$row['flightNumber'],			'fullName'=>$row['fullName'],
-			'account'=>$row['account'],						'item_id'=>$row['item_id'],						
-			
-			'category'=>$row['category'],					'name'=>$row['name'],
-			'specifications'=>$row['specifications'],		'price'=>$row['price'],
-			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
-			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
-			'itemPictureName4'=>$row['itemPictureName4'],	
-			
-			'number'=>$row['number'],					'email'=>$row['email'],
-			'location'=>$row['location'],				'other'=>$row['other'],
-			'prefered'=>$row['prefered'] ));
-						$arr=array_merge($arr,$arr_temp);
-						
-						
-					}//while
-				}//if
-			}//for
-			echo json_encode($arr);
-			break;
-		}//case
-		
 		case 'seller_history':
 		{
 			$sql = "SELECT departureCountry,
@@ -831,7 +765,7 @@ if($_POST['mobile'] != 1)
 	}
 }
 
-if($_POST['mobile'] == 1)
+if($_POST['mobile'] == 1 || $_POST['concise']== 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	die('please login');
@@ -1231,6 +1165,7 @@ if($_POST['mobile'] == 1)
 		
 		case 'explore':
 		{
+			$arr=array();
 			$sql = "SELECT max(id) FROM item_id";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 			$max_id = $row['max(id)'];
@@ -1238,7 +1173,7 @@ if($_POST['mobile'] == 1)
 			$sql = "SELECT min(id) FROM item_id";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 			$min_id = $row['min(id)'];
-	//		var_dump($row,$min_id,$max_id);
+	if($_POST['debug']) var_dump($row,$min_id,$max_id);
 			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
 				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
@@ -1263,16 +1198,15 @@ if($_POST['mobile'] == 1)
 						WHERE publish1.item_id = '$in'
 						";
 				$result = mysqli_query($conn, $sql);
-		//		var_dump($conn);
+		if($_POST['debug']) var_dump($result);
 				if (mysqli_num_rows($result) > 0) 
 				{
-					$arr=array();
 					
 					while($row = mysqli_fetch_assoc($result)) 
 					{
-						$arr_temp =array(
-						'item_id'.$in=>$in,	
-						'result'.$in=>array( 
+						$arr[$in] = array(
+						'item_id'=>$in,	
+						'result'=>array( 
 						
 			'departureCountry'=>$row['departureCountry'],	'arrivalCountry'=>$row['arrivalCountry'],
 			'arrivalDateTime'=>$row['arrivalDateTime'],		'flightCarrier'=>$row['flightCarrier'],
@@ -1289,19 +1223,146 @@ if($_POST['mobile'] == 1)
 			'location'=>$row['location'],				'other'=>$row['other'],
 			'prefered'=>$row['prefered'] ));
 			
-						
-						$arr=$arr+ $arr_temp;
-						echo json_encode($arr_temp);
-						//var_dump($result,$row,$arr_temp,$arr,$min_id,$max_id,$in);
+				//		echo json_encode($arr_temp);
+				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
 						
 					}//while
 				}//if
 			}//for
-			
-			
+			if($_POST['debug']) echo '--before echo arr=---';
+			if($_POST['debug']) var_dump($arr);
+			echo json_encode($arr);
 			break;
 		}//case
 		
+		case 'seller_history':
+		{
+			$arr=array();
+			$sql = "SELECT max(id) FROM item_id";
+			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+			$max_id = $row['max(id)'];
+			
+			$sql = "SELECT min(id) FROM item_id";
+			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+			$min_id = $row['min(id)'];
+	if($_POST['debug']) var_dump($row,$min_id,$max_id);
+			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
+			{
+				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
+								publish1.arrivalDateTime,	publish1.flightCarrier,
+								publish1.flightNumber,		publish1.fullName, publish1.account,
+								
+								
+								publish2.category,			publish2.name,
+								publish2.specifications,	publish2.price,
+								publish2.description,		publish2.itemPictureName,
+								publish2.itemPictureName2,	publish2.itemPictureName3,
+								publish2.itemPictureName4,	
+								
+								publish3.number,			publish3.email,
+								publish3.location,			publish3.other,
+								publish3.prefered		
+								
+								
+						FROM	publish1 
+						INNER JOIN publish2 ON publish1.item_id = publish2.item_id
+						INNER JOIN publish3 ON publish1.item_id = publish3.item_id
+						WHERE publish1.item_id = '$in'
+						";
+				$result = mysqli_query($conn, $sql);
+		if($_POST['debug']) var_dump($result);
+				if (mysqli_num_rows($result) > 0) 
+				{
+					
+					while($row = mysqli_fetch_assoc($result)) 
+					{
+						if($row['account']==$_SESSION['auth'])
+						{
+						$arr[$in] = array(
+						'item_id'=>$in,	
+						'result'=>array( 
+						
+			'departureCountry'=>$row['departureCountry'],	'arrivalCountry'=>$row['arrivalCountry'],
+			'arrivalDateTime'=>$row['arrivalDateTime'],		'flightCarrier'=>$row['flightCarrier'],
+			'flightNumber'=>$row['flightNumber'],			'fullName'=>$row['fullName'],
+			'account'=>$row['account'],						'item_id'=>$row['item_id'],						
+			
+			'category'=>$row['category'],					'name'=>$row['name'],
+			'specifications'=>$row['specifications'],		'price'=>$row['price'],
+			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
+			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
+			'itemPictureName4'=>$row['itemPictureName4'],	
+			
+			'number'=>$row['number'],					'email'=>$row['email'],
+			'location'=>$row['location'],				'other'=>$row['other'],
+			'prefered'=>$row['prefered'] ));
+			
+				//		echo json_encode($arr_temp);
+				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
+						}//if account==auth
+					}//while
+				}//if
+			}//for
+			if($_POST['debug']) echo '--before echo arr=---';
+			if($_POST['debug']) var_dump($arr);
+			echo json_encode($arr);
+			break;
+		}//case
+		
+		case 'profile_update':
+		{
+			if($_POST['password'] != '')
+			{
+				$password=$_POST['password'];
+				$email=$_POST['email'];
+				$country=$_POST['country'];
+				$user=$_SESSION['auth'];
+				$sql=" 	UPDATE user_list 
+						SET password='$password',
+							country='$country',
+							email = '$email'
+						WHERE user = '$user'";
+			}
+			else
+			{
+				$email=$_POST['email'];
+				$country=$_POST['country'];
+				$user=$_SESSION['auth'];
+				$sql=" 	UPDATE user_list 
+						SET country='$country',
+							email = '$email'
+						WHERE user = '$user'";
+				
+			}
+			mysqli_query($conn,$sql);
+			if($status)
+			echo 'successful';
+			else echo 'failed';
+		}
+		
+		case 'user_profile':
+		{
+			session_start();
+			$servername = "mysql.hostinger.co.uk";
+			$username = "u979434920_asale";
+			$password = "_MYsql";
+			$db = "u979434920_asale";
+			$conn = mysqli_connect($servername, $username, $password,$db);
+			$user=$_SESSION['auth'];
+			$mysql = "SELECT user,password,email,country,id FROM user_list WHERE user='$user' ";
+			$result = mysqli_query($conn,$mysql);
+			$row=mysqli_fetch_assoc($result);
+			setElement('user',$row['user']);
+		//	setElement('password',$row['password']);
+			setElement('email',$row['email']);
+			setElement('country',$row['country']);
+			setElement('id',$row['id']);
+			echo json_encode( array('user'=>$row['user'],
+									'email'=>$row['email'],
+									'country'=>$row['country'],
+									'id'=>$row['id']));
+			break;		
+		}
 		
 	}//switch
 }

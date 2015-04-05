@@ -150,97 +150,99 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script>
 $(document).ready(function(e) {
 	
-    $('#sticky').sticky({topSpacing:100});
-	var response = $.post( "../api/airsale.php", {action:'explore'});
-  response.done( function(data){
-	 $('html').append(data); 
-	 display_data();
-	 $('[data-toggle="popover"]').popover();
-  });
-  
+	$('#sticky').sticky({topSpacing:100});
+	display_data();
+	window.setTimeout(function() {
+	$('[data-toggle="popover"]').popover();}, 3000);
 });
 
 function display_data()
 {
 	var table=document.getElementById('display_table');
 	var cell,row;
-	for(i=1;i<Number( getElement('numberOfItems'));i++)
-	{
-		//get the variables
-		flightNumber=getElement( 'flightNumber'.concat(String(i)));
-		arrivalCountry=getElement( 'arrivalCountry'.concat(String(i)));
-		arrivalDateTime=getElement( 'arrivalDateTime'.concat(String(i)));
-		item_id = getElement( 'item_id'.concat(String(i)));
-		name = getElement('name'.concat(item_id));
-		price= getElement('price'.concat(item_id));
-		description= getElement('description'.concat(item_id));
-		itemPictureName= getElement('itemPictureName'.concat(item_id));
-		itemPictureName2= getElement('itemPictureName2'.concat(item_id));
-		itemPictureName3= getElement('itemPictureName3'.concat(item_id));
-		itemPictureName4= getElement('itemPictureName4'.concat(item_id));
-		number = getElement('number'.concat(item_id));
-		email= getElement('email'.concat(item_id));
-		account_name=  getElement('account_name'.concat(item_id));
-		
-		/*
-		$.post('../api/airsale.php',{mobile:'1',action:'exploreJSON_Get'},function(data){
+	var JArray;
+	$.post('../api/airsale.php',{concise:'1',action:'explore'},function(data){
 			JArray = $.parseJSON(data);
+			for(i=1;JArray[i];i++)
+			{
+				//get the variables
+				/*
+				flightNumber=getElement( 'flightNumber'.concat(String(i)));
+				arrivalCountry=getElement( 'arrivalCountry'.concat(String(i)));
+				arrivalDateTime=getElement( 'arrivalDateTime'.concat(String(i)));
+				item_id = getElement( 'item_id'.concat(String(i)));
+				name = getElement('name'.concat(item_id));
+				price= getElement('price'.concat(item_id));
+				description= getElement('description'.concat(item_id));
+				itemPictureName= getElement('itemPictureName'.concat(item_id));
+				itemPictureName2= getElement('itemPictureName2'.concat(item_id));
+				itemPictureName3= getElement('itemPictureName3'.concat(item_id));
+				itemPictureName4= getElement('itemPictureName4'.concat(item_id));
+				number = getElement('number'.concat(item_id));
+				email= getElement('email'.concat(item_id));
+				account_name=  getElement('account_name'.concat(item_id));
+				*/
+				
+				item_id				=			JArray[i]["result"]["item_id"];
+				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
+				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
+				arrivalDateTime 	= 			JArray[i]["result"]["arrivalDateTime"];
+				name 				= 			JArray[i]["result"]["name"];
+				price 				= 			JArray[i]["result"]["price"];
+				email				=			JArray[i]["result"]["email"];
+				number				=			JArray[i]["result"]["number"];
+				description			=			JArray[i]["result"]["description"];
+				itemPictureName 	= 			JArray[i]["result"]["itemPictureName"];
+				
+				//put them into the table
+				row = table.insertRow();
+				cell = row.insertCell();
+				img = document.createElement('img');
+				img.src = './items/'.concat(itemPictureName);
+				img.style.width = '50%';
+				img.style.display='block';
+				img.style.marginLeft='auto';
+				img.style.marginRight='auto';
+				cell.appendChild(img);
+				title = document.createElement('h3');
+				title.innerHTML = name;
+				cell.appendChild(title);
+				
+				price_tag = document.createElement('h2');
+				price_tag.innerHTML='$'+price;
+				cell = row.insertCell();
+				cell.appendChild(price_tag );
+				
+				cell = row.insertCell();
+				arrivalCountry_tag = document.createElement('h3');
+				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
+				cell.appendChild(arrivalCountry_tag);
+				
+				cell = row.insertCell();
+				arrivalDateTime_tag = document.createElement('h3');
+				arrivalDateTime_tag.innerHTML = arrivalDateTime;
+				cell.appendChild(arrivalDateTime_tag);
+				
+				cell = row.insertCell();
+				action1_tag = document.createElement('a');
+				action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
+				action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
+				action1_tag.className = 'btn btn-default';
+				cell.appendChild(action1_tag);
+				
+				cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
+				action2_tag = document.createElement('button');
+				action2_tag.innerHTML = '<i class="fa fa-phone"></i> Contact';
+				action2_tag.className = 'btn btn-info';
+				action2_tag.setAttribute('data-toggle','popover');
+				action2_tag.setAttribute('data-placement','top');
+				action2_tag.setAttribute('title','Contact seller');
+				action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
+				cell.appendChild(action2_tag);
+			}//for closing bracket
 		});
 		
-		item_id=JArray.item_id;
-		flightNumber = 					JArray.result.flightNumber;
-		arrivalCountry = 				JArray.result.arrivalCountry;
-		arrivalDateTime = 				JArray.result.arrivalDateTime;
-		name = 							JArray.result.name;
-		itemPictureName = 	JArray.result.itemPictureName;	*/
 		
-		//put them into the table
-		row = table.insertRow();
-		cell = row.insertCell();
-		img = document.createElement('img');
-		img.src = './items/'.concat(itemPictureName);
-		img.style.width = '50%';
-		img.style.display='block';
-		img.style.marginLeft='auto';
-		img.style.marginRight='auto';
-		cell.appendChild(img);
-		title = document.createElement('h3');
-		title.innerHTML = name;
-		cell.appendChild(title);
-		
-		price_tag = document.createElement('h2');
-		price_tag.innerHTML='$'+price;
-		cell = row.insertCell();
-		cell.appendChild(price_tag );
-		
-		cell = row.insertCell();
-		arrivalCountry_tag = document.createElement('h3');
-		arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
-		cell.appendChild(arrivalCountry_tag);
-		
-		cell = row.insertCell();
-		arrivalDateTime_tag = document.createElement('h3');
-		arrivalDateTime_tag.innerHTML = arrivalDateTime;
-		cell.appendChild(arrivalDateTime_tag);
-		
-		cell = row.insertCell();
-		action1_tag = document.createElement('a');
-		action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
-		action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
-		action1_tag.className = 'btn btn-default';
-		cell.appendChild(action1_tag);
-		
-		cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
-		action2_tag = document.createElement('button');
-		action2_tag.innerHTML = '<i class="fa fa-phone"></i> Contact';
-		action2_tag.className = 'btn btn-info';
-		action2_tag.setAttribute('data-toggle','popover');
-		action2_tag.setAttribute('data-placement','top');
-		action2_tag.setAttribute('title','Contact seller');
-		action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
-		cell.appendChild(action2_tag);
-	}
-	
 }
 
 </script>
