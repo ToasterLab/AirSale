@@ -1,5 +1,8 @@
 <?php
 include('/home/u979434920/public_html/airsale/api/airsale.php');
+
+getPublishElements(1);
+
 ?>
 <!doctype html>
 <html>
@@ -67,18 +70,21 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
+            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
-        	</div>
+            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+            </div>
+            <div class='btn-group'>
+            <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+            </div>
         </div>
         <br>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 66%">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 50%">
           </div>
         </div>
     </div>
@@ -87,9 +93,10 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
+        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+        <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
         </div>
     </div>
     </center>
@@ -102,21 +109,14 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         <input type='hidden' name="action" value='publish2'>
     <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
     
-    	
-        <div class='col-md-3 form-group' id='flightCarrier-div'>
-        <label>*Flight carrier:</label>
-        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
+    	<div class='col-md-6 form-group'>
+        <label>Arrival Country (Last entry):</label>
+        <p class='form-control-static form-control' id='arrivalCountry-div'></p>
         </div>
         
-        <div class='col-md-3 form-group' id='flightNumber-div'>
-        <label>*Flight number:</label>
-        <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
-        </div>
-        
-        
-        <div class='col-md-6 form-group' id='arrivalDate-div'>
-        <label>*Arrival Date:</label>
-        <input class='form-control' type='text' name='arrivalDate' id='arrivalDate' placeholder="(Format: YYYY-MM-DD) eg. 2015-03-26">
+        <div class='col-md-6 form-group'>
+        <label>Arrival Time (Last entry):</label>
+        <p class='form-control-static form-control' id='arrivalDateTime-div'></p>
         </div>
                 
         <div class='col-md-3 form-group' id='category-div'>
@@ -155,7 +155,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         
     <br><br> 
     <center>
-    <input type='submit' class='btn btn-lg btn-default' > <br><br>
+    <input type='submit' class='btn btn-lg btn-default' "> <br><br>
     </center>
     </form>
     
@@ -175,29 +175,25 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script>
 $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
+	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
+	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
 });
 
 function formValidation()
 {
 	error=0;
 	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=1;}
-	else {$('#category-div').removeClass('has-error');error=error&false;}
+	else {$('#category-div').removeClass('has-error');error=0;}
 	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=1;}
-	else {$('#name-div').removeClass('has-error');error=error&false;}
+	else {$('#name-div').removeClass('has-error');error=0;}
 	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
-	else {$('#specifications-div').removeClass('has-error');error=error&false;}
+	else {$('#specifications-div').removeClass('has-error');error=0;}
 	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=1;}
-	else {$('#price-div').removeClass('has-error');error=error&false;}
+	else {$('#price-div').removeClass('has-error');error=0;}
 	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=1;}
-	else {$('#description-div').removeClass('has-error');error=error&false;}
-	if($('#arrivalDate').val()=='') {$('#arrivalDate-div').addClass('has-error');error=1;}
-	else {$('#arrivalDate-div').removeClass('has-error');error=error&false;}
-	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
-	else {$('#flightNumber-div').removeClass('has-error');error=error&false;}
-	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
-	else {$('#flightCarrier-div').removeClass('has-error');error=error&false;}
+	else {$('#description-div').removeClass('has-error');error=0;}
 	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
+	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
 	else return true;
 	
 }

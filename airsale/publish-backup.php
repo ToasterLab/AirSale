@@ -68,18 +68,21 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="#" class='btn btn-default btn-lg active'>Step 1: Update profile information</a>
+            <a href="#" class='btn btn-default btn-lg active'>Step 1: Validate my air ticket	</a>
             </div>
             <div class='btn-group'>
             <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
-        	</div>
+            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+            </div>
+            <div class='btn-group'>
+            <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+            </div>
         </div>
         <br>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 33%">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 25%">
           </div>
         </div>
     </div>
@@ -87,9 +90,10 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="#" class='btn btn-default active btn-lg'>Step 1: Update/Confirm profile information</a>
+        <a href="#" class='btn btn-default active btn-lg'>Step 1: Validate my air ticket	</a>
         <a href="/airsale/publish2.php" class='btn btn-default btn-lg'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
+        <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
         </div>
     </div>
     </center>
@@ -101,37 +105,41 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <form action='/api/airsale.php' method='POST' onSubmit="return formValidation()" enctype="multipart/form-data" >
     <input type='hidden' name="action" value='publish1'>
     
-    <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. COMPULSORY FIELDS ARE MARKED WITH *</label><br><br></center>
-    	<div class='col-md-3 form-group' id='number-div'>
-        <label>*Contact number</label>
-        <input class='form-control' type='text' name='number' id='number'>
+    <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. ALL FIELDS ARE COMPULSORY</label><br><br></center>
+    	<div class='col-md-6 form-group' id='departureCountry-div'>
+        <label>Departure Country (Leaving FROM):</label>
+        <input class='form-control' type="text" name='departureCountry' id='departureCountry'>
         </div>
         
-        <div class='col-md-3 form-group' id='email-div'>
-        <label>*Contact email</label>
-        <input class='form-control' type='text' name='email' id='email'>
+        <div class='col-md-6 form-group' id='arrivalCountry-div'>
+        <label>Arrival Country (Arriving AT):</label>
+        <input class='form-control' type="text" name='arrivalCountry' id='arrivalCountry'>
         </div>
         
-        <div class='col-md-3 form-group' id='location-div'>
-        <label>*Hand-over location</label>
-        <input type='text' class='form-control' name='location' id='location'>
+        <div class='col-md-6 form-group' id='arrivalDateTime-div'>
+        <label>Arrival time (Format: YYYY-MM-DD HH:MM:SS):</label>
+        <input class='form-control' type="datetime" name='arrivalDateTime' id='arrivalDateTime' placeholder="eg. 2015-01-01 12:50:00">
         </div>
         
-        <div class='form-group col-md-3' id='prefered-div'>
-        <label>*Prefered method of contact</label>
-        <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
+        <div class='col-md-3 form-group' id='flightCarrier-div'>
+        <label>Flight carrier:</label>
+        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
         </div>
         
-        <div class='col-md-6 form-group' id='other-div'>
-        <label>Other method to contact me(format: method-account)</label>
-        <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
+        <div class='col-md-3 form-group' id='flightNumber-div'>
+        <label>Flight number:</label>
+        <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
+        </div>
+        
+        <div class='col-md-6 form-group' id='fullName-div'>
+        <label>Passenger FULL name (The passenger who is selling the item. This should be the account holder):</label>
+        <input class='form-control' type="text" name='fullName' id='fullName'>
         </div>
         
         
-        <div class='form-group col-md-6' id='userPicture-div'>
-        <label>Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
-        <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
-        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of yourself so that the customers can identify you. </label>
+        <div class='col-md-6 form-group' id='airTicket-div'>
+        <label>Picture of air-ticket (OR e-ticket) showing flight number, passenger's full name, departure country and departure time (Any picture format, preferably jpg, jpeg, png, that is SMALLER than 7MB):</label>
+        <input class='form-control' type="file" name='airTicket' id='airTicket' accept="image/*">
         </div>
     
     <br><br> 
@@ -155,38 +163,28 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script>
 $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
-	updateForm();
 });
 
 function formValidation()
 {
 	error=0;
-	if($('#number').val()=='') {$('#number-div').addClass('has-error');error=true;}
-	else {$('#number-div').removeClass('has-error');error=error&false;}
-	if($('#location').val()=='') {$('#location-div').addClass('has-error');error=true;}
-	else {$('#location-div').removeClass('has-error');error=error&false;}
-	if($('#email').val()=='') {$('#email-div').addClass('has-error');error=true;}
-	else {$('#email-div').removeClass('has-error');error=error&false;}
-	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=true;}
-	else {$('#prefered-div').removeClass('has-error');error=error&false;}
+	if($('#arrivalCountry').val()=='') {$('#arrivalCountry-div').addClass('has-error');error=1;}
+	else {$('#arrivalCountry-div').removeClass('has-error');error=0;}
+	if($('#airTicket').val()=='') {$('#airTicket-div').addClass('has-error');error=1;}
+	else {$('#airTicket-div').removeClass('has-error');error=0;}
+	if($('#arrivalDateTime').val()=='') {$('#arrivalDateTime-div').addClass('has-error');error=1;}
+	else {$('#arrivalDateTime-div').removeClass('has-error');error=0;}
+	if($('#departureCountry').val()=='') {$('#departureCountry-div').addClass('has-error');error=1;}
+	else {$('#departureCountry-div').removeClass('has-error');error=0;}
+	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
+	else {$('#flightCarrier-div').removeClass('has-error');error=0;}
+	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
+	else {$('#flightNumber-div').removeClass('has-error');error=0;}
+	if($('#fullName').val()=='') {$('#fullName-div').addClass('has-error');error=1;}
+	else {$('#fullName-div').removeClass('has-error');error=0;}
 	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
+	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
 	else return true;
-	
-}
-
-function updateForm()
-{
-	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'user_profile'},function(data) 
-	{
-		JArray = $.parseJSON(data);
-		document.getElementById('email').value=JArray['email'];
-		document.getElementById('number').value=JArray['number'];
-		document.getElementById('other').value=JArray['other'];
-		document.getElementById('prefered').value=JArray['prefered'];
-		document.getElementById('location').value=JArray['location'];
-	});
-	
 	
 }
 </script>

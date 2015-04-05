@@ -131,7 +131,7 @@ function getPublishElements($publish_id)
 }
 
 
-if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
+if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	echo '<script>location.replace(\'../login_failed.html\')</script>';
@@ -208,50 +208,41 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 		}
 			
 		case 'publish1':
-		{
-			$departureCountry=mysqli_escape_string($conn,$_POST["departureCountry"]);
-			$arrivalCountry=mysqli_escape_string($conn,$_POST["arrivalCountry"]);
-			$arrivalDateTime=mysqli_escape_string($conn,$_POST["arrivalDateTime"]);
-			$flightCarrier=mysqli_escape_string($conn,$_POST["flightCarrier"]);
-			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
-			$fullName = mysqli_escape_string($conn,$_POST["fullName"]);
-			$account = $_SESSION['auth'];
-						
-			$uploaddir = '../airsale/tickets/';
-			$filename=(string)rand() . basename($_FILES['airTicket']['name']);
-			$uploadfile = $uploaddir . $filename;
-			$ticketName = mysqli_escape_string($conn,$filename);
+		{	
+			if(!empty($_FILES['userPicture']))
+			{
+				$uploaddir = '../airsale/users/';	
+				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
+				$uploadfile = $uploaddir . $filename;
+				$userPictureName = mysqli_escape_string($conn,$filename);
+			}
 			
 			$sql="INSERT INTO item_id (account) VALUES ('$account')";
 			mysqli_query($conn,$sql);
 			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$item_id;
 			
-			$sql="INSERT INTO publish1 (departureCountry,
-					arrivalCountry,
-					arrivalDateTime,
-					flightCarrier,
-					flightNumber,
-					fullName,
-					ticketName,
-					account,
-					item_id)
-					VALUES ('$departureCountry',
-					'$arrivalCountry',
-					'$arrivalDateTime',
-					'$flightCarrier',
-					'$flightNumber',
-					'$fullName',
-					'$ticketName',
-					'$account',
-					'$item_id')";
+			$number=$_POST['number'];
+			$email=$_POST['email'];
+			$location=$_POST['location'];
+			$other=$_POST['other'];
+			$prefered=$_POST['prefered'];
+			$user=$_SESSION['auth'];
+			$sql=" 	UPDATE user_list 
+					SET number='$number',
+						email = '$email',
+						location='$location',
+						other='$other',
+						prefered='$prefered'
+					WHERE user = '$user'";
+						
 			$status=mysqli_query($conn,$sql);
 			
-			if ($_FILES["airTicket"]["size"] > 8000000) {
+			if ($_FILES["userPicture"]["size"] > 8000000) {
 				die("Sorry, your file is too large. Please go back to upload your file again.");
 			}
 			
-			if (move_uploaded_file($_FILES['airTicket']['tmp_name'], $uploadfile)) {
+			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
 				echo "File is valid, and was successfully uploaded.\n";
 			} else {
 				echo "Possible file upload attack!\n";
@@ -267,6 +258,9 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 			$specifications=mysqli_escape_string($conn,$_POST["specifications"]);
 			$price=mysqli_escape_string($conn,$_POST["price"]);
 			$description = mysqli_escape_string($conn,$_POST["description"]);
+			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
+			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
+			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
 			$account = $_SESSION['auth'];
 						
 			if(!empty($_FILES['itemPicture']))
@@ -283,7 +277,8 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 					price,
 					description,
 					itemPictureName,
-					account,item_id)
+					account,item_id,flightCarrier,flightNumber,arrivalDate
+					)
 					VALUES ('$category',
 					'$name',
 					'$specifications',
@@ -291,7 +286,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 					'$description',
 					'$itemPictureName',
 					'$account',
-					'$item_id'
+					'$item_id',
+					'$flightCarrier',
+					'$flightNumber',
+					'$arrivalDate'
 					)";
 			$status=mysqli_query($conn,$sql);
 					
@@ -309,51 +307,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 		
 		case 'publish3':
 		{
-			$number=mysqli_escape_string($conn,$_POST["number"]);
-			$email=mysqli_escape_string($conn,$_POST["email"]);
-			$location=mysqli_escape_string($conn,$_POST["location"]);
-			$other=mysqli_escape_string($conn,$_POST["other"]);
-			$prefered = mysqli_escape_string($conn,$_POST["prefered"]);
-			$account = $_SESSION['auth'];
-	
-			if(!empty($_FILES['userPicture']))
-			{
-				$uploaddir = '../airsale/users/';	
-				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
-				$uploadfile = $uploaddir . $filename;
-				$userPictureName = mysqli_escape_string($conn,$filename);
-			}
-			
-			$sql="INSERT INTO publish3 (number,
-					email,
-					location,
-					other,
-					prefered,
-					userPictureName,
-					account,
-					item_id)
-					VALUES ('$number',
-					'$email',
-					'$location',
-					'$other',
-					'$prefered',
-					'$userPictureName',
-					'$account',
-					'$item_id'
-					)";
-			$status=mysqli_query($conn,$sql);
-			
-			if ($_FILES["userPicture"]["size"] > 8000000) {
-				die("Sorry, your file is too large. Please go back to upload your file again.");
-			}
-			
-			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			
-			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
+			echo '<script>alert("The item is sucessfully published. It will be seen by all users at the I am a buyer-> explore tab. "); location.replace(\'../airsale/home.php\')</script>';break;
 		}
 		
 		case 'publish4':
@@ -584,7 +538,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSONGet'] != 1)
 	}
 }
 
-if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSONGet']== 1)
+if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	die('please login');
@@ -1067,26 +1021,22 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSONGet']== 1)
 	if($_POST['debug']) var_dump($row,$min_id,$max_id);
 			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
-				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
-								publish1.arrivalDateTime,	publish1.flightCarrier,
-								publish1.flightNumber,		publish1.fullName, publish1.account,
-								
-								
-								publish2.category,			publish2.name,
+				$sql = "SELECT 	publish2.category,			publish2.name,
 								publish2.specifications,	publish2.price,
 								publish2.description,		publish2.itemPictureName,
 								publish2.itemPictureName2,	publish2.itemPictureName3,
-								publish2.itemPictureName4,	
+								publish2.itemPictureName4,	publish2.flightCarrier,	
+								publish2.flightNumber,		publish2.arrivalDate,	
+								publish2.account,			publish2.item_id,
 								
-								publish3.number,			publish3.email,
-								publish3.location,			publish3.other,
-								publish3.prefered		
+								user_list.number,			user_list.email,
+								user_list.location,			user_list.other,
+								user_list.prefered		
 								
 								
-						FROM	publish1 
-						INNER JOIN publish2 ON publish1.item_id = publish2.item_id
-						INNER JOIN publish3 ON publish1.item_id = publish3.item_id
-						WHERE publish1.item_id = '$in'
+						FROM	publish2
+						INNER JOIN user_list ON publish2.account = user_list.user
+						WHERE publish2.item_id = '$in'
 						";
 				$result = mysqli_query($conn, $sql);
 		if($_POST['debug']) var_dump($result);
@@ -1100,17 +1050,14 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSONGet']== 1)
 						$arr[] = array(
 						'item_id'=>$in,	
 						'result'=>array( 
-						
-			'departureCountry'=>$row['departureCountry'],	'arrivalCountry'=>$row['arrivalCountry'],
-			'arrivalDateTime'=>$row['arrivalDateTime'],		'flightCarrier'=>$row['flightCarrier'],
-			'flightNumber'=>$row['flightNumber'],			'fullName'=>$row['fullName'],
-			'account'=>$row['account'],						'item_id'=>$row['item_id'],						
-			
+			'flightCarrier'=>$row['flightCarrier'],			'flightNumber'=>$row['flightNumber'],
+			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
+							
 			'category'=>$row['category'],					'name'=>$row['name'],
 			'specifications'=>$row['specifications'],		'price'=>$row['price'],
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
 			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
-			'itemPictureName4'=>$row['itemPictureName4'],	
+			'itemPictureName4'=>$row['itemPictureName4'],	'arrivalDate'=>$row['arrivalDate'],
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
@@ -1168,14 +1115,23 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSONGet']== 1)
 			$db = "u979434920_asale";
 			$conn = mysqli_connect($servername, $username, $password,$db);
 			$user=$_SESSION['auth'];
-			$mysql = "SELECT user,password,email,country,id FROM user_list WHERE user='$user' ";
+			$mysql = "SELECT user,email,country,id,number,other,prefered,location FROM user_list WHERE user='$user' ";
 			$result = mysqli_query($conn,$mysql);
 			$row=mysqli_fetch_assoc($result);
 			echo json_encode( array('user'=>$row['user'],
 									'email'=>$row['email'],
+									'number'=>$row['number'],
 									'country'=>$row['country'],
+									'location'=>$row['location'],
+									'other'=>$row['other'],
+									'prefered'=>$row['prefered'],
 									'id'=>$row['id']));
 			break;		
+		}
+		
+		case 'session':
+		{
+			echo json_encode($_SESSION);
 		}
 		
 	}//switch

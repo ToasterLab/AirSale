@@ -1,6 +1,5 @@
 <?php
 include('/home/u979434920/public_html/airsale/api/airsale.php');
-getPublishElements(1);getPublishElements(2);getPublishElements(3);
 ?>
 <!doctype html>
 <html>
@@ -16,7 +15,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 <script src="/js/classie.js"></script>
 <script src="/js/airsale.js"></script>
 <script src='/js/j2.js'></script>
-<title>Editing step 2 information</title>
+<title>Step 2 in selling new items</title>
 </head>
 <body>
 
@@ -57,7 +56,7 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 
 <div>
 	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head3' style="display:none"> Editing item information<br></h1>
+    <h1 id='head3' style="display:none"> Selling an item<br></h1>
     </div>
 </div>
 
@@ -68,21 +67,18 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
-            </div>
-            <div class='btn-group'>
-            <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
-            </div>
+            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+        	</div>
         </div>
         <br>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 50%">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 66%">
           </div>
         </div>
     </div>
@@ -91,10 +87,9 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
-        <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
         </div>
     </div>
     </center>
@@ -104,22 +99,29 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 <div class='container'>
 	<div class='row'>
     <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
-    <input type='hidden' name="action" value='publish2_edit'>
+        <input type='hidden' name="action" value='publish2'>
     <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
     
-    	<div class='col-md-6 form-group'>
-        <label>Arrival Country (Last entry):</label>
-        <p class='form-control-static form-control' id='arrivalCountry-div'></p>
+    	
+        <div class='col-md-3 form-group' id='flightCarrier-div'>
+        <label>*Flight carrier:</label>
+        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
         </div>
         
-        <div class='col-md-6 form-group'>
-        <label>Arrival Time (Last entry):</label>
-        <p class='form-control-static form-control' id='arrivalDateTime-div'></p>
+        <div class='col-md-3 form-group' id='flightNumber-div'>
+        <label>*Flight number:</label>
+        <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
+        </div>
+        
+        
+        <div class='col-md-6 form-group' id='arrivalDate-div'>
+        <label>*Arrival Date:</label>
+        <input class='form-control' type='text' name='arrivalDate' id='arrivalDate' placeholder="(Format: YYYY-MM-DD) eg. 2015-03-26">
         </div>
                 
         <div class='col-md-3 form-group' id='category-div'>
         <label>*Category of item</label>
-        <select class='form-control' name='category' id='category-form'>
+        <select class='form-control' name='category' id='category'>
         	<option value='cosmetics'>Cosmetics</option>
             <option value='cosmetics-makeup'>Cosmetics-makeup</option>
             <option value='electronics'>Electronics</option>
@@ -128,32 +130,32 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
         
         <div class='col-md-3 form-group' id='name-div'>
         <label>*Name of item</label>
-        <input class='form-control' type='text' name='name' id='name-form'>
+        <input class='form-control' type='text' name='name' id='name'>
         </div>
         
         <div class='col-md-4 form-group' id='specifications-div'>
         <label>*Specifications of item(Volume, brand, etc)</label>
-        <input type='text' class='form-control' name='specifications' id='specifications-form'>
+        <input type='text' class='form-control' name='specifications' id='specifications'>
         </div>
         
         <div class='col-md-2 form-group' id='price-div'>
         <label>*Price</label>
-        <input type='text' class='form-control' name='price' id='price-form'>
+        <input type='text' class='form-control' name='price' id='price'>
         </div>
         
         <div class='form-group col-md-12' id='description-div'>
         <label>*Description of the item</label>
-        <textarea rows="10" class='form-control' name='description' id='description-form'></textarea>
+        <textarea rows="10" class='form-control' name='description' id='description'></textarea>
         </div>
         
         <div class='form-group col-md-12'>
         <label>Picture of the item (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
-        <input class='form-control' type='file' name='itemPicture' accept="image/*">
+        <input class='form-control' type='file' name='itemPicture' accept="image/*" id='img21'>
         </div>
         
     <br><br> 
     <center>
-    <input type='submit' class='btn btn-lg btn-default' "> <br><br>
+    <input type='submit' class='btn btn-lg btn-default' > <br><br>
     </center>
     </form>
     
@@ -173,38 +175,63 @@ getPublishElements(1);getPublishElements(2);getPublishElements(3);
 <script>
 $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
-	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
-	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
 	formUpdate();
 });
 
 function formValidation()
 {
 	error=0;
-	if($('#category-form').val()=='') {$('#category-div').addClass('has-error');error=1;}
-	else {$('#category-div').removeClass('has-error');error=0;}
-	if($('#name-form').val()=='') {$('#name-div').addClass('has-error');error=1;}
-	else {$('#name-div').removeClass('has-error');error=0;}
-	if($('#specifications-form').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
-	else {$('#specifications-div').removeClass('has-error');error=0;}
-	if($('#price-form').val()=='') {$('#price-div').addClass('has-error');error=1;}
-	else {$('#price-div').removeClass('has-error');error=0;}
-	if($('#description-form').val()=='') {$('#description-div').addClass('has-error');error=1;}
-	else {$('#description-div').removeClass('has-error');error=0;}
+	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=1;}
+	else {$('#category-div').removeClass('has-error');error=error&false;}
+	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=1;}
+	else {$('#name-div').removeClass('has-error');error=error&false;}
+	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
+	else {$('#specifications-div').removeClass('has-error');error=error&false;}
+	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=1;}
+	else {$('#price-div').removeClass('has-error');error=error&false;}
+	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=1;}
+	else {$('#description-div').removeClass('has-error');error=error&false;}
+	if($('#arrivalDate').val()=='') {$('#arrivalDate-div').addClass('has-error');error=1;}
+	else {$('#arrivalDate-div').removeClass('has-error');error=error&false;}
+	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
+	else {$('#flightNumber-div').removeClass('has-error');error=error&false;}
+	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
+	else {$('#flightCarrier-div').removeClass('has-error');error=error&false;}
 	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
+	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
 	else return true;
 	
 }
 
+
+
 function formUpdate()
 {
-	document.getElementById('category-form').selected = getElement('category');
-	document.getElementById('name-form').value = getElement('name');
-	document.getElementById('specifications-form').value = getElement('specifications');
-	document.getElementById('price-form').value = getElement('price');
-	document.getElementById('description-form').value = getElement('description');
-	
+	var JSession,JArray,JResult;
+	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'session'},function(data) {
+		JSession=$.parseJSON(data);
+		item_id = Number( JSession['item_id']);
+	});
+	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'seller_history'},function(data) {
+		JArray=$.parseJSON(data);
+		for(i=0;JArray[i] != null;i++)
+		{
+			if(JArray[i]['item_id']==JSession['item_id']) index_of_item = i;
+		}
+		JResult = JArray[index_of_item]['result'];
+		
+		document.getElementById('flightCarrier').value=JResult['flightCarrier'];
+		document.getElementById('flightNumber').value=JResult['flightNumber'];
+		document.getElementById('arrivalDate').value=JResult['arrivalDate'];
+		document.getElementById('category').selected=JResult['category'];
+		document.getElementById('name').value=JResult['location'];
+		document.getElementById('specifications').value=JResult['specifications'];
+		document.getElementById('price').value=JResult['price'];
+		document.getElementById('description').value=JResult['description'];
+		
+		document.getElementById('img21').src= './items/'.concat( JResult['itemPictureName'] );
+		
+	});
 }
 
 </script>
