@@ -1,15 +1,25 @@
 <div class="row some-empty-space-above">
-	<form class="col s12" ng-submit="login()" ng-controller="loginController" name="loginForm" action="#">
+	<form class="col s12" ng-submit="register()" ng-controller="registerController" name="registerForm" action="#">
 		<input class="hide" id="user_honeypot" type="text">
 		<input class="hide" id="pwd_honeypot" type="password">
 		<div class="input-field col s12" ng-show="user.error">
 			<div class="card-panel red darken-4">
 		        <span class="white-text">
 		        	<strong>Sorry!</strong>
-		        	Invalid password or username.
+		        	Username or email already exists.
 		        </span>
 		    </div>
 	   	</div>
+                <div class="input-field col s12">
+                        <i class="mdi-communication-email prefix blue-text text-darken-1"></i>
+                        <input id="email" type="email" class="validate" autocomplete="off" ng-model="user.email">
+                        <label for="email">Email</label>
+                </div>
+                <div class="input-field col s12">
+                        <i class="mdi-communication-location-on prefix blue-text text-darken-1"></i>
+                        <input id="country" type="text" class="validate" autocomplete="off" ng-model="user.country">
+                        <label for="country">Country</label>
+                </div>
 		<div class="input-field col s12">
                 	<i class="mdi-action-account-circle prefix blue-text text-darken-1"></i>
                 	<input id="username" type="text" class="validate" autocomplete="off" ng-model="user.username">
@@ -21,8 +31,8 @@
                 	<label for="password">Password</label>
                 </div>
                 <div class="row center">
-                	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above" type="submit" ng-click="login()">
-                		LOGIN<i class="mdi-content-send right"></i>
+                	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above" type="submit" ng-click="register()">
+                		REGISTER<i class="mdi-content-send right"></i>
                 	</a>
                 </div>
 	</form>

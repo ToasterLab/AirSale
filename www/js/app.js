@@ -1,4 +1,9 @@
-var airSale = angular.module('AirSale', ['ngRoute'], function($httpProvider){
+// DEFINITION
+
+apiURL = 'http://airsale.lalx.org/api/airsale.php'
+
+var airSale = angular.module('AirSale', ['ngRoute'], 
+    function($httpProvider){
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     /**
@@ -54,19 +59,25 @@ airSale.config(function($routeProvider) {
         .when('/', {
             templateUrl : 'pages/home.html',
             controller  : 'mainController',
-            title : 'Welcome'
+            title       : 'Welcome'
         })
 
         .when('/items', {
             templateUrl : 'pages/items.html',
             controller  : 'itemController',
-            title : "items"
+            title       : 'Explore'
         })
 
         .when('/login', {
             templateUrl : 'pages/login.html',
             controller  : 'loginController',
-            title: 'Login',
+            title       : 'Login'
+        })
+
+        .when('/register', {
+            templateUrl : 'pages/register.html',
+            controller  : 'registerController',
+            title       : 'Register'
         })
 
         .otherwise({
@@ -82,20 +93,36 @@ airSale.factory('bgData', [function() {
   return imptInfo;
 }]);
 
-airSale.controller('mainController', function($scope) {
-    $scope.message = 'Test Message';
-});
+airSale.controller('mainController', ["$scope","$http","$location","bgData",
+    function($scope,$http,$location,bgData) {
+        $scope.message = 'Test Message';
+        $scope.isLoggedIn = bgData.isLoggedIn
+        //http://stackoverflow.com/questions/20933502/how-to-toggle-angularjs-ng-show-without-rootscope
+        //http://stackoverflow.com/questions/19137695/angularjs-how-to-access-global-variables-outside-of-controller
+    }
+]);
 
 airSale.controller('itemController', 
     ["$scope","$http","$location","bgData",
-    function($scope) {
-        
+    function($scope,$http,$location,bgData) {
+        config = {
+                withCredentials: true
+            }
+        $http.post(apiURL, 
+            {
+                'action':'explore',
+                'mobile':1
+            },
+            config
+        ).success(function(data){
+            console.log(data)
+        });
     }
 ]);
 
 airSale.controller('loginController', 
-    ["$scope","$http","$location","bgData", 
-    function($scope, $http, $location, bgData){
+    ["$scope","$http","$location","$timeout","bgData", 
+    function($scope, $http, $location, $timeout, bgData){
         $scope.user = {}
         $scope.toSend = {
             mobile: "1",
@@ -107,8 +134,11 @@ airSale.controller('loginController',
             $scope.toSend.user = $scope.user.username
             $scope.toSend.password = $scope.user.password
             console.log($scope.toSend)
-            $http.post('http://cors-anywhere.herokuapp.com/http://airsale.lalx.org/api/airsale.php', $scope.toSend)
-            .success(function(data){
+            config = {
+                withCredentials: true
+            }
+            $http.post(apiURL, $scope.toSend, config)
+            .success(function(data,status,header){
                 console.log(data)
                 if(data == "failed"){
                     bgData.isLogged = false;
@@ -123,6 +153,10 @@ airSale.controller('loginController',
         };
     }]
 );
+
+airSale.controller('registerController', function($scope) {
+    $scope.message = 'Test Message';
+});
 
 airSale.directive('centerise', [function(){
 	return {

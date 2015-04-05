@@ -1,4 +1,5 @@
 jQuery.fn.center = function () {
-    this.css({'margin-top': (this.parent().height() - this.height() / 2)});
+    navHeight = $("nav").height();
+    this.css("margin-top",(($(window).height()-navHeight-this.height())/2));
     return this;
 }

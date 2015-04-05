@@ -23,6 +23,7 @@
 /home/huey/AirSale/platforms/android/assets/_where-is-www.txt \
 /home/huey/AirSale/platforms/android/assets/www/components \
 /home/huey/AirSale/platforms/android/assets/www/cordova_plugins.js \
+/home/huey/AirSale/platforms/android/assets/www/test.php \
 /home/huey/AirSale/platforms/android/assets/www/js \
 /home/huey/AirSale/platforms/android/assets/www/img \
 /home/huey/AirSale/platforms/android/assets/www/pages \
@@ -34,12 +35,15 @@
 /home/huey/AirSale/platforms/android/assets/www/components/font \
 /home/huey/AirSale/platforms/android/assets/www/components/css \
 /home/huey/AirSale/platforms/android/assets/www/components/js/angular.min.js.map \
+/home/huey/AirSale/platforms/android/assets/www/components/js/angular.js \
 /home/huey/AirSale/platforms/android/assets/www/components/js/materialize.min.js \
 /home/huey/AirSale/platforms/android/assets/www/components/js/angular-route.min.js \
 /home/huey/AirSale/platforms/android/assets/www/components/js/angular.min.js \
 /home/huey/AirSale/platforms/android/assets/www/components/js/jquery.min.map \
 /home/huey/AirSale/platforms/android/assets/www/components/js/angular-route.min.js.map \
+/home/huey/AirSale/platforms/android/assets/www/components/js/angular-cookies.min.js \
 /home/huey/AirSale/platforms/android/assets/www/components/js/jquery.min.js \
+/home/huey/AirSale/platforms/android/assets/www/components/js/angular-cookies.min.js.map \
 /home/huey/AirSale/platforms/android/assets/www/components/font/material-design-icons \
 /home/huey/AirSale/platforms/android/assets/www/components/font/roboto \
 /home/huey/AirSale/platforms/android/assets/www/components/font/material-design-icons/Material-Design-Icons.eot \
@@ -63,11 +67,13 @@
 /home/huey/AirSale/platforms/android/assets/www/components/font/roboto/Roboto-Light.ttf \
 /home/huey/AirSale/platforms/android/assets/www/components/font/roboto/Roboto-Regular.ttf \
 /home/huey/AirSale/platforms/android/assets/www/components/css/materialize.min.css \
+/home/huey/AirSale/platforms/android/assets/www/js/customFunctions.js \
 /home/huey/AirSale/platforms/android/assets/www/js/app.js \
 /home/huey/AirSale/platforms/android/assets/www/img/nexus6.jpg \
 /home/huey/AirSale/platforms/android/assets/www/img/macbook.jpg \
 /home/huey/AirSale/platforms/android/assets/www/pages/home.html \
 /home/huey/AirSale/platforms/android/assets/www/pages/login.html \
 /home/huey/AirSale/platforms/android/assets/www/pages/items.html \
+/home/huey/AirSale/platforms/android/assets/www/pages/register.html \
 /home/huey/AirSale/platforms/android/assets/www/css/custom.css \
 /home/huey/AirSale/platforms/android/ant-build/AndroidManifest.xml \
