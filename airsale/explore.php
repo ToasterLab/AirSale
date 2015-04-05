@@ -63,10 +63,10 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 </div>
 
 
-<div class='container'>
+<div class='container' >
 
 	<div class='row visible-md visible-lg' id='sticky'>
-        <div class='btn-group btn-group-justified' role='group'>
+        <div class='btn-group btn-group-justified' role='group' style="z-index:12">
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-dollar'></i> Sort by prices<span class='caret'></span></button>
             <ul class='dropdown-menu' role='menu'>
@@ -132,7 +132,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     	<th style="width:33%"><i class='fa fa-camera'></i> Snapshot and name of the item</th>
         <th><i class='fa fa-dollar'></i> Price</th>
         <th><i class='fa fa-plane'></i> Seller's arrival country</th>
-        <th><i class='fa fa-plane'></i> Seller's arrival date and time</th>
+        <th style="width:20%"><i class='fa fa-plane'></i> Seller's arrival date and time</th>
         <th><i class='fa fa-gears'></i> Action</th>
     </tr>
     </table>
@@ -149,11 +149,13 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 <script>
 $(document).ready(function(e) {
+	
     $('#sticky').sticky({topSpacing:100});
 	var response = $.post( "../api/airsale.php", {action:'explore'});
   response.done( function(data){
 	 $('html').append(data); 
 	 display_data();
+	 $('[data-toggle="popover"]').popover();
   });
   
 });
@@ -208,48 +210,35 @@ function display_data()
 		
 		price_tag = document.createElement('h2');
 		price_tag.innerHTML='$'+price;
-		price_tag.style.position='absolute';
-		price_tag.style.top='50%';
 		cell = row.insertCell();
-		cell.style.position='relative';
 		cell.appendChild(price_tag );
 		
 		cell = row.insertCell();
-		cell.style.position='relative';
 		arrivalCountry_tag = document.createElement('h3');
-		arrivalCountry_tag.style.position='absolute';
-		arrivalCountry_tag.style.top='50%';
-		arrivalCountry_tag.style.transform='translate(0, -50%)';
 		arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
 		cell.appendChild(arrivalCountry_tag);
 		
 		cell = row.insertCell();
-		cell.style.position='relative';
 		arrivalDateTime_tag = document.createElement('h3');
-		arrivalDateTime_tag.style.position='absolute';
-		arrivalDateTime_tag.style.top='50%';
-		arrivalDateTime_tag.style.transform='translate(0, -50%)';
 		arrivalDateTime_tag.innerHTML = arrivalDateTime;
 		cell.appendChild(arrivalDateTime_tag);
 		
 		cell = row.insertCell();
-		cell.style.position='relative';
 		action1_tag = document.createElement('a');
-		action1_tag.style.position='absolute';
-		action1_tag.style.top='50%';
-		action1_tag.style.transform='translate(0, -50%)';
 		action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
+		action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
 		action1_tag.className = 'btn btn-default';
 		cell.appendChild(action1_tag);
 		
 		cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
-		action2_tag = document.createElement('a');
-		action2_tag.style.position='absolute';
-		action2_tag.style.top='30%';
+		action2_tag = document.createElement('button');
 		action2_tag.innerHTML = '<i class="fa fa-phone"></i> Contact';
 		action2_tag.className = 'btn btn-info';
+		action2_tag.setAttribute('data-toggle','popover');
+		action2_tag.setAttribute('data-placement','top');
+		action2_tag.setAttribute('title','Contact seller');
+		action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
 		cell.appendChild(action2_tag);
-		
 	}
 	
 }

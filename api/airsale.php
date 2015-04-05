@@ -1,4 +1,4 @@
-<?php
+<?php header('Access-Control-Allow-Origin: *');
 /*
 © 2015 LALX Singapore programmed by Li Xi together with Huey Lee
 Access URL: airsale.lalx.org/api/airsale.php
