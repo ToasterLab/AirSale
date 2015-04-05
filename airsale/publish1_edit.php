@@ -99,7 +99,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <div class='container'>
 	<div class='row'>
     <form action='/api/airsale.php' method='POST' onSubmit="return formValidation()" enctype="multipart/form-data" >
-    <input type='hidden' name="action" value='publish1'>
+    <input type='hidden' name="action" value='publish1_edit'>
     
     <br><center><label for='disclaimer'> ALL INFORMATION COLLECTED WILL NOT UNDER ANY CIRCUMSTANCE BE RELEASED TO ANY PARTY FOR ANY PURPOSE. COMPULSORY FIELDS ARE MARKED WITH *</label><br><br></center>
     	<div class='col-md-3 form-group' id='number-div'>

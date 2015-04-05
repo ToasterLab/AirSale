@@ -67,7 +67,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
+            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
             </div>
             <div class='btn-group'>
             <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
@@ -87,7 +87,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
+        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
         <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
         </div>
@@ -99,7 +99,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <div class='container'>
 	<div class='row'>
     <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
-        <input type='hidden' name="action" value='publish2'>
+        <input type='hidden' name="action" value='publish2_edit'>
     <br><center><label for='instruction'> Compulsory fields are marked with an asterisk (*). Please complete this page with the most accurate description possible. Also, you may wish to browse the airport websites to find out what is available at your destination.</label><br><br></center>
     
     	
@@ -175,6 +175,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script>
 $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
+	
 	formUpdate();
 });
 
@@ -214,6 +215,7 @@ function formUpdate()
 	});
 	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'seller_history'},function(data) {
 		JArray=$.parseJSON(data);
+		
 		for(i=0;JArray[i] != null;i++)
 		{
 			if(JArray[i]['item_id']==JSession['item_id']) index_of_item = i;
@@ -224,7 +226,7 @@ function formUpdate()
 		document.getElementById('flightNumber').value=JResult['flightNumber'];
 		document.getElementById('arrivalDate').value=JResult['arrivalDate'];
 		document.getElementById('category').selected=JResult['category'];
-		document.getElementById('name').value=JResult['location'];
+		document.getElementById('name').value=JResult['name'];
 		document.getElementById('specifications').value=JResult['specifications'];
 		document.getElementById('price').value=JResult['price'];
 		document.getElementById('description').value=JResult['description'];

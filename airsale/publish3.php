@@ -329,7 +329,7 @@ function formUpdate()
 		document.getElementById('flightNumber').value=JResult['flightNumber'];
 		document.getElementById('arrivalDate').value=JResult['arrivalDate'];
 		document.getElementById('category').selected=JResult['category'];
-		document.getElementById('name').value=JResult['location'];
+		document.getElementById('name').value=JResult['name'];
 		document.getElementById('specifications').value=JResult['specifications'];
 		document.getElementById('price').value=JResult['price'];
 		document.getElementById('description').value=JResult['description'];

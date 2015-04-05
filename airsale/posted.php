@@ -97,7 +97,7 @@ function display_data()
 	var table=document.getElementById('display_table');
 	var cell,row;
 	var JArray;
-	$.post('../api/airsale.php',{concise:'1',action:'explore'},function(data){
+	$.post('../api/airsale.php',{concise:'1',action:'seller_history'},function(data){
 			JArray = $.parseJSON(data);
 			for(i=0;JArray[i];i++)
 			{

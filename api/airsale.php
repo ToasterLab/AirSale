@@ -377,44 +377,44 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 		}
 		
 		case 'publish1_edit':
-		{
-			$departureCountry=mysqli_escape_string($conn,$_POST["departureCountry"]);
-			$arrivalCountry=mysqli_escape_string($conn,$_POST["arrivalCountry"]);
-			$arrivalDateTime=mysqli_escape_string($conn,$_POST["arrivalDateTime"]);
-			$flightCarrier=mysqli_escape_string($conn,$_POST["flightCarrier"]);
-			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
-			$fullName = mysqli_escape_string($conn,$_POST["fullName"]);
-			$passport = mysqli_escape_string($conn,$_POST["passport"]);
-			$account = $_SESSION['auth'];
+		{	
+			if(!empty($_FILES['userPicture']))
+			{
+				$uploaddir = '../airsale/users/';	
+				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
+				$uploadfile = $uploaddir . $filename;
+				$userPictureName = mysqli_escape_string($conn,$filename);
+			}
 			
-			$uploaddir = '../airsale/tickets/';
-			$filename=(string)rand() . basename($_FILES['airTicket']['name']);
-			$uploadfile = $uploaddir . $filename;
-			$ticketName = mysqli_escape_string($conn,$filename);
-	
-			$sql="UPDATE publish1 SET
-					departureCountry 	= '$departureCountry',
-					arrivalCountry		= '$arrivalCountry',
-					arrivalDateTime		= '$arrivalDateTime',
-					flightCarrier		= '$flightCarrier',
-					flightNumber		= '$flightNumber',
-					fullName			= '$fullName',
-					passport			= '$passport',
-					ticketName			= '$ticketName'
-					WHERE item_id='$item_id'
-					";
+			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
+			
+			$number=$_POST['number'];
+			$email=$_POST['email'];
+			$location=$_POST['location'];
+			$other=$_POST['other'];
+			$prefered=$_POST['prefered'];
+			$user=$_SESSION['auth'];
+			$sql=" 	UPDATE user_list 
+					SET number='$number',
+						email = '$email',
+						location='$location',
+						other='$other',
+						prefered='$prefered'
+					WHERE user = '$user'";
+						
 			$status=mysqli_query($conn,$sql);
 			
-			if ($_FILES["airTicket"]["size"] > 8000000) {
+			if ($_FILES["userPicture"]["size"] > 8000000) {
 				die("Sorry, your file is too large. Please go back to upload your file again.");
 			}
 			
-			if (move_uploaded_file($_FILES['airTicket']['tmp_name'], $uploadfile)) {
+			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
 				echo "File is valid, and was successfully uploaded.\n";
 			} else {
 				echo "Possible file upload attack!\n";
 			}
-			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
+			
+			echo '<script>location.replace(\'../airsale/publish2_edit.php\')</script>';break;
 		}
 		
 		case 'publish2_edit':
@@ -424,8 +424,12 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			$specifications=mysqli_escape_string($conn,$_POST["specifications"]);
 			$price=mysqli_escape_string($conn,$_POST["price"]);
 			$description = mysqli_escape_string($conn,$_POST["description"]);
+			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
+			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
+			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
 			$account = $_SESSION['auth'];
-					
+			$item_id = $_SESSION['item_id'];
+						
 			if(!empty($_FILES['itemPicture']))
 			{	
 				$uploaddir = '../airsale/items/';
@@ -434,14 +438,16 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 				$itemPictureName = mysqli_escape_string($conn,$filename);
 			}
 			
-		
 			$sql="UPDATE publish2 SET
 					category 				= '$category',
 					name					= '$name',
 					specifications			= '$specifications',
 					price					= '$price',
 					description				= '$description',
-					itemPictureName			= '$itemPictureName'
+					itemPictureName			= '$itemPictureName',
+					flightCarrier			= '$flightCarrier',
+					flightNumber			= '$flightNumber',
+					arrivalDate				= '$arrivalDate'
 					WHERE item_id='$item_id'
 					";
 			$status=mysqli_query($conn,$sql);
