@@ -179,34 +179,42 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			$email=mysqli_escape_string($conn,$_POST["email"]);
 			$country=mysqli_escape_string($conn,$_POST["country"]);
 			
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
+			
 			//if($debug)  die("info:".$vocab.$definition.$sentence1);
 			
 			$sql="SELECT user FROM user_list WHERE user='$user'";
 			$result = mysqli_query($conn, $sql);
 			if (mysqli_num_rows($result) == 0)
 			{
-				$sql="INSERT INTO user_list (user,
-						password,
-						email,
-						country)
-						VALUES ('$user',
-						'$password',
-						'$email',
-						'$country')";
+				$sql="INSERT INTO user_list (
+						user,				password,
+						email,				country,
+						number,				
+						location,			prefered	)
+						VALUES (
+						'$user',			'$password',
+						'$email',			'$country',
+						'$number',			
+						'$location',		'$prefered'	)";
 				
 				$status=mysqli_query($conn,$sql);
 				$_SESSION['auth']=mysqli_escape_string($conn,$_POST["user"]);
-				setrawcookie('auth',base64_encode($user),time()+1800,'/');
+				setrawcookie('auth',$user,0,'/');
 				echo '<script>location.replace(\'../airsale/home.php\')</script>';
 			}
 			else 
 			{
-				echo '<script>  alert("User name is already registered. Please try a different one");location.replace(\'../signup.html\')</script>';
+				echo '<script>  alert("User already exists. Please try a different one");history.back();</script>';
 				
 			}
 			break;
 		}
-			
+		
 		case 'publish1':
 		{	
 			if(!empty($_FILES['userPicture']))
@@ -222,11 +230,11 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$item_id;
 			
-			$number=$_POST['number'];
-			$email=$_POST['email'];
-			$location=$_POST['location'];
-			$other=$_POST['other'];
-			$prefered=$_POST['prefered'];
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
 			$user=$_SESSION['auth'];
 			$sql=" 	UPDATE user_list 
 					SET number='$number',
@@ -249,6 +257,50 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			}
 			
 			echo '<script>location.replace(\'../airsale/publish2.php\')</script>';break;
+		}
+		
+		case 'publish1_edit':
+		{	
+			if(!empty($_FILES['userPicture']))
+			{
+				$uploaddir = '../airsale/users/';	
+				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
+				$uploadfile = $uploaddir . $filename;
+				$userPictureName = mysqli_escape_string($conn,$filename);
+			}
+			
+			$sql="INSERT INTO item_id (account) VALUES ('$account')";
+			mysqli_query($conn,$sql);
+			$item_id = mysqli_insert_id($conn);
+			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
+			
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
+			$user=$_SESSION['auth'];
+			$sql=" 	UPDATE user_list 
+					SET number='$number',
+						email = '$email',
+						location='$location',
+						other='$other',
+						prefered='$prefered'
+					WHERE user = '$user'";
+						
+			$status=mysqli_query($conn,$sql);
+			
+			if ($_FILES["userPicture"]["size"] > 8000000) {
+				die("Sorry, your file is too large. Please go back to upload your file again.");
+			}
+			
+			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
+				echo "File is valid, and was successfully uploaded.\n";
+			} else {
+				echo "Possible file upload attack!\n";
+			}
+			
+			echo '<script>location.replace(\'../airsale/publish2_edit.php\')</script>';break;
 		}
 		
 		case 'publish2':
@@ -277,7 +329,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 					price,
 					description,
 					itemPictureName,
-					account,item_id,flightCarrier,flightNumber,arrivalDate
+					account,item_id,flightCarrier,flightNumber,arrivalDate,arrivalCountry
 					)
 					VALUES ('$category',
 					'$name',
@@ -289,7 +341,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 					'$item_id',
 					'$flightCarrier',
 					'$flightNumber',
-					'$arrivalDate'
+					'$arrivalDate',''
 					)";
 			$status=mysqli_query($conn,$sql);
 					
@@ -309,112 +361,71 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 		{
 			echo '<script>alert("The item is sucessfully published. It will be seen by all users at the I am a buyer-> explore tab. "); location.replace(\'../airsale/home.php\')</script>';break;
 		}
-		
-		case 'publish4':
-		{
-			echo '<script>alert("The item is sucessfully published. It will be seen by all users at the I am a buyer-> explore tab. "); location.replace(\'../airsale/home.php\')</script>';break;
-		}
-		
+	
 		case 'publish2_photo':
 		{
-			$edit_id = base64_decode( $_COOKIE['edit_id']);
 			$account = $_SESSION['auth'];
 			$uploaddir = '../airsale/items/';
+			$result = mysqli_query($conn," SELECT itemPictureName2,itemPictureName3,itemPictureName4
+											FROM publish2WHERE item_id='$item_id'");
+			$row = mysqli_fetch_assoc($result);
+			$itemPictureName2_del =$row['itemPictureName2'];
+			$itemPictureName3_del =$row['itemPictureName3'];
+			$itemPictureName4_del =$row['itemPictureName4'];
 			
-			if(!empty($_FILES['itemPicture2']))
+			if($_FILES['itemPicture2']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName2_del); echo 'itemPictureName2_del deleted';
 				$filename2=(string)rand() . basename($_FILES['itemPicture2']['name']);
 				$uploadfile2 = $uploaddir . $filename2;
 				$itemPictureName2 = mysqli_escape_string($conn,$filename2);
+				$sql="UPDATE publish2
+						SET itemPictureName2 = '$itemPictureName2'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture2']['tmp_name'], $uploadfile2)) {
+					echo "File is valid, and was successfully uploaded.\n";
+				} else {
+					echo "Possible file upload attack!\n";
+				}
 			}
 			
-			if(!empty($_FILES['itemPicture3']))
+			if($_FILES['itemPicture3']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName3_del); echo 'itemPictureName3_del deleted';
 				$filename3=(string)rand() . basename($_FILES['itemPicture3']['name']);
 				$uploadfile3 = $uploaddir . $filename3;
 				$itemPictureName3 = mysqli_escape_string($conn,$filename3);
+				$sql="UPDATE publish2
+						SET itemPictureName3 = '$itemPictureName3'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture3']['tmp_name'], $uploadfile3)) {
+					echo "File is valid, and was successfully uploaded.\n";
+				} else {
+					echo "Possible file upload attack!\n";
+				}
 			}
 			
 			
-			if(!empty($_FILES['itemPicture4']))
+			if($_FILES['itemPicture4']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName4_del); echo 'itemPictureName4_del deleted';
 				$filename4=(string)rand() . basename($_FILES['itemPicture4']['name']);
 				$uploadfile4 = $uploaddir . $filename4;
 				$itemPictureName4 = mysqli_escape_string($conn,$filename4);
+				$sql="UPDATE publish2
+						SET itemPictureName4 = '$itemPictureName4'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture4']['tmp_name'], $uploadfile4)) {
+					echo "File is valid, and was successfully uploaded.\n";
+				} else {
+					echo "Possible file upload attack!\n";
+				}
 			}
 			
-			$sql="UPDATE publish2
-					SET itemPictureName2 = '$itemPictureName2',
-						itemPictureName3 = '$itemPictureName3',
-						itemPictureName4 = '$itemPictureName4'
-					WHERE item_id='$item_id'";
-			$status=mysqli_query($conn,$sql);
-			
-			if (move_uploaded_file($_FILES['itemPicture2']['tmp_name'], $uploadfile2)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture3']['tmp_name'], $uploadfile3)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture4']['tmp_name'], $uploadfile4)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			
-			echo 'Here is some more debugging info:';
-			print_r($_FILES);
-			
-			print "</pre>";
-			
-			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
-		}
-		
-		case 'publish1_edit':
-		{	
-			if(!empty($_FILES['userPicture']))
-			{
-				$uploaddir = '../airsale/users/';	
-				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
-				$uploadfile = $uploaddir . $filename;
-				$userPictureName = mysqli_escape_string($conn,$filename);
-			}
-			
-			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
-			
-			$number=$_POST['number'];
-			$email=$_POST['email'];
-			$location=$_POST['location'];
-			$other=$_POST['other'];
-			$prefered=$_POST['prefered'];
-			$user=$_SESSION['auth'];
-			$sql=" 	UPDATE user_list 
-					SET number='$number',
-						email = '$email',
-						location='$location',
-						other='$other',
-						prefered='$prefered'
-					WHERE user = '$user'";
-						
-			$status=mysqli_query($conn,$sql);
-			
-			if ($_FILES["userPicture"]["size"] > 8000000) {
-				die("Sorry, your file is too large. Please go back to upload your file again.");
-			}
-			
-			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			
-			echo '<script>location.replace(\'../airsale/publish2_edit.php\')</script>';break;
+			echo '<script>location.replace(\'../airsale/publish3.php\')</script>';break;
 		}
 		
 		case 'publish2_edit':
@@ -429,81 +440,60 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
 			$account = $_SESSION['auth'];
 			$item_id = $_SESSION['item_id'];
-						
-			if(!empty($_FILES['itemPicture']))
+			if($_POST['debug']) var_dump($_FILES);			
+			if($_FILES['itemPicture']['error'] == 0)
 			{	
+			
+				$sql = "SELECT itemPictureName FROM publish2 WHERE item_id='$item_id'";
+				$result = mysqli_query($conn,$sql);
+				$row = mysqli_fetch_assoc($result);
+				$toBeDeleted_itemPictureName = $row['itemPictureName'];
+				if(unlink('../airsale/items/'.$toBeDeleted_itemPictureName)) echo 'item deleted';
+				
 				$uploaddir = '../airsale/items/';
 				$filename=(string)rand() . basename($_FILES['itemPicture']['name']);
 				$uploadfile = $uploaddir . $filename;
 				$itemPictureName = mysqli_escape_string($conn,$filename);
+				$sql="UPDATE publish2 SET
+						category 				= '$category',
+						name					= '$name',
+						specifications			= '$specifications',
+						price					= '$price',
+						description				= '$description',
+						itemPictureName			= '$itemPictureName',
+						flightCarrier			= '$flightCarrier',
+						flightNumber			= '$flightNumber',
+						arrivalDate				= '$arrivalDate'
+						WHERE item_id='$item_id'
+						";
+				$status=mysqli_query($conn,$sql);
+				if ($_FILES["itemPicture"]["size"] > 8000000) {
+					die("Sorry, your file is too large. Please go back to upload your file again.");
+				}
+				
+				if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
+					echo "File is valid, and was successfully uploaded.\n";
+				} else {
+					echo "Possible file upload attack!\n";
+				}
 			}
-			
-			$sql="UPDATE publish2 SET
-					category 				= '$category',
-					name					= '$name',
-					specifications			= '$specifications',
-					price					= '$price',
-					description				= '$description',
-					itemPictureName			= '$itemPictureName',
-					flightCarrier			= '$flightCarrier',
-					flightNumber			= '$flightNumber',
-					arrivalDate				= '$arrivalDate'
-					WHERE item_id='$item_id'
-					";
-			$status=mysqli_query($conn,$sql);
-			if ($_FILES["itemPicture"]["size"] > 8000000) {
-				die("Sorry, your file is too large. Please go back to upload your file again.");
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-		
-			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
-		}
-		
-		case 'publish3_edit':
-		{
-			$number=mysqli_escape_string($conn,$_POST["number"]);
-			$email=mysqli_escape_string($conn,$_POST["email"]);
-			$location=mysqli_escape_string($conn,$_POST["location"]);
-			$other=mysqli_escape_string($conn,$_POST["other"]);
-			$prefered = mysqli_escape_string($conn,$_POST["prefered"]);
-			$account = $_SESSION['auth'];
-			echo "Debug info on SQL query: \n ";
-			echo $_POST;
-			
-			if(!empty($_FILES['userPicture']))
+			else 
 			{
-				$uploaddir = '../airsale/users/';	
-				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
-				$uploadfile = $uploaddir . $filename;
-				$userPictureName = mysqli_escape_string($conn,$filename);
+				$sql="UPDATE publish2 SET
+						category 				= '$category',
+						name					= '$name',
+						specifications			= '$specifications',
+						price					= '$price',
+						description				= '$description',
+						flightCarrier			= '$flightCarrier',
+						flightNumber			= '$flightNumber',
+						arrivalDate				= '$arrivalDate'
+						WHERE item_id='$item_id'
+						";
+				$status=mysqli_query($conn,$sql);
+				
 			}
-			
-	
-			$sql="UPDATE publish3 SET
-					number 					= '$number',
-					email					= '$email',
-					location				= '$location',
-					other					= '$other',
-					prefered				= '$prefered',
-					userPictureName			= '$userPictureName'
-					WHERE item_id='$item_id'
-					";
-			$status=mysqli_query($conn,$sql);
-			if ($_FILES["userPicture"]["size"] > 8000000) {
-				die("Sorry, your file is too large. Please go back to upload your file again.");
-			}
-			
-			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
-				echo "File is valid, and was successfully uploaded.\n";
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-			echo '<script>location.replace(\'../airsale/publish4.php\')</script>';break;
+			echo '<script>location.replace(\'../airsale/publish3.php\')</script>';break;
 		}
 		
 		case 'setSession(item_id)viaCookie(edit_item_id)':
@@ -517,29 +507,46 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 		{
 			if($_POST['password'] != '')
 			{
-				$password=$_POST['password'];
-				$email=$_POST['email'];
-				$country=$_POST['country'];
+				$email=mysqli_escape_string($conn,$_POST["email"]);
+				$country=mysqli_escape_string($conn,$_POST["country"]);
+				$password=mysqli_escape_string($conn,$_POST["password"]);
+				$number=mysqli_escape_string($conn,$_POST["number"]);
+				$location=mysqli_escape_string($conn,$_POST["location"]);
+				$other=mysqli_escape_string($conn,$_POST["other"]);
+				$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
 				$user=$_SESSION['auth'];
 				$sql=" 	UPDATE user_list 
 						SET password='$password',
+							number='$number',
+							email = '$email',
 							country='$country',
-							email = '$email'
+							location='$location',
+							other='$other',
+							prefered='$prefered'
 						WHERE user = '$user'";
 			}
 			else
 			{
-				$email=$_POST['email'];
-				$country=$_POST['country'];
+				$email=mysqli_escape_string($conn,$_POST["email"]);
+				$country=mysqli_escape_string($conn,$_POST["country"]);
+				$number=mysqli_escape_string($conn,$_POST["number"]);
+				$location=mysqli_escape_string($conn,$_POST["location"]);
+				$other=mysqli_escape_string($conn,$_POST["other"]);
+				$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
 				$user=$_SESSION['auth'];
 				$sql=" 	UPDATE user_list 
-						SET country='$country',
-							email = '$email'
+						SET number='$number',
+							email = '$email',
+							country='$country',
+							location='$location',
+							other='$other',
+							prefered='$prefered'
 						WHERE user = '$user'";
 				
 			}
 			mysqli_query($conn,$sql);
 			echo '<script> alert("Your profile is successfully updated");location.replace("../airsale/profile.php");</script>';
+			break;
 		}
 	}
 }
@@ -548,6 +555,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	die('please login');
+	
 	switch($_POST['action'])
 	{
 		case 'login':
@@ -579,89 +587,122 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 		
 		case 'signup':
 		{
+			
 			$password=mysqli_escape_string($conn,$_POST["password"]);
 			$user=mysqli_escape_string($conn,$_POST["user"]);
 			$email=mysqli_escape_string($conn,$_POST["email"]);
 			$country=mysqli_escape_string($conn,$_POST["country"]);
 			
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
+			
+			//if($debug)  die("info:".$vocab.$definition.$sentence1);
 			
 			$sql="SELECT user FROM user_list WHERE user='$user'";
 			$result = mysqli_query($conn, $sql);
 			if (mysqli_num_rows($result) == 0)
 			{
-				$sql="INSERT INTO user_list (user,
-						password,
-						email,
-						country,
-						identity_method,
-						identity)
-						VALUES ('$user',
-						'$password',
-						'$email',
-						'$country',
-						'$identity_method',
-						'$identity')";
+				$sql="INSERT INTO user_list (
+						user,				password,
+						email,				country,
+						number,				
+						location,			prefered	)
+						VALUES (
+						'$user',			'$password',
+						'$email',			'$country',
+						'$number',			
+						'$location',		'$prefered'	)";
 				
 				$status=mysqli_query($conn,$sql);
-				$_SESSION['auth']=$user;
-				echo '1';
+				$_SESSION['auth']=mysqli_escape_string($conn,$_POST["user"]);
+				setrawcookie('auth',$user,0,'/');
+				echo $user;
 			}
 			else 
 			{
-				echo 'failed-user name exists';
+				echo 'failed-user exists';
+				
 			}
 			break;
 		}
-			
+		
 		case 'publish1':
-		{
-			$departureCountry=mysqli_escape_string($conn,$_POST["departureCountry"]);
-			$arrivalCountry=mysqli_escape_string($conn,$_POST["arrivalCountry"]);
-			$arrivalDateTime=mysqli_escape_string($conn,$_POST["arrivalDateTime"]);
-			$flightCarrier=mysqli_escape_string($conn,$_POST["flightCarrier"]);
-			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
-			$fullName = mysqli_escape_string($conn,$_POST["fullName"]);
-			$account = $_SESSION['auth'];
-						
-			$uploaddir = '../airsale/tickets/';
-			$filename=(string)rand() . basename($_FILES['airTicket']['name']);
-			$uploadfile = $uploaddir . $filename;
-			$ticketName = mysqli_escape_string($conn,$filename);
+		{	
+			if(!empty($_FILES['userPicture']))
+			{
+				$uploaddir = '../airsale/users/';	
+				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
+				$uploadfile = $uploaddir . $filename;
+				$userPictureName = mysqli_escape_string($conn,$filename);
+			}
 			
 			$sql="INSERT INTO item_id (account) VALUES ('$account')";
 			mysqli_query($conn,$sql);
 			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$item_id;
 			
-			$sql="INSERT INTO publish1 (departureCountry,
-					arrivalCountry,
-					arrivalDateTime,
-					flightCarrier,
-					flightNumber,
-					fullName,
-					ticketName,
-					account,
-					item_id)
-					VALUES ('$departureCountry',
-					'$arrivalCountry',
-					'$arrivalDateTime',
-					'$flightCarrier',
-					'$flightNumber',
-					'$fullName',
-					'$ticketName',
-					'$account',
-					'$item_id')";
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
+			$user=$_SESSION['auth'];
+			$sql=" 	UPDATE user_list 
+					SET number='$number',
+						email = '$email',
+						location='$location',
+						other='$other',
+						prefered='$prefered'
+					WHERE user = '$user'";
+						
 			$status=mysqli_query($conn,$sql);
 			
-			if ($_FILES["airTicket"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
-			
-			if (move_uploaded_file($_FILES['airTicket']['tmp_name'], $uploadfile)) {
-				echo "1";
+			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
 			} else {
 				echo "failed";
 			}
+			break;
+		}
+		
+		case 'publish1_edit':
+		{	
+			if(!empty($_FILES['userPicture']))
+			{
+				$uploaddir = '../airsale/users/';	
+				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
+				$uploadfile = $uploaddir . $filename;
+				$userPictureName = mysqli_escape_string($conn,$filename);
+			}
+			
+			$sql="INSERT INTO item_id (account) VALUES ('$account')";
+			mysqli_query($conn,$sql);
+			$item_id = mysqli_insert_id($conn);
+			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
+			
+			$number=mysqli_escape_string($conn,$_POST["number"]);
+			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$location=mysqli_escape_string($conn,$_POST["location"]);
+			$other=mysqli_escape_string($conn,$_POST["other"]);
+			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
+			$user=$_SESSION['auth'];
+			$sql=" 	UPDATE user_list 
+					SET number='$number',
+						email = '$email',
+						location='$location',
+						other='$other',
+						prefered='$prefered'
+					WHERE user = '$user'";
+						
+			$status=mysqli_query($conn,$sql);
+			
+			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
+			} else {
+				echo "failed";
+			}
+			
 			break;
 		}
 		
@@ -672,6 +713,9 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			$specifications=mysqli_escape_string($conn,$_POST["specifications"]);
 			$price=mysqli_escape_string($conn,$_POST["price"]);
 			$description = mysqli_escape_string($conn,$_POST["description"]);
+			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
+			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
+			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
 			$account = $_SESSION['auth'];
 						
 			if(!empty($_FILES['itemPicture']))
@@ -688,7 +732,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 					price,
 					description,
 					itemPictureName,
-					account,item_id)
+					account,item_id,flightCarrier,flightNumber,arrivalDate,arrivalCountry
+					)
 					VALUES ('$category',
 					'$name',
 					'$specifications',
@@ -696,169 +741,80 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 					'$description',
 					'$itemPictureName',
 					'$account',
-					'$item_id'
+					'$item_id',
+					'$flightCarrier',
+					'$flightNumber',
+					'$arrivalDate',''
 					)";
 			$status=mysqli_query($conn,$sql);
-					
-			if ($_FILES["itemPicture"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
 			
 			if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
-				echo "1";
 			} else {
 				echo "failed";
 			}
 			break;
-		}
-		
-		case 'publish3':
-		{
-			$number=mysqli_escape_string($conn,$_POST["number"]);
-			$email=mysqli_escape_string($conn,$_POST["email"]);
-			$location=mysqli_escape_string($conn,$_POST["location"]);
-			$other=mysqli_escape_string($conn,$_POST["other"]);
-			$prefered = mysqli_escape_string($conn,$_POST["prefered"]);
-			$account = $_SESSION['auth'];
-	
-			if(!empty($_FILES['userPicture']))
-			{
-				$uploaddir = '../airsale/users/';	
-				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
-				$uploadfile = $uploaddir . $filename;
-				$userPictureName = mysqli_escape_string($conn,$filename);
-			}
-			
-			$sql="INSERT INTO publish3 (number,
-					email,
-					location,
-					other,
-					prefered,
-					userPictureName,
-					account,
-					item_id)
-					VALUES ('$number',
-					'$email',
-					'$location',
-					'$other',
-					'$prefered',
-					'$userPictureName',
-					'$account',
-					'$item_id'
-					)";
-			$status=mysqli_query($conn,$sql);
-			
-			if ($_FILES["userPicture"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
-			
-			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
-			
-			break;
-		}
-		
-		case 'publish4':
-		{
-			NULL;break;
 		}
 		
 		case 'publish2_photo':
 		{
 			$account = $_SESSION['auth'];
 			$uploaddir = '../airsale/items/';
+			$result = mysqli_query($conn," SELECT itemPictureName2,itemPictureName3,itemPictureName4
+											FROM publish2WHERE item_id='$item_id'");
+			$row = mysqli_fetch_assoc($result);
+			$itemPictureName2_del =$row['itemPictureName2'];
+			$itemPictureName3_del =$row['itemPictureName3'];
+			$itemPictureName4_del =$row['itemPictureName4'];
 			
-			if(!empty($_FILES['itemPicture2']))
+			if($_FILES['itemPicture2']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName2_del); 
 				$filename2=(string)rand() . basename($_FILES['itemPicture2']['name']);
 				$uploadfile2 = $uploaddir . $filename2;
 				$itemPictureName2 = mysqli_escape_string($conn,$filename2);
+				$sql="UPDATE publish2
+						SET itemPictureName2 = '$itemPictureName2'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture2']['tmp_name'], $uploadfile2)) {
+				} else {
+					echo "failed";
+				}
 			}
 			
-			if(!empty($_FILES['itemPicture3']))
+			if($_FILES['itemPicture3']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName3_del); 
 				$filename3=(string)rand() . basename($_FILES['itemPicture3']['name']);
 				$uploadfile3 = $uploaddir . $filename3;
 				$itemPictureName3 = mysqli_escape_string($conn,$filename3);
+				$sql="UPDATE publish2
+						SET itemPictureName3 = '$itemPictureName3'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture3']['tmp_name'], $uploadfile3)) {
+				} else {
+					echo "failed";
+				}
 			}
 			
 			
-			if(!empty($_FILES['itemPicture4']))
+			if($_FILES['itemPicture4']['error']==0)
 			{	
+				unlink($uploaddir . $itemPictureName4_del); 
 				$filename4=(string)rand() . basename($_FILES['itemPicture4']['name']);
 				$uploadfile4 = $uploaddir . $filename4;
 				$itemPictureName4 = mysqli_escape_string($conn,$filename4);
+				$sql="UPDATE publish2
+						SET itemPictureName4 = '$itemPictureName4'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if (move_uploaded_file($_FILES['itemPicture4']['tmp_name'], $uploadfile4)) {
+				} else {
+					echo "failed";
+				}
 			}
 			
-			$sql="UPDATE publish2
-					SET itemPictureName2 = '$itemPictureName2',
-						itemPictureName3 = '$itemPictureName3',
-						itemPictureName4 = '$itemPictureName4'
-					WHERE item_id='$item_id'";
-			$status=mysqli_query($conn,$sql);
-			
-			if (move_uploaded_file($_FILES['itemPicture2']['tmp_name'], $uploadfile2)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture3']['tmp_name'], $uploadfile3)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture4']['tmp_name'], $uploadfile4)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
-			
-			break;
-		}
-		
-		case 'publish1_edit':
-		{
-			$departureCountry=mysqli_escape_string($conn,$_POST["departureCountry"]);
-			$arrivalCountry=mysqli_escape_string($conn,$_POST["arrivalCountry"]);
-			$arrivalDateTime=mysqli_escape_string($conn,$_POST["arrivalDateTime"]);
-			$flightCarrier=mysqli_escape_string($conn,$_POST["flightCarrier"]);
-			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
-			$fullName = mysqli_escape_string($conn,$_POST["fullName"]);
-			$passport = mysqli_escape_string($conn,$_POST["passport"]);
-			$account = $_SESSION['auth'];
-			
-			$uploaddir = '../airsale/tickets/';
-			$filename=(string)rand() . basename($_FILES['airTicket']['name']);
-			$uploadfile = $uploaddir . $filename;
-			$ticketName = mysqli_escape_string($conn,$filename);
-	
-			$sql="UPDATE publish1 SET
-					departureCountry 	= '$departureCountry',
-					arrivalCountry		= '$arrivalCountry',
-					arrivalDateTime		= '$arrivalDateTime',
-					flightCarrier		= '$flightCarrier',
-					flightNumber		= '$flightNumber',
-					fullName			= '$fullName',
-					passport			= '$passport',
-					ticketName			= '$ticketName'
-					WHERE item_id='$item_id'
-					";
-			$status=mysqli_query($conn,$sql);
-			
-			if ($_FILES["airTicket"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
-			
-			if (move_uploaded_file($_FILES['airTicket']['tmp_name'], $uploadfile)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
 			break;
 		}
 		
@@ -869,79 +825,63 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			$specifications=mysqli_escape_string($conn,$_POST["specifications"]);
 			$price=mysqli_escape_string($conn,$_POST["price"]);
 			$description = mysqli_escape_string($conn,$_POST["description"]);
+			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
+			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
+			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
 			$account = $_SESSION['auth'];
-					
-			if(!empty($_FILES['itemPicture']))
+			$item_id = $_SESSION['item_id'];
+			if($_POST['debug']) var_dump($_FILES);			
+			if($_FILES['itemPicture']['error'] == 0)
 			{	
+			
+				$sql = "SELECT itemPictureName FROM publish2 WHERE item_id='$item_id'";
+				$result = mysqli_query($conn,$sql);
+				$row = mysqli_fetch_assoc($result);
+				$toBeDeleted_itemPictureName = $row['itemPictureName'];
+				if(unlink('../airsale/items/'.$toBeDeleted_itemPictureName)) ;
+				
 				$uploaddir = '../airsale/items/';
 				$filename=(string)rand() . basename($_FILES['itemPicture']['name']);
 				$uploadfile = $uploaddir . $filename;
 				$itemPictureName = mysqli_escape_string($conn,$filename);
+				$sql="UPDATE publish2 SET
+						category 				= '$category',
+						name					= '$name',
+						specifications			= '$specifications',
+						price					= '$price',
+						description				= '$description',
+						itemPictureName			= '$itemPictureName',
+						flightCarrier			= '$flightCarrier',
+						flightNumber			= '$flightNumber',
+						arrivalDate				= '$arrivalDate'
+						WHERE item_id='$item_id'
+						";
+				$status=mysqli_query($conn,$sql);
+				
+				if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
+				} else {
+					echo "failed";
+				}
 			}
-			
-			$sql="UPDATE publish2 SET
-					category 				= '$category',
-					name					= '$name',
-					specifications			= '$specifications',
-					price					= '$price',
-					description				= '$description',
-					itemPictureName			= '$itemPictureName'
-					WHERE item_id='$item_id'
-					";
-			$status=mysqli_query($conn,$sql);
-			if ($_FILES["itemPicture"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
-			
-			if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
-				echo "1";
-			} else {
-				echo "failed";
-			}
-		
-			break;
-		}
-		
-		case 'publish3_edit':
-		{
-			$number=mysqli_escape_string($conn,$_POST["number"]);
-			$email=mysqli_escape_string($conn,$_POST["email"]);
-			$location=mysqli_escape_string($conn,$_POST["location"]);
-			$other=mysqli_escape_string($conn,$_POST["other"]);
-			$prefered = mysqli_escape_string($conn,$_POST["prefered"]);
-			$account = $_SESSION['auth'];
-		
-			if(!empty($_FILES['userPicture']))
+			else 
 			{
-				$uploaddir = '../airsale/users/';	
-				$filename=(string)rand() . basename($_FILES['userPicture']['name']);
-				$uploadfile = $uploaddir . $filename;
-				$userPictureName = mysqli_escape_string($conn,$filename);
-			}
-			
-			$sql="UPDATE publish3 SET
-					number 					= '$number',
-					email					= '$email',
-					location				= '$location',
-					other					= '$other',
-					prefered				= '$prefered',
-					userPictureName			= '$userPictureName'
-					WHERE item_id='$item_id'
-					";
-			$status=mysqli_query($conn,$sql);
-			
-			if ($_FILES["userPicture"]["size"] > 8000000) {
-				echo 'failed-file size exceeded 8MB';
-			}
-			
-			if (move_uploaded_file($_FILES['userPicture']['tmp_name'], $uploadfile)) {
-				echo "1";
-			} else {
-				echo "failed";
+				$sql="UPDATE publish2 SET
+						category 				= '$category',
+						name					= '$name',
+						specifications			= '$specifications',
+						price					= '$price',
+						description				= '$description',
+						flightCarrier			= '$flightCarrier',
+						flightNumber			= '$flightNumber',
+						arrivalDate				= '$arrivalDate'
+						WHERE item_id='$item_id'
+						";
+				$status=mysqli_query($conn,$sql);
+				
 			}
 			break;
 		}
-		
+
 		case 'explore':
 		{
 			$arr=array();
@@ -955,26 +895,22 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 	if($_POST['debug']) var_dump($row,$min_id,$max_id);
 			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
-				$sql = "SELECT 	publish1.departureCountry,	publish1.arrivalCountry,
-								publish1.arrivalDateTime,	publish1.flightCarrier,
-								publish1.flightNumber,		publish1.fullName,
-								
-								
-								publish2.category,			publish2.name,
+				$sql = "SELECT 	publish2.category,			publish2.name,
 								publish2.specifications,	publish2.price,
 								publish2.description,		publish2.itemPictureName,
 								publish2.itemPictureName2,	publish2.itemPictureName3,
-								publish2.itemPictureName4,	
+								publish2.itemPictureName4,	publish2.flightCarrier,	
+								publish2.flightNumber,		publish2.arrivalDate,	
+								publish2.account,			publish2.item_id,
 								
-								publish3.number,			publish3.email,
-								publish3.location,			publish3.other,
-								publish3.prefered		
+								user_list.number,			user_list.email,
+								user_list.location,			user_list.other,
+								user_list.prefered		
 								
 								
-						FROM	publish1 
-						INNER JOIN publish2 ON publish1.item_id = publish2.item_id
-						INNER JOIN publish3 ON publish1.item_id = publish3.item_id
-						WHERE publish1.item_id = '$in'
+						FROM	publish2
+						INNER JOIN user_list ON publish2.account = user_list.user
+						WHERE publish2.item_id = '$in'
 						";
 				$result = mysqli_query($conn, $sql);
 		if($_POST['debug']) var_dump($result);
@@ -983,20 +919,18 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 					
 					while($row = mysqli_fetch_assoc($result)) 
 					{
+						{
 						$arr[] = array(
 						'item_id'=>$in,	
 						'result'=>array( 
-						
-			'departureCountry'=>$row['departureCountry'],	'arrivalCountry'=>$row['arrivalCountry'],
-			'arrivalDateTime'=>$row['arrivalDateTime'],		'flightCarrier'=>$row['flightCarrier'],
-			'flightNumber'=>$row['flightNumber'],			'fullName'=>$row['fullName'],
-			'account'=>$row['account'],						'item_id'=>$row['item_id'],						
-			
+			'flightCarrier'=>$row['flightCarrier'],			'flightNumber'=>$row['flightNumber'],
+			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
+							
 			'category'=>$row['category'],					'name'=>$row['name'],
 			'specifications'=>$row['specifications'],		'price'=>$row['price'],
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
 			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
-			'itemPictureName4'=>$row['itemPictureName4'],	
+			'itemPictureName4'=>$row['itemPictureName4'],	'arrivalDate'=>$row['arrivalDate'],
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
@@ -1004,7 +938,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			
 				//		echo json_encode($arr_temp);
 				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
-						
+						}//if account==auth
 					}//while
 				}//if
 			}//for
@@ -1110,6 +1044,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			if($status)
 			echo 'successful';
 			else echo 'failed';
+			break;
 		}
 		
 		case 'user_profile':

@@ -160,17 +160,17 @@ $(document).ready(function(e) {
 
 function formValidation()
 {
-	error=0;
-	if($('#number').val()=='') {$('#number-div').addClass('has-error');error=true;}
-	else {$('#number-div').removeClass('has-error');error=error&false;}
-	if($('#location').val()=='') {$('#location-div').addClass('has-error');error=true;}
-	else {$('#location-div').removeClass('has-error');error=error&false;}
-	if($('#email').val()=='') {$('#email-div').addClass('has-error');error=true;}
-	else {$('#email-div').removeClass('has-error');error=error&false;}
-	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=true;}
-	else {$('#prefered-div').removeClass('has-error');error=error&false;}
+	error = true;	//false indicates there is an error
+	if($('#number').val()=='') {$('#number-div').addClass('has-error');error=false;}
+	else {$('#number-div').removeClass('has-error');error=error&true;}
+	if($('#location').val()=='') {$('#location-div').addClass('has-error');error=false;}
+	else {$('#location-div').removeClass('has-error');error=error&true;}
+	if($('#email').val()=='') {$('#email-div').addClass('has-error');error=false;}
+	else {$('#email-div').removeClass('has-error');error=error&true;}
+	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=false;}
+	else {$('#prefered-div').removeClass('has-error');error=error&true;}
 	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
+	if(error==false) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
 	else return true;
 	
 }

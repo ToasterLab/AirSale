@@ -12,6 +12,126 @@
 <script src="/js/classie.js"></script>
 <title>AirSale SIGNUP</title>
 </head>
+
+<body>
+<nav class='navbar navbar-default navbar-fixed-top' role='navigation'>
+	<div class='container-fluid'>
+    	<div class='navbar-header'>
+        	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#page-navG" >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+       		<span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a href='/index.html' class='navbar-brand'> AirSale</a>
+        </div>
+        
+        <div id="page-navG" class="collapse navbar-collapse" >
+        	<ul class='nav navbar-nav'>
+            <li class='active'> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
+        	</ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class='jumbotron' style="padding-top:100pt">
+    <h1> Sign-up for AirSale!<br></h1>
+</div>
+    
+<div class='container'>
+	<div class='row'>
+      <form role="form" action='/api/airsale.php' method="post"  onSubmit="return formValidate();">
+      <div class='col-xs-12'>
+      <center>
+      <h4>All information collected will NOT under any circumstance be released in any form to any party for any reason. Information is securely stored on our servers. Please note that compulsory fields are marked with an asterisk *.</h4>
+      </center><br><br>
+      </div>
+      <input type='hidden' name='action' value="signup">
+      <div class='row'>
+        <div class="form-group col-sm-4" id='user-div'>
+          <label><i class='fa fa-user'></i> *User name:</label>
+          <input class="form-control" name="user" placeholder="Enter user name" id='user'>
+        </div>
+        
+        <div class="form-group col-sm-4" id='password1-div'>
+          <label for="password"><i class='fa fa-key'></i> *Password:</label>
+          <input class="form-control" name="password" placeholder="Enter your password" type='password' id='password1'>
+        </div>
+               
+        <div class="form-group col-sm-4" id='div-pw'>
+          <label for="password"><i class='fa fa-key'></i> *Confirm your password:</label>
+          <input class="form-control" name="password_2" placeholder="Enter your password again" type='password' id='password2'>
+          <label id='pw-status' class='has-error'></label>
+        </div>
+        
+      </div>
+        
+      <div class='row'>
+        <div class="form-group col-sm-4" id='email1-div'>
+          <label><i class='fa fa-envelope-o'></i> *Email:</label>
+          <input class="form-control" name="email" placeholder="Enter email" type="email" id='email1'>
+        </div>
+        
+        <div class="form-group col-sm-4" id='email-div'>
+          <label><i class='fa fa-envelope-o'></i> *Confirm your email:</label>
+          <input class="form-control" name="email_2" placeholder="Enter email" type="email" id='email2'>
+          <label id='email-status'></label>
+        </div>
+        
+        <div class="form-group col-sm-4" id='country-div'>
+          <label><i class='fa fa-globe'></i> *Current country of residence:</label>
+          <input class="form-control" name="country" placeholder="Enter country of residence" id='country'>
+        </div>
+      </div>
+      
+      <div class='row'>
+        <div class='col-sm-4 form-group' id='number-div'>
+        <label><i class='fa fa-phone'></i> *Contact number</label>
+        <input class='form-control' type='text' name='number' id='number' placeholder="Contact Number">
+        </div>
+      
+      	<div class='col-sm-4 form-group' id='location-div'>
+        <label><i class='fa fa-exchange'></i> *Prefered hand-over location</label>
+        <input type='text' class='form-control' name='location' id='location' placeholder="eg. Airport">
+        </div>
+        
+        <div class='form-group col-sm-4' id='prefered-div'>
+        <label><i class='fa fa-check-square-o'></i> *Prefered method of contact</label>
+        <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
+        </div>
+      </div>
+	  
+      <div class='row'>
+       	<div class='col-md-6 form-group' id='other-div'>
+        <label><i class='fa fa-list'></i> Other method to contact me(format: method-account)</label>
+        <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
+        </div>
+        
+        
+        <div class='form-group col-md-6' id='userPicture-div'>
+        <label><i class='fa fa-camera'></i> Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+        <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
+        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of yourself so that the customers can identify you. </label>
+        </div>
+      
+      </div>        
+        <center>
+        <button type="submit" class="btn btn-default btn-lg" >Submit</button><br>
+        <label> <a href="/airsale/login.html" class='btn'>If you have an account already, log in here</a></label>
+        </center>
+      </form>
+  </div>
+</div>
+
+
+<div class='modal-footer'>
+	<p>  ©2015 Li Xi</p>
+</div>
+
+</body>
+</html>
+
 <script>
 $(document).ready(function(e) {
    window.setInterval( function() { $('#password2').on('blur', checkform());},500);
@@ -50,97 +170,24 @@ function checkform()
 
 function formValidate()
 {
-	if( $('#user').val() == '') setCookie('error','1',1);
-	if( $('#password1').val() == '') setCookie('error','1',1);
-	if( $('#email1').val() == '') setCookie('error','1',1);
-	if( $('#country').val() == '') setCookie('error','1',1);
-	if( $('#identity').val() == '') setCookie('error','1',1);
+	error = true;	//false indicates there is an error
+	if($('#user').val()=='') {$('#user-div').addClass('has-error');error=false;}
+	else {$('#user-div').removeClass('has-error');error=error&true;}
+	if($('#password1').val()=='') {$('#password1-div').addClass('has-error');error=false;}
+	else {$('#password1-div').removeClass('has-error');error=error&true;}
+	if($('#email1').val()=='') {$('#email1-div').addClass('has-error');error=false;}
+	else {$('#email1-div').removeClass('has-error');error=error&true;}
+	if($('#country').val()=='') {$('#country-div').addClass('has-error');error=false;}
+	else {$('#country-div').removeClass('has-error');error=error&true;}
 	
-	if(getCookie('error') ==  '1') 
-	{
-		alert('Please do NOT leave any field empty. Error are highlighted. ');
-		return false;
-	}
+	if($('#number').val()=='') {$('#number-div').addClass('has-error');error=false;}
+	else {$('#number-div').removeClass('has-error');error=error&true;}
+	if($('#location').val()=='') {$('#location-div').addClass('has-error');error=false;}
+	else {$('#location-div').removeClass('has-error');error=error&true;}
+	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=false;}
+	else {$('#prefered-div').removeClass('has-error');error=error&true;}
+	
+	if(error==false) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with an asterisk *.');return false;}
 	else return true;
 }
 </script>
-
-<body>
-<nav class='navbar navbar-default navbar-fixed-top' role='navigation'>
-	<div class='container-fluid'>
-    	<div class='navbar-header'>
-        	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#page-navG" >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-       		<span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a href='/airsale/index.html' class='navbar-brand'> AirSale</a>
-        </div>
-        
-        <div id="page-navG" class="collapse navbar-collapse" >
-        	<ul class='nav navbar-nav'>
-            <li class='active'> <a href='/login.html'> Login here</a></li>
-        	</ul>
-        </div>
-    </div>
-</nav>
-
-
-<div class='jumbotron' style="padding-top:100pt">
-    <h1> Sign-up for AirSale!<br></h1>
-    <div class='container'>
-      <form role="form" action='/api/airsale.php' method="post"  onSubmit="return formValidate();">
-      <input type='hidden' name='action' value="signup">
-      <div class='row'>
-        <div class="form-group col-lg-4">
-          <label>User name:</label>
-          <input class="form-control" name="user" placeholder="Enter user name" id='user'>
-        </div>
-        
-        <div class="form-group col-lg-4">
-          <label for="password">Password:</label>
-          <input class="form-control" name="password" placeholder="Enter your password" type='password' id='password1'>
-        </div>
-               
-        <div class="form-group col-lg-4" id='div-pw'>
-          <label for="password">Confirm your password:</label>
-          <input class="form-control" name="password_2" placeholder="Enter your password again" type='password' id='password2'>
-          <label id='pw-status' class='has-error'></label>
-        </div>
-        
-      </div>
-        
-      <div class='row'>
-        <div class="form-group col-lg-6">
-          <label>Email:</label>
-          <input class="form-control" name="email" placeholder="Enter email" type="email" id='email1'>
-        </div>
-        
-        <div class="form-group col-lg-6" id='email-div'>
-          <label>Confirm your email:</label>
-          <input class="form-control" name="email" placeholder="Enter email" type="email" id='email2'>
-          <label id='email-status'></label>
-        </div>
-      </div>
-      
-        <div class="form-group">
-          <label>Current country of residence:</label>
-          <input class="form-control" name="country" placeholder="Enter country of residence" id='country'>
-        </div>
-        
-        <center>
-        <button type="submit" class="btn btn-default btn-lg" >Submit</button>
-        <label> <a href="/airsale/login.html" class='btn'>If you have an account already, log in here</a></label>
-        </center>
-      </form>
-      </div>
-</div>
-
-
-<div class='modal-footer'>
-	<p>  ©2015 Li Xi</p>
-</div>
-
-</body>
-</html>

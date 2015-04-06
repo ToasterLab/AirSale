@@ -163,7 +163,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     	<th style="width:33%"><i class='fa fa-camera'></i> Snapshot and name of the item</th>
         <th><i class='fa fa-dollar'></i> Price</th>
         <th><i class='fa fa-plane'></i> Seller's arrival country</th>
-        <th style="width:20%"><i class='fa fa-plane'></i> Seller's arrival date and time</th>
+        <th style="width:20%"><i class='fa fa-plane'></i> Seller's arrival date</th>
         <th><i class='fa fa-gears'></i> Action</th>
     </tr>
     </table>
@@ -195,8 +195,11 @@ function display_data()
 			{
 				item_id				=			JArray[i]["item_id"];
 				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
+				if(flightNumber == null) flightNumber = 'User did not specify.';
 				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
-				arrivalDateTime 	= 			JArray[i]["result"]["arrivalDateTime"];
+				if(arrivalCountry == null) arrivalCountry = 'Currently not available.';
+				arrivalDate		 	= 			JArray[i]["result"]["arrivalDate"];
+				if(arrivalDate == null) arrivalDate = 'User did not specify.';
 				name 				= 			JArray[i]["result"]["name"];
 				price 				= 			JArray[i]["result"]["price"];
 				email				=			JArray[i]["result"]["email"];
@@ -231,7 +234,7 @@ function display_data()
 				
 				cell = row.insertCell();
 				arrivalDateTime_tag = document.createElement('h3');
-				arrivalDateTime_tag.innerHTML = arrivalDateTime;
+				arrivalDateTime_tag.innerHTML = arrivalDate;
 				cell.appendChild(arrivalDateTime_tag);
 				
 				cell = row.insertCell();
@@ -260,17 +263,20 @@ function display_data()
 function search_routine_handle()
 {
 	if(JArray!=null)
-	for(_i=0;JArray[_i]!=null;_i++)
+	for(j=0;JArray[j]!=null;j++)
 	{
-		name				= 			JArray[_i]['result']['name'];
-		flightNumber 		= 			JArray[_i]["result"]["flightNumber"];
-		arrivalCountry 		=	 		JArray[_i]["result"]["arrivalCountry"];
-		arrivalDateTime 	= 			JArray[_i]["result"]["arrivalDateTime"];
+		name				= 			JArray[j]['result']['name'];
+		flightNumber 		= 			JArray[j]["result"]["flightNumber"];
+		if(flightNumber == null) flightNumber = 'User did not specify.';
+		arrivalCountry 		=	 		JArray[j]["result"]["arrivalCountry"];
+		if(arrivalCountry == null) arrivalCountry = 'Currently not available.';
+		arrivalDate		 	= 			JArray[j]["result"]["arrivalDate"];
+		if(arrivalDate == null) arrivalDate = 'User did not specify.';
 		
-	if(name.indexOf( $('#search_field').val() ) == (-1) && arrivalCountry.indexOf( $('#search_field').val() ) == (-1) &&	flightNumber.indexOf( $('#search_field').val() ) == (-1) && arrivalDateTime.indexOf( $('#search_field').val() ) == (-1) || 
-	(name.indexOf( $('#search_field_mobile').val() ) == (-1) && arrivalCountry.indexOf( $('#search_field_mobile').val() ) == (-1) &&	flightNumber.indexOf( $('#search_field_mobile').val() ) == (-1) && arrivalDateTime.indexOf( $('#search_field_mobile').val() ) == (-1)))
-		$('#row_'+JArray[_i]['result']['name'].replace(/\s/g, '')).css({display:'none'});
-	else $('#row_'+JArray[_i]['result']['name'].replace(/\s/g, '')).css({display:' '});
+	if(name.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalCountry.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) &&	flightNumber.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalDate.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) || 
+	(name.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) && arrivalCountry.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) &&	flightNumber.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) && arrivalDate.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1)))
+		$('#row_'+JArray[j]['result']['name'].replace(/\s/g, '')).css({display:'none'});
+	else $('#row_'+JArray[j]['result']['name'].replace(/\s/g, '')).css({display:' '});
 	}
 }
 

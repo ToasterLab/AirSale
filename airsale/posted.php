@@ -105,7 +105,7 @@ function display_data()
 				item_id				=			JArray[i]["item_id"];
 				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
 				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
-				arrivalDateTime 	= 			JArray[i]["result"]["arrivalDateTime"];
+				arrivalDate		 	= 			JArray[i]["result"]["arrivalDate"];
 				name 				= 			JArray[i]["result"]["name"];
 				price 				= 			JArray[i]["result"]["price"];
 				email				=			JArray[i]["result"]["email"];
@@ -128,8 +128,6 @@ function display_data()
 				
 				price_tag = document.createElement('h2');
 				price_tag.innerHTML='$'+price;
-				price_tag.style.position='absolute';
-				price_tag.style.top='50%';
 				cell = row.insertCell();
 				cell.style.position='relative';
 				cell.appendChild(price_tag );
@@ -137,35 +135,24 @@ function display_data()
 				cell = row.insertCell();
 				cell.style.position='relative';
 				arrivalCountry_tag = document.createElement('h3');
-				arrivalCountry_tag.style.position='absolute';
-				arrivalCountry_tag.style.top='50%';
-				arrivalCountry_tag.style.transform='translate(0, -50%)';
 				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
 				cell.appendChild(arrivalCountry_tag);
 				
 				cell = row.insertCell();
 				cell.style.position='relative';
 				arrivalDateTime_tag = document.createElement('h3');
-				arrivalDateTime_tag.style.position='absolute';
-				arrivalDateTime_tag.style.top='50%';
-				arrivalDateTime_tag.style.transform='translate(0, -50%)';
-				arrivalDateTime_tag.innerHTML = arrivalDateTime;
+				arrivalDateTime_tag.innerHTML = arrivalDate;
 				cell.appendChild(arrivalDateTime_tag);
 				
 				cell = row.insertCell();
 				cell.style.position='relative';
 				action1_tag = document.createElement('a');
-				action1_tag.style.position='absolute';
-				action1_tag.style.top='50%';
-				action1_tag.style.transform='translate(0, -50%)';
 				action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
 				action1_tag.className = 'btn btn-default';
 				cell.appendChild(action1_tag);
 				
 				cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
 				action2_tag = document.createElement('a');
-				action2_tag.style.position='absolute';
-				action2_tag.style.top='30%';
 				action2_tag.innerHTML = '<i class="fa fa-pencil"></i> Edit';
 				action2_tag.setAttribute("onClick",'itemEdit(' + item_id + ');');
 				action2_tag.className = 'btn btn-info';

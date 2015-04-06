@@ -101,13 +101,13 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 <div class='container'>
     <div class='row'>
-    <br><center><h3>Please verify all information entered. If there is any error, click on the respective edit buttons to edit. Information CANNOT be changed after confirmation until the request is approved. Approval time is usually about 3 working days (Singapore time).</h3><br><br></center>
+    <br><center><h3>Please verify all information entered. If there is any error, click on the respective edit buttons to edit. Changes on this page WILL NOT be submitted to the server.</h3><br><br></center>
     </div>
     
     <div class='row'>
     
     <form enctype="multipart/form-data" action="/api/airsale.php" method='post'>
-    <input type='hidden' name="action" value='publish4'>
+    <input type='hidden' name="action" value='publish3'>
     
     <div class='panel panel-default'>
     <div class='panel-heading'>
@@ -226,16 +226,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                   <!-- Wrapper for slides -->
                   <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                      <img id='img21'>
+                      <img id='img21' style='width:100%'>
                     </div>
                     <div class="item">
-                      <img id="img22" >
+                      <img id="img22"  style='width:100%'>
                     </div>
                     <div class="item">
-                      <img id="img23" >
+                      <img id="img23"  style='width:100%'>
                     </div>
                     <div class="item">
-                      <img id="img24" >
+                      <img id="img24"  style='width:100%'>
                     </div>
                   </div>
                 
@@ -311,8 +311,7 @@ function formUpdate()
 	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'session'},function(data) {
 		JSession=$.parseJSON(data);
 		item_id = Number( JSession['item_id']);
-	});
-	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'seller_history'},function(data) {
+		$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'seller_history'},function(data) {
 		JArray=$.parseJSON(data);
 		for(i=0;JArray[i] != null;i++)
 		{
@@ -341,6 +340,8 @@ function formUpdate()
 		document.getElementById('img24').src= './items/'.concat( JResult['itemPictureName4'] );
 		
 	});
+	});
+	
 }
 
 function editPublish(edit_handle)

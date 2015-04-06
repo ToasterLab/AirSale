@@ -151,6 +151,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         <div class='form-group col-md-12'>
         <label>Picture of the item (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
         <input class='form-control' type='file' name='itemPicture' accept="image/*">
+        <label>TIP: This is the primary preview picture that all users will see under the Explore Tab. Thus, shoot the best shot for this picture!</label>
         </div>
         
     <br><br> 
@@ -179,25 +180,25 @@ $(document).ready(function(e) {
 
 function formValidation()
 {
-	error=0;
-	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=1;}
-	else {$('#category-div').removeClass('has-error');error=error&false;}
-	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=1;}
-	else {$('#name-div').removeClass('has-error');error=error&false;}
-	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
-	else {$('#specifications-div').removeClass('has-error');error=error&false;}
-	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=1;}
-	else {$('#price-div').removeClass('has-error');error=error&false;}
-	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=1;}
-	else {$('#description-div').removeClass('has-error');error=error&false;}
-	if($('#arrivalDate').val()=='') {$('#arrivalDate-div').addClass('has-error');error=1;}
-	else {$('#arrivalDate-div').removeClass('has-error');error=error&false;}
-	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=1;}
-	else {$('#flightNumber-div').removeClass('has-error');error=error&false;}
-	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=1;}
-	else {$('#flightCarrier-div').removeClass('has-error');error=error&false;}
+	error = true;	//false indicates there is an error
+	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=false;}
+	else {$('#category-div').removeClass('has-error');error=error&true;}
+	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=false;}
+	else {$('#name-div').removeClass('has-error');error=error&true;}
+	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=false;}
+	else {$('#specifications-div').removeClass('has-error');error=error&true;}
+	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=false;}
+	else {$('#price-div').removeClass('has-error');error=error&true;}
+	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=false;}
+	else {$('#description-div').removeClass('has-error');error=error&true;}
+	if($('#arrivalDate').val()=='') {$('#arrivalDate-div').addClass('has-error');error=false;}
+	else {$('#arrivalDate-div').removeClass('has-error');error=error&true;}
+	if($('#flightNumber').val()=='') {$('#flightNumber-div').addClass('has-error');error=false;}
+	else {$('#flightNumber-div').removeClass('has-error');error=error&true;}
+	if($('#flightCarrier').val()=='') {$('#flightCarrier-div').addClass('has-error');error=false;}
+	else {$('#flightCarrier-div').removeClass('has-error');error=error&true;}
 	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
+	if(error==false) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
 	else return true;
 	
 }

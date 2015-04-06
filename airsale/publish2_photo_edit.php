@@ -1,33 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
-
-$sql = "SELECT arrivalCountry,account,arrivalDateTime FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('arrivalCountry',base64_encode($row['arrivalCountry']));
-		setElement('arrivalDateTime',base64_encode($row['arrivalDateTime']));
-		}
-		$i++;
-	}
-}
-
-$sql = "SELECT name,price,account FROM publish2";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		if($row['account'] == base64_decode($_COOKIE['auth']) )
-		{
-		setElement('itemName',base64_encode($row['name']));
-		setElement('itemPrice',base64_encode($row['price']));
-		}
-		$i++;
-	}
-}
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 ?>
 <!doctype html>
@@ -96,21 +68,18 @@ if (mysqli_num_rows($result) > 0) {
     <div class='panel-body'>
         <div class='btn-group btn-group-justified' role='group'>
             <div class='btn-group '>
-            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
+            <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish2_edit.php" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
+            <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
-            </div>
-            <div class='btn-group'>
-            <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
-            </div>
+            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+        	</div>
         </div>
         <br>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 50%">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 66%">
           </div>
         </div>
     </div>
@@ -119,10 +88,9 @@ if (mysqli_num_rows($result) > 0) {
     <center>
     <div class='row visible-sm visible-xs'>
     	<div class='btn-group-vertical'>
-        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Validate my air ticket	</a>
-        <a href="/airsale/publish2_edit.php" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Update my contact details</a>
-        <a href="/airsale/publish4.php" class='btn btn-default btn-lg'>Step 4: Strike a deal!</a>
+        <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
+        <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
+        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
         </div>
     </div>
     </center>
@@ -131,32 +99,12 @@ if (mysqli_num_rows($result) > 0) {
 
 <div class='container'>
 	<div class='row'>
-    <form action='/api/airsale.php' method='post' onSubmit="return formValidation()" enctype="multipart/form-data" >
+    <form action='/api/airsale.php' method='post' enctype="multipart/form-data" >
     <input type='hidden' name='action' value="publish2_photo">
     <br><br>
-    	<div class='col-md-3 form-group'>
-        <label>Arrival Country (Last entry):</label>
-        <p class='form-control-static form-control' id='arrivalCountry-div'></p>
-        </div>
-        
-        <div class='col-md-3 form-group'>
-        <label>Arrival Time (Last entry):</label>
-        <p class='form-control-static form-control' id='arrivalDateTime-div'></p>
-        </div>
-        
-        <div class='col-md-3 form-group'>
-        <label>Item name (Last entry):</label>
-        <p class='form-control-static form-control' id='itemName-div'></p>
-        </div>
-        
-        <div class='col-md-3 form-group'>
-        <label>Price (Last entry):</label>
-        <p class='form-control-static form-control' id='itemPrice-div'></p>
-        </div>
-        <br>
-        
+    	
         <div class='alert-warning' style="margin-top:40pt">
-        <h3> Warning: The TOTAL file size (all three added) must not exeed 8 MB<br>
+        <h3> Warning: The TOTAL file size (all three added) must not exceed 24 MB<br>
 		Note: You can upload a maximum of 4 photos, including the one uploaded before.</h3>
         </div>
         
@@ -177,7 +125,7 @@ if (mysqli_num_rows($result) > 0) {
         
     <br><br> 
     <center>
-    <input type='submit' class='btn btn-lg btn-default' "> <br><br>
+    <input type='submit' class='btn btn-lg btn-default' > <br><br>
     </center>
     </form>
     
@@ -197,29 +145,5 @@ if (mysqli_num_rows($result) > 0) {
 <script>
 $(document).ready(function(e) {
     $('#sticky').sticky({topSpacing:100});
-	document.getElementById('arrivalCountry-div').innerHTML = getElement('arrivalCountry');
-	document.getElementById('arrivalDateTime-div').innerHTML = getElement('arrivalDateTime');
-	document.getElementById('itemName-div').innerHTML = getElement('itemName');
-	document.getElementById('itemPrice-div').innerHTML = getElement('itemPrice');
 });
-
-function formValidation()
-{
-	error=0;
-	if($('#category').val()=='') {$('#category-div').addClass('has-error');error=1;}
-	else {$('#category-div').removeClass('has-error');error=0;}
-	if($('#name').val()=='') {$('#name-div').addClass('has-error');error=1;}
-	else {$('#name-div').removeClass('has-error');error=0;}
-	if($('#specifications').val()=='') {$('#specifications-div').addClass('has-error');error=1;}
-	else {$('#specifications-div').removeClass('has-error');error=0;}
-	if($('#price').val()=='') {$('#price-div').addClass('has-error');error=1;}
-	else {$('#price-div').removeClass('has-error');error=0;}
-	if($('#description').val()=='') {$('#description-div').addClass('has-error');error=1;}
-	else {$('#description-div').removeClass('has-error');error=0;}
-	
-	if(error==1) {alert('Please check for any missing fields that are highlighted in red. Please note that all fields are compulsory.');return false;}
-	else return true;
-	
-}
-
 </script>

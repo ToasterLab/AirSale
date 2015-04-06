@@ -69,40 +69,67 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         	<div class='panel-body'>
             <form action='../api/airsale.php' enctype="multipart/form-data" method='POST' onSubmit="return validateForm()">
             <input type='hidden' name='action' value='profile_update'>
-            <label> If you need to update any field, edit the corresponding field. Others will not be affected. </label>
+            <label> If you need to update any field, edit the corresponding field and click submit. Other fields will not be affected. </label><br><br>
             <div class='row'>
-              <div class='col-md-4'>
-            	<h5><i class='glyphicon glyphicon-user'></i> User Name</h5>
+              <div class='col-sm-4'>
+            	<label><i class='glyphicon glyphicon-user'></i> User Name</label>
             	<p class='form-control-static form-control' id='name-form'></p>
               </div>
-              <div class='col-md-4'>
-                <h5><i class='fa fa-barcode'></i> Unique user ID (Useful for technical support)</h5>
+              <div class='col-sm-4'>
+                <label><i class='fa fa-barcode'></i> Unique user ID (Useful for technical support)</label>
             	<p class='form-control-static form-control' id='id-form'></p>
               </div>
               
-              <div class='col-md-4'>
-                <h5><i class='fa fa-envelope-o'></i> Email</h5>
+              <div class='col-sm-4'>
+                <label><i class='fa fa-envelope-o'></i> Email</label>
             	<input class='form-control' type='text' id='email-form' name='email'>
               </div>
               
-            </div>
+            </div><br>
             
             <div class='row'>
-              <div class='col-md-6'>
-              <h5><i class='fa fa-globe'></i> Country of residence</h5>
-           	  <input type='text' class='form-control' id='country-form' name='country'>
-              </div>
+            
+             <div class='col-sm-4 form-group' id='number-div'>
+       		 <label><i class='fa fa-phone'></i> Contact number</label>
+      		 <input class='form-control' type='text' name='number' id='number' placeholder="Contact Number">
+     		 </div>
+             
+             <div class='col-sm-4'>
+             <label><i class='fa fa-globe'></i> Country of residence</label>
+           	 <input type='text' class='form-control' id='country-form' name='country'>
+             </div>
               
-              <div class='col-md-3' id='password1-div'>
-              <h5><i class='fa fa-key'></i> New password</h5>
+             <div class='col-sm-4 form-group' id='location-div'>
+             <label><i class='fa fa-exchange'></i> Prefered hand-over location</label>
+             <input type='text' class='form-control' name='location' id='location' placeholder="eg. Airport">
+             </div>
+            </div><br>
+            
+            <div class='row'>
+            
+            <div class='col-md-8 form-group' id='other-div'>
+            <label><i class='fa fa-list'></i> Other method to contact me(format: method-account)</label>
+            <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
+            </div>
+            <div class='form-group col-md-4' id='prefered-div'>
+            <label><i class='fa fa-check-square-o'></i> Prefered method of contact</label>
+            <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
+            </div>
+            
+            </div><br>
+            
+            
+            <div class='row'>
+              <div class='col-sm-3' id='password1-div'>
+              <label><i class='fa fa-key'></i> New password</label>
            	  <input type='password' class='form-control' id='password1' name='password'>
               </div>
-              <div class='col-md-3' id='password2-div'>
-              <h5><i class='fa fa-key'></i> Confirm password</h5>
+              <div class='col-sm-3' id='password2-div'>
+              <label><i class='fa fa-key'></i> Confirm password</label>
            	  <input type='password' class='form-control' id='password2'>
               </div>
             </div>
-            <center><br><br>
+            <center><br>
             <button type='submit' class='btn btn-default btn-lg'>Confirm</button>
             </center><br><br>
             </form>
@@ -131,8 +158,12 @@ $(document).ready(function(e) {
 	document.getElementById('id-form').innerHTML = JArray["id"];
 	document.getElementById('email-form').value = JArray["email"];
 	document.getElementById('country-form').value = JArray["country"];
-	});
+	document.getElementById('number').value=JArray['number'];
+	document.getElementById('other').value=JArray['other'];
+	document.getElementById('prefered').value=JArray['prefered'];
+	document.getElementById('location').value=JArray['location'];
 	window.setInterval(function() {validateFormRealTime()},100);
+	});
 });
 
 function validateFormRealTime()
