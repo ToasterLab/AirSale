@@ -3,6 +3,7 @@ header('Access-Control-Allow-Credentials:true');
 /*
 © 2015 LALX Singapore programmed by Li Xi together with Huey Lee
 Access URL: airsale.lalx.org/api/airsale.php
+Home location: /home/u979434920/public_html/
 */
 ob_start();
 /*
@@ -18,6 +19,7 @@ $db = "u979434920_asale";
 $table = 'user_list';
 setcookie('debug','0',time()+30*85400,'/');
 $debug=$_COOKIE['debug'];
+
 
 $conn = mysqli_connect($servername, $username, $password,$db);
 global $item_id;
@@ -1420,9 +1422,45 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			break;
 		}
 		
+		case 'getFlightInfo':
+		{
+			$arrivalDate = str_replace('-','/',$_POST['arrivalDate']);
+			$flightCarrier = str_replace(' ','',$_POST['flightCarrier']);
+			$flightNumber = str_replace(' ','',$_POST['flightNumber']);
+			
+	//		$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.'MI/962'.'/arriving/'.'2015/04/08'.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
+	$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.$flightCarrier.'/'.$flightNumber.'/arriving/'.$arrivalDate.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
+			$curl = curl_init($service_url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$curl_response = curl_exec($curl);		//already JSON encoded
+			if ($curl_response === false) {
+				$info = curl_getinfo($curl);
+				curl_close($curl);
+				echo 'failed';
+			}
+			else 
+			{
+				file_put_contents('../flightData/'.$flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']),$curl_response);
+			}
+			curl_close($curl);
+			echo $curl_response;
+			break;
+		}
+		
+		case 'getFlightInfoFromFile':
+		{
+			$arrivalDate = str_replace('-','/',$_POST['arrivalDate']);
+			$flightCarrier = str_replace(' ','',$_POST['flightCarrier']);
+			$flightNumber = str_replace(' ','',$_POST['flightNumber']);
+			$file_location = '../flightData/'.$flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
+			echo file_get_contents($file_location); //Already JSON encoded
+			break;
+		}
+		
 		case 'session':
 		{
 			echo json_encode($_SESSION);
+			break;
 		}
 		
 	}//switch

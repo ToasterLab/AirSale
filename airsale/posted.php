@@ -156,9 +156,9 @@ function display_data()
 				cell.appendChild(arrivalDateTime_tag);
 				
 				cell = row.insertCell();
-				cell.style.position='relative';
 				action1_tag = document.createElement('a');
 				action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
+				action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
 				action1_tag.className = 'btn btn-default';
 				cell.appendChild(action1_tag);
 				
@@ -181,7 +181,11 @@ function itemEdit(item_id)
 	$.post('../api/airsale.php',{action:'setSession(item_id)viaCookie(edit_item_id)'});
 	window.location='publish1_edit.php';
 }
-
+function itemDetails(item_id)
+{
+	setSessionCookie('detail_item_id',String(item_id));
+	window.location='details.php';
+}
 
 </script>
 

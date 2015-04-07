@@ -114,7 +114,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     
     	
         <div class='col-md-3 form-group' id='flightCarrier-div'>
-        <label>*Flight carrier:</label>
+        <label>*Flight carrier(Carrier CODE only. Eg. SQ,MI,VA):</label>
         <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
         </div>
         
