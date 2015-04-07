@@ -18,6 +18,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script src="/js/classie.js"></script>
 <script src="/js/airsale.js"></script>
 <title>User Profile</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 
@@ -66,29 +76,58 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <div class='container'>
 	<div class='row'>
     	<div class='panel panel-default'>
+        	<div class='panel-heading'>
+            <div class='row'>
+        	  <div class='col-sm-4'>
+            	<label><i class='glyphicon glyphicon-user'></i> User Name</label>
+            	<p class='form-control-static form-control' id='name'></p>
+              </div>
+              <div class='col-sm-4'>
+                <label><i class='fa fa-barcode'></i> Unique user ID (Useful for technical support)</label>
+            	<p class='form-control-static form-control' id='id'></p>
+              </div>
+              <div class='col-sm-4'>
+              	<label><i class='fa fa-lock'></i> Identity validation status</label>
+            	<p class='form-control-static form-control' id='validation'></p>
+              </div>
+            </div><br><br>
+            <div class='row'>
+              <div class='col-sm-6'>
+            	<label><i class='fa fa-trophy'></i> Your credibility rating</label>
+            	<p class='form-control-static form-control' id='credibility'></p>
+                <label> There are 3 ways to improve your credibility. 1. Validate your identity by uploading a picture of your photo ID with your full-name. 2. Strike a deal with someone and complete the transaction. 3. Pay a deposit of SGD$100 to Airsale. You can withdraw your deposit at any time you wish. <span><a href='./credibility.php'> Click here to learn more about credibility ratings</a></span></label>
+              </div>
+              <div class='col-sm-6'>
+                <label><i class='fa fa-cart-plus'></i> Number of successful transactions</label>
+            	<p class='form-control-static form-control' id='transactions'></p>
+              </div>            
+            </div>
+        	</div>
+        
         	<div class='panel-body'>
             <form action='../api/airsale.php' enctype="multipart/form-data" method='POST' onSubmit="return validateForm()">
             <input type='hidden' name='action' value='profile_update'>
             <label> If you need to update any field, edit the corresponding field and click submit. Other fields will not be affected. </label><br><br>
             <div class='row'>
-              <div class='col-sm-4'>
-            	<label><i class='glyphicon glyphicon-user'></i> User Name</label>
-            	<p class='form-control-static form-control' id='name-form'></p>
+              
+              <div class='col-sm-4' id='password1-div'>
+              <label><i class='fa fa-key'></i> New password</label>
+           	  <input type='password' class='form-control' id='password1' name='password'>
               </div>
-              <div class='col-sm-4'>
-                <label><i class='fa fa-barcode'></i> Unique user ID (Useful for technical support)</label>
-            	<p class='form-control-static form-control' id='id-form'></p>
+              <div class='col-sm-4' id='password2-div'>
+              <label><i class='fa fa-key'></i> Confirm password</label>
+           	  <input type='password' class='form-control' id='password2'>
               </div>
               
               <div class='col-sm-4'>
                 <label><i class='fa fa-envelope-o'></i> Email</label>
-            	<input class='form-control' type='text' id='email-form' name='email'>
+            	<input class='form-control' type='text' id='email' name='email'>
               </div>
               
             </div><br>
             
             <div class='row'>
-            
+              
              <div class='col-sm-4 form-group' id='number-div'>
        		 <label><i class='fa fa-phone'></i> Contact number</label>
       		 <input class='form-control' type='text' name='number' id='number' placeholder="Contact Number">
@@ -96,7 +135,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
              
              <div class='col-sm-4'>
              <label><i class='fa fa-globe'></i> Country of residence</label>
-           	 <input type='text' class='form-control' id='country-form' name='country'>
+           	 <input type='text' class='form-control' id='country' name='country'>
              </div>
               
              <div class='col-sm-4 form-group' id='location-div'>
@@ -106,28 +145,25 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </div><br>
             
             <div class='row'>
-            
-            <div class='col-md-8 form-group' id='other-div'>
+            <div class='col-sm-4 form-group' id='other-div'>
             <label><i class='fa fa-list'></i> Other method to contact me(format: method-account)</label>
             <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
             </div>
-            <div class='form-group col-md-4' id='prefered-div'>
+            <div class='form-group col-sm-4' id='prefered-div'>
             <label><i class='fa fa-check-square-o'></i> Prefered method of contact</label>
             <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
             </div>
-            
+            <div class='form-group col-sm-4' id='fullName-div'>
+            <label><i class='fa fa-lock'></i> Full Name</label>
+            <input type='text' class='form-control' name='fullName' id='fullName'>
+            </div>
             </div><br>
-            
-            
+                          
             <div class='row'>
-              <div class='col-sm-3' id='password1-div'>
-              <label><i class='fa fa-key'></i> New password</label>
-           	  <input type='password' class='form-control' id='password1' name='password'>
-              </div>
-              <div class='col-sm-3' id='password2-div'>
-              <label><i class='fa fa-key'></i> Confirm password</label>
-           	  <input type='password' class='form-control' id='password2'>
-              </div>
+            <div class='form-group col-xs-12' id='userPicture-div'>
+            <label><i class='fa fa-camera'></i> Picture of photo ID: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+            <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
+            </div>
             </div>
             <center><br>
             <button type='submit' class='btn btn-default btn-lg'>Confirm</button>
@@ -147,21 +183,50 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
+  
+
 
 <script>
 $(document).ready(function(e) {
 	var JArray;
     document.getElementById('head1').innerHTML = "<span class='glyphicon glyphicon-user'></span>".concat(getCookie('auth'));
-	document.getElementById('name-form').innerHTML = getCookie('auth');
+	document.getElementById('name').innerHTML = getCookie('auth');
 	$.post('http://airsale.lalx.org/api/airsale.php',{mobile:1,action:'user_profile'},function(data) {
 	JArray=$.parseJSON(data);	
-	document.getElementById('id-form').innerHTML = JArray["id"];
-	document.getElementById('email-form').value = JArray["email"];
-	document.getElementById('country-form').value = JArray["country"];
+	document.getElementById('id').innerHTML = JArray["id"];
+	document.getElementById('email').value = JArray["email"];
+	document.getElementById('country').value = JArray["country"];
 	document.getElementById('number').value=JArray['number'];
 	document.getElementById('other').value=JArray['other'];
 	document.getElementById('prefered').value=JArray['prefered'];
 	document.getElementById('location').value=JArray['location'];
+	document.getElementById('fullName').value=JArray['fullName'];
+	if(Number(JArray['identityValidation']))
+	document.getElementById('validation').innerHTML = "Identity is validated by photo ID";
+	else document.getElementById('validation').innerHTML = "Identity has NOT been validated";
+	document.getElementById('transactions').innerHTML=JArray['successfulTransactions'];
+	
+	document.getElementById('credibility').innerHTML = JArray['credibility']+" / 5";
+	span1 = document.createElement('span');span1.className = "fa fa-star-o";
+	span2 = document.createElement('span');span2.className = "fa fa-star-o";
+	span3 = document.createElement('span');span3.className = "fa fa-star-o";
+	span4 = document.createElement('span');span4.className = "fa fa-star-o";
+	span5 = document.createElement('span');span5.className = "fa fa-star-o";
+	switch(JArray['credibility'])
+	{
+		case '0': {break;}
+		case '1': {span1.className = "fa fa-star";break;}
+		case '2': {span1.className = "fa fa-star";span2.className = "fa fa-star";break;}
+		case '3': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";break;}
+		case '4': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";span4.className = "fa fa-star";break;}
+		case '5': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";span4.className = "fa fa-star";span5.className = "fa fa-star";break;}
+	}
+	document.getElementById('credibility').appendChild(span1);
+	document.getElementById('credibility').appendChild(span2);
+	document.getElementById('credibility').appendChild(span3);
+	document.getElementById('credibility').appendChild(span4);
+	document.getElementById('credibility').appendChild(span5);
+	
 	window.setInterval(function() {validateFormRealTime()},100);
 	});
 });
@@ -190,4 +255,5 @@ function validateForm()
 	if(error) {alert('Passwords entered are not matched. Please try again.');return false;}
 	else return true;
 }
+
 </script>

@@ -18,6 +18,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script src='/js/j2.js'></script>
 
 <title>EXPLORING AirSale!</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 
@@ -68,6 +78,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 	<div class='visible-md visible-lg' id='sticky'>
     <div class='panel panel-success'>
     <div class='panel-body'>
+    <!--//NOT YET READY------------------------------------------
         <div class='btn-group btn-group-justified' role='group' style="z-index:12">
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-dollar'></i> Sort by prices<span class='caret'></span></button>
@@ -93,6 +104,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </ul>
             </div>            
         </div><br>
+        ------------>
      	<div>
             <div class='input-group input-group-lg'>
             <span class='input-group-addon'><i class='fa fa-search'></i></span>
@@ -111,6 +123,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <div class='visible-sm visible-xs'>
     <div class='row'>
     <center>
+    <!---------------------NOT YET READY
         <div class='btn-group btn-group-vertical' role='group'>
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-dollar'></i> Sort by prices<span class='caret'></span></button>
@@ -136,6 +149,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </ul>
             
         </div>
+        -------------------------------------->
         <div class='btn-group'>
             <div class='input-group'>
             <span class='input-group-addon'><i class='fa fa-search'></i></span>
@@ -177,6 +191,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
+  
 
 <script>
 $(document).ready(function(e) {
@@ -280,5 +295,10 @@ function search_routine_handle()
 	}
 }
 
+function itemDetails(item_id)
+{
+	setSessionCookie('detail_item_id',String(item_id));
+	window.location='details.php';
+}
 </script>
 

@@ -11,6 +11,16 @@
 <script src="/js/gryphon.js"></script>
 <script src="/js/classie.js"></script>
 <title>About AirSale</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <nav class='navbar navbar-default navbar-fixed-top' role='navigation'>
@@ -22,27 +32,13 @@
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/index.html' class='navbar-brand'> AirSale</a>
         </div>
         
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
-            <li class='dropdown'>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
-            	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
-                </ul>
-            </li>
-            <li class='dropdown'>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
-          	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
-                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
-                </ul>
-            
-            </li>
+            <li> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -64,3 +60,4 @@
 
 </body>
 </html>
+  

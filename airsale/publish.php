@@ -17,6 +17,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script src="/js/airsale.js"></script>
 <script src='/js/j2.js'></script>
 <title>Selling new items</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 
@@ -122,18 +132,11 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         <input type='text' class='form-control' name='prefered' id='prefered' value="Message">
         </div>
         
-        <div class='col-md-6 form-group' id='other-div'>
+        <div class='col-md-12 form-group' id='other-div'>
         <label>Other method to contact me(format: method-account)</label>
         <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
         </div>
         
-        
-        <div class='form-group col-md-6' id='userPicture-div'>
-        <label>Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
-        <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
-        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of yourself so that the customers can identify you. </label>
-        </div>
-    
     <br><br> 
     <center>
     <input type='submit' class='btn btn-lg btn-default'> <br><br>
@@ -151,6 +154,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
+  
 
 <script>
 $(document).ready(function(e) {

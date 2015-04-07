@@ -18,6 +18,16 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <script src='/js/j2.js'></script>
 
 <title>My Posted Items</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 
@@ -83,6 +93,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
+  
 
 <script>
 $(document).ready(function(e) {
@@ -168,7 +179,7 @@ function itemEdit(item_id)
 {
 	setSessionCookie('edit_item_id',item_id);
 	$.post('../api/airsale.php',{action:'setSession(item_id)viaCookie(edit_item_id)'});
-	location.replace('publish1_edit.php');
+	window.location='publish1_edit.php';
 }
 
 

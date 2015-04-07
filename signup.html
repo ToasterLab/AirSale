@@ -11,6 +11,16 @@
 <script src="/js/gryphon.js"></script>
 <script src="/js/classie.js"></script>
 <title>AirSale SIGNUP</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61584028-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 
 <body>
@@ -29,6 +39,7 @@
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
             <li class='active'> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -41,7 +52,7 @@
     
 <div class='container'>
 	<div class='row'>
-      <form role="form" action='/api/airsale.php' method="post"  onSubmit="return formValidate();">
+      <form role="form" action='/api/airsale.php' method="post"  onSubmit="return formValidate();" enctype="multipart/form-data">
       <div class='col-xs-12'>
       <center>
       <h4>All information collected will NOT under any circumstance be released in any form to any party for any reason. Information is securely stored on our servers. Please note that compulsory fields are marked with an asterisk *.</h4>
@@ -71,6 +82,7 @@
         <div class="form-group col-sm-4" id='email1-div'>
           <label><i class='fa fa-envelope-o'></i> *Email:</label>
           <input class="form-control" name="email" placeholder="Enter email" type="email" id='email1'>
+          <label class='alert-info'>We will send you important notifications via this email. Thus, please check carefully that this is the correct email.</label>
         </div>
         
         <div class="form-group col-sm-4" id='email-div'>
@@ -103,16 +115,20 @@
       </div>
 	  
       <div class='row'>
-       	<div class='col-md-6 form-group' id='other-div'>
+       	<div class='col-md-4 form-group' id='other-div'>
         <label><i class='fa fa-list'></i> Other method to contact me(format: method-account)</label>
         <input type='text' class='form-control' name='other' id='other' placeholder="eg. MSN-a@a.com">
         </div>
         
+        <div class='form-group col-sm-4' id='fullName-div'>
+        <label><i class='fa fa-lock'></i> *Full Name(as in official identification documents)</label>
+        <input type='text' class='form-control' name='fullName' id='fullName' placeholder="Joe Example Name or Tan Ah Kau">
+        </div>
         
-        <div class='form-group col-md-6' id='userPicture-div'>
-        <label><i class='fa fa-camera'></i> Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
+        <div class='form-group col-md-4' id='userPicture-div'>
+        <label><i class='fa fa-camera'></i> Picture of photo ID: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
         <input class='form-control' type='file' name='userPicture' id='userPicture' accept="image/*">
-        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of yourself so that the customers can identify you. </label>
+        <label for='picture-instruction' class='alert-danger'> You are recommended to upload a picture of any photo identification documents such as IC card. This will improve your credibility rating, which is visible by both buyers and sellers. This picture will not be accessible by anyone (including you) once your identity is validated. </label>
         </div>
       
       </div>        
@@ -131,6 +147,7 @@
 
 </body>
 </html>
+  
 
 <script>
 $(document).ready(function(e) {
@@ -186,6 +203,8 @@ function formValidate()
 	else {$('#location-div').removeClass('has-error');error=error&true;}
 	if($('#prefered').val()=='') {$('#prefered-div').addClass('has-error');error=false;}
 	else {$('#prefered-div').removeClass('has-error');error=error&true;}
+	if($('#fullName').val()=='') {$('#fullName-div').addClass('has-error');error=false;}
+	else {$('#fullName-div').removeClass('has-error');error=error&true;}
 	
 	if(error==false) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with an asterisk *.');return false;}
 	else return true;
