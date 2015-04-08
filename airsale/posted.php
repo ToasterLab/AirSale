@@ -80,6 +80,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         <th><i class='fa fa-dollar'></i> Price</th>
         <th><i class='fa fa-plane'></i> Seller's arrival country</th>
         <th><i class='fa fa-plane'></i> Seller's arrival date and time</th>
+        <th><i class='fa fa-check-square-o'></i> Approval Status</th>
         <th><i class='fa fa-gears'></i> Action</th>
     </tr>
     </table>
@@ -115,6 +116,7 @@ function display_data()
 			//get the variables
 				item_id				=			JArray[i]["item_id"];
 				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
+				flightCarrier 		= 			JArray[i]["result"]["flightCarrier"];
 				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
 				arrivalDate		 	= 			JArray[i]["result"]["arrivalDate"];
 				name 				= 			JArray[i]["result"]["name"];
@@ -123,6 +125,7 @@ function display_data()
 				number				=			JArray[i]["result"]["number"];
 				description			=			JArray[i]["result"]["description"];
 				itemPictureName 	= 			JArray[i]["result"]["itemPictureName"];
+				isApproved 			=			JArray[i]["result"]["isApproved"];
 				//put them into the table
 				row = table.insertRow();
 				cell = row.insertCell();
@@ -146,7 +149,7 @@ function display_data()
 				cell = row.insertCell();
 				cell.style.position='relative';
 				arrivalCountry_tag = document.createElement('h3');
-				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
+				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+flightCarrier+ flightNumber + ")";
 				cell.appendChild(arrivalCountry_tag);
 				
 				cell = row.insertCell();
@@ -154,6 +157,18 @@ function display_data()
 				arrivalDateTime_tag = document.createElement('h3');
 				arrivalDateTime_tag.innerHTML = arrivalDate;
 				cell.appendChild(arrivalDateTime_tag);
+				
+				cell = row.insertCell();
+				approval_tag = document.createElement('i');
+				if(isApproved == '0') {approval_tag.className='glyphicon glyphicon-time';
+									approval_text=document.createTextNode(' Waiting for approval');}
+				if(isApproved == '1') {approval_tag.className='glyphicon glyphicon-ok';
+										approval_text=document.createTextNode(' Approved');}
+				if(isApproved == '2') {approval_tag.className='glyphicon glyphicon-remove';
+						approval_text=document.createTextNode(' Rejected. Please check your flight details');}
+				if(isApproved == '3') {approval_tag.className='glyphicon glyphicon-flag';
+				approval_text=document.createTextNode(' Suspended. Contact us for more information.');}
+				cell.appendChild(approval_tag);cell.appendChild(approval_text);
 				
 				cell = row.insertCell();
 				action1_tag = document.createElement('a');

@@ -1,5 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 echo '<pre>';
 
 //getting data from previous entry

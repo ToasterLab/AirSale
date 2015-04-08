@@ -208,8 +208,11 @@ function display_data()
 			JArray = $.parseJSON(data);
 			for(i=0;JArray[i]!=null;i++)
 			{
+				if(JArray[i]["result"]["isApproved"]=='1')
+				{
 				item_id				=			JArray[i]["item_id"];
 				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
+				flightCarrier 		= 			JArray[i]["result"]["flightCarrier"];
 				if(flightNumber == null) flightNumber = 'User did not specify.';
 				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
 				if(arrivalCountry == null) arrivalCountry = 'Currently not available.';
@@ -244,7 +247,7 @@ function display_data()
 				
 				cell = row.insertCell();
 				arrivalCountry_tag = document.createElement('h3');
-				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+ flightNumber + ")";
+				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+flightCarrier+ flightNumber + ")";
 				cell.appendChild(arrivalCountry_tag);
 				
 				cell = row.insertCell();
@@ -268,6 +271,7 @@ function display_data()
 				action2_tag.setAttribute('title','Contact seller');
 				action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
 				cell.appendChild(action2_tag);
+				}//if isApproved bracket
 			}//'for' closing bracket
 			$('[data-toggle="popover"]').popover();
 			window.setInterval(function() {search_routine_handle();},100);

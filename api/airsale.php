@@ -17,8 +17,6 @@ $username = "u979434920_asale";
 $password = "_MYsql";
 $db = "u979434920_asale";
 $table = 'user_list';
-setcookie('debug','0',time()+30*85400,'/');
-$debug=$_COOKIE['debug'];
 
 
 $conn = mysqli_connect($servername, $username, $password,$db);
@@ -133,7 +131,7 @@ function getPublishElements($publish_id)
 }
 
 
-if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
+if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_POST['admin']!='1')
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	echo '<script>location.replace(\'../login_failed.html\')</script>';
@@ -285,8 +283,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$item_id;
 			
+			
 			$number=mysqli_escape_string($conn,$_POST["number"]);
 			$email=mysqli_escape_string($conn,$_POST["email"]);
+			$_SESSION['user_email']=$email;
 			$location=mysqli_escape_string($conn,$_POST["location"]);
 			$other=mysqli_escape_string($conn,$_POST["other"]);
 			$prefered=mysqli_escape_string($conn,$_POST["prefered"]);
@@ -387,7 +387,51 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 		
 		case 'publish3':
 		{
-			echo '<script>alert("The item is sucessfully published. It will be seen by all users at the I am a buyer-> explore tab. "); location.replace(\'../airsale/home.php\')</script>';break;
+			//inform user for the acknowledgement
+			$subject = 'AirSale Acknowledgement: New item created';
+			$name = $_SESSION['auth'];
+			$email = $_SESSION['user_email'];
+				$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+				'Dear '.$name .", \n".
+				"Thank you very much for using AirSale. \n".
+				"This is to confirm that your new item has been successfully created. It will now be sent for approval by the administrators. This is to verify the existence of the flight that you have entered. Please do note that the format of the flight carrier and flight number MUST BE strictly followed in order for your new item to be approved. You will be notified from this email address once your item is approved\nThank you for choosing us and we wish you good luck. \n \n".
+				"Yours sincerely,\n AirSale Team \n".
+				"\n-----------------\n".
+				"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
+				"\n-----------------\n".
+				"If you did not create the item at AirSale, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+			mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+			
+			//inform admin
+			$subject = 'AirSale Notification: New item created by user';
+				$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+				"Dear Admin, \n".
+				"A new item has been created by user. Please approve/reject it accordingly. Thank you very much.\n \n".
+				"Yours sincerely,\n AirSale Team \n".
+				"\n-----------------\n".
+				"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
+				"\n-----------------\n".
+				"If you did not create this item, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+			mail('lieinsteinxi@gmail.com',$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+			
+			echo '<script>alert("The item is sucessfully created. It will be seen by all users at the I am a buyer-> explore tab once it is APPROVED. You can edit the information at I am a seller -> Posted items page. "); location.replace(\'../airsale/home.php\')</script>';break;
+		}
+		
+		case 'publish3_edit':
+		{
+			//inform admin
+			$subject = 'AirSale Notification: Item updated by user';
+				$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+				"Dear Admin, \n".
+				"An item was edited by user. Please approve/reject it accordingly. Thank you very much.\n \n".
+				"Yours sincerely,\n AirSale Team \n".
+				"\n-----------------\n".
+				"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
+				"\n-----------------\n".
+				"If you did not submit this enquiry, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+			mail('lieinsteinxi@gmail.com',$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+			
+			echo '<script>alert("The item is sucessfully updated. It will be seen by all users at the I am a buyer-> explore tab once it is APPROVED. You can edit the information at I am a seller -> Posted items page. "); location.replace(\'../airsale/home.php\')</script>';break;
 		}
 	
 		case 'publish2_photo':
@@ -491,6 +535,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 						itemPictureName			= '$itemPictureName',
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
+						isApproved				= '0',
 						arrivalDate				= '$arrivalDate'
 						WHERE item_id='$item_id'
 						";
@@ -515,13 +560,14 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 						description				= '$description',
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
+						isApproved				= '0',
 						arrivalDate				= '$arrivalDate'
 						WHERE item_id='$item_id'
 						";
 				$status=mysqli_query($conn,$sql);
 				
 			}
-			echo '<script>location.replace(\'../airsale/publish3.php\')</script>';break;
+			echo '<script>location.replace(\'../airsale/publish3_edit.php\')</script>';break;
 		}
 		
 		case 'setSession(item_id)viaCookie(edit_item_id)':
@@ -712,7 +758,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1)
 	}
 }
 
-if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
+if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POST['admin']!='1')
 {
 	if($_POST['action']!= 'signup' && $_POST['action']!= 'login') if($_SESSION['auth']=='') 
 	die('please login');
@@ -1039,6 +1085,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 						itemPictureName			= '$itemPictureName',
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
+						isApproved				= '0',
 						arrivalDate				= '$arrivalDate'
 						WHERE item_id='$item_id'
 						";
@@ -1059,6 +1106,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 						description				= '$description',
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
+						isApproved				= '0',
 						arrivalDate				= '$arrivalDate'
 						WHERE item_id='$item_id'
 						";
@@ -1086,8 +1134,14 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 								publish2.description,		publish2.itemPictureName,
 								publish2.itemPictureName2,	publish2.itemPictureName3,
 								publish2.itemPictureName4,	publish2.flightCarrier,	
-								publish2.flightNumber,		publish2.arrivalDate,	
+								publish2.flightNumber,		publish2.arrivalDate,
+								publish2.arrivalCountry,	publish2.flightFileName,
+								publish2.arrivalAirport,	publish2.arrivalCode,
+								publish2.departureCountry,	publish2.departureAirport,
+								publish2.departureCode,	
+								
 								publish2.account,			publish2.item_id,
+								publish2.isApproved,
 								
 								user_list.number,			user_list.email,
 								user_list.location,			user_list.other,
@@ -1110,13 +1164,19 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 						'item_id'=>$in,	
 						'result'=>array( 
 			'flightCarrier'=>$row['flightCarrier'],			'flightNumber'=>$row['flightNumber'],
+			'arrivalCountry'=>$row['arrivalCountry'],		'flightFileName'=>$row['flightFileName'],
+			'arrivalAirport'=>$row['arrivalAirport'],		'arrivalCode'=>$row['arrivalCode'],
+			'departureCountry'=>$row['departureCountry'],	'departureAirport'=>$row['departureAirport'],
+			'departureCode'=>$row['departureCode'],
+			
+			
 			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
-							
 			'category'=>$row['category'],					'name'=>$row['name'],
 			'specifications'=>$row['specifications'],		'price'=>$row['price'],
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
 			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
 			'itemPictureName4'=>$row['itemPictureName4'],	'arrivalDate'=>$row['arrivalDate'],
+			'isApproved'=>$row['isApproved'],
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
@@ -1154,6 +1214,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 								publish2.itemPictureName4,	publish2.flightCarrier,	
 								publish2.flightNumber,		publish2.arrivalDate,	
 								publish2.account,			publish2.item_id,
+								publish2.isApproved,
+								
 								
 								user_list.number,			user_list.email,
 								user_list.location,			user_list.other,
@@ -1184,6 +1246,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
 			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
 			'itemPictureName4'=>$row['itemPictureName4'],	'arrivalDate'=>$row['arrivalDate'],
+			'isApproved'=>$row['isApproved'],
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
@@ -1447,13 +1510,121 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			break;
 		}
 		
+		case 'getFlightInfoAndInjectIntoSQLforItemWhereID=Cookie(item_id)':
+		{
+			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
+			$result=mysqli_query($conn,$sql);
+			$row = mysqli_fetch_assoc($result);
+			
+			$arrivalDate = str_replace('-','/',$row['arrivalDate']);
+			$flightCarrier = str_replace(' ','',$row['flightCarrier']);
+			$flightNumber = str_replace(' ','',$row['flightNumber']);
+			if($flightNumber!= NULL)
+			$flightFileName = $flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
+			
+	//		$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.'MI/962'.'/arriving/'.'2015/04/08'.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
+	$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.$flightCarrier.'/'.$flightNumber.'/arriving/'.$arrivalDate.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
+			$curl = curl_init($service_url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$curl_response = curl_exec($curl);		//already JSON encoded
+			if ($curl_response === false) {
+				$info = curl_getinfo($curl);
+				curl_close($curl);
+				echo '0';
+			}
+			else 
+			{
+				if($flightNumber!= NULL)
+				file_put_contents('../flightData/'.$flightFileName,$curl_response);
+				
+				$JResult=json_decode($curl_response,true); 
+				if($_POST['debug'])var_dump($curl_response,$JResult);
+				$arrivalCountry = mysqli_escape_string($conn, $JResult["appendix"]["airports"][1]["countryName"]);
+				$arrivalAirport = mysqli_escape_string($conn,$JResult["appendix"]["airports"][1]["name"]);
+				$arrivalCode	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][1]["cityCode"]);
+				$departureCountry 	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["countryName"]);
+				$departureAirport 	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["name"]);
+				$departureCode		= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["cityCode"]);
+				
+				$sql = "UPDATE publish2 SET 
+						arrivalCountry='$arrivalCountry',arrivalAirport='$arrivalAirport',
+						arrivalCode='$arrivalCode',
+						departureCountry='$departureCountry',departureAirport='$departureAirport',
+						departureCode='$departureCode'
+						WHERE item_id='$item_id'";
+				$status=mysqli_query($conn,$sql);
+				if($status!= NULL) echo '1';
+			}
+			curl_close($curl);
+			break;
+		}
+		
 		case 'getFlightInfoFromFile':
 		{
 			$arrivalDate = str_replace('-','/',$_POST['arrivalDate']);
 			$flightCarrier = str_replace(' ','',$_POST['flightCarrier']);
 			$flightNumber = str_replace(' ','',$_POST['flightNumber']);
 			$file_location = '../flightData/'.$flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
-			echo file_get_contents($file_location); //Already JSON encoded
+			if(file_exists($file_location)) echo file_get_contents($file_location); //Already JSON encoded
+			else echo '0';
+			break;
+		}
+		
+		case 'getFlightInfoFromFileforItemWhereID=Cookie(item_id)':
+		{
+			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
+			$result=mysqli_query($conn,$sql);
+			$row = mysqli_fetch_assoc($result);
+			
+			$arrivalDate = str_replace('-','/',$row['arrivalDate']);
+			$flightCarrier = str_replace(' ','',$row['flightCarrier']);
+			$flightNumber = str_replace(' ','',$row['flightNumber']);
+			if($flightNumber!= NULL)
+			$flightFileName = $flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
+			$file_location = '../flightData/'.$flightFileName;
+			if(file_exists($file_location)) echo file_get_contents($file_location); //Already JSON encoded
+			else echo '0';
+			break;
+		}
+		
+		case 'getFlightInfoFromFileAndInjectIntoSQLforItemWhereID=Cookie(item_id)':
+		{
+			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
+			$result=mysqli_query($conn,$sql);
+			$row = mysqli_fetch_assoc($result);
+			
+			$arrivalDate = str_replace('-','/',$row['arrivalDate']);
+			$flightCarrier = str_replace(' ','',$row['flightCarrier']);
+			$flightNumber = str_replace(' ','',$row['flightNumber']);
+			if($flightNumber!= NULL)
+			$flightFileName = $flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
+			$file_location = '../flightData/'.$flightFileName;
+			if(file_exists($file_location)) 
+			{
+				$JResult = json_decode( file_get_contents($file_location),true);
+				if($_POST['debug'])var_dump($JResult);
+				$arrivalCountry = mysqli_escape_string($conn, $JResult["appendix"]["airports"][1]["countryName"]);
+				$arrivalAirport = mysqli_escape_string($conn,$JResult["appendix"]["airports"][1]["name"]);
+				$arrivalCode	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][1]["cityCode"]);
+				$departureCountry 	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["countryName"]);
+				$departureAirport 	= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["name"]);
+				$departureCode		= mysqli_escape_string($conn,$JResult["appendix"]["airports"][0]["cityCode"]);
+				if($_POST['debug'])var_dump($arrivalAirport);
+				$sql = "UPDATE publish2 SET 
+						arrivalCountry='$arrivalCountry',arrivalAirport='$arrivalAirport',
+						arrivalCode='$arrivalCode',
+						departureCountry='$departureCountry',departureAirport='$departureAirport',
+						departureCode='$departureCode'
+						WHERE item_id='$item_id'
+						";
+				$status=mysqli_query($conn,$sql);
+				if($status) echo '1';
+				if($_POST['debug'])var_dump($status,$item_id,$_COOKIE,$sql,$conn);
+			}
+			else echo '0';
 			break;
 		}
 		
@@ -1463,6 +1634,61 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1)
 			break;
 		}
 		
+	}//switch	
+}
+
+if($_POST['admin']=='1')
+{
+	if($_POST['action']!= 'admin_login') if($_SESSION['admin_auth']=='') 
+	echo '<script>location.replace(\'../login_failed.html\')</script>';
+	
+	switch($_POST['action'])
+	{
+		case 'admin_login':
+		{
+			session_start();
+			$UI_user=$_POST['user'];
+			$UI_password = $_POST['password'];
+			$sql = "SELECT user,password FROM admin_list WHERE password='$UI_password' AND user='$UI_user'";
+			$result = mysqli_query($conn, $sql);
+			if (mysqli_num_rows($result) > 0) {
+					$row = mysqli_fetch_assoc($result);
+					if($row['user'] == $UI_user)
+					{
+					$_SESSION['admin_auth']=$row['user'];
+					echo '<script>location.replace(\'/admin/home.php\')</script>';
+					}
+					else {
+					$_SESSION['admin_auth']='';
+					echo '<script>location.replace(\'../login_failed.html\')</script>';
+					}
+			
+			}
+			else {
+				$_SESSION['admin_auth']='';
+				echo '<script>location.replace(\'../login_failed.html\')</script>';
+			}
+			break;
+		}
+		
+		case 'admin_approveViaCookie(approve_item_id)':
+		{
+			$approve_item_id = $_COOKIE['approve_item_id'];
+			$sql="UPDATE publish2 SET isApproved='1' WHERE item_id='$approve_item_id'";
+			$status=mysqli_query($conn,$sql);
+			if($status!=0) echo 1;	
+			break;
+		}
+		
+		case 'admin_rejectViaCookie(reject_item_id)':
+		{
+			$reject_item_id = $_COOKIE['reject_item_id'];
+			$sql="UPDATE publish2 SET isApproved='2' WHERE item_id='$reject_item_id'";
+			$status=mysqli_query($conn,$sql);
+			if($status!=0) echo 1;	
+			break;
+		}
+	
 	}//switch
 }
 ?>

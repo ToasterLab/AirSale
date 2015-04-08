@@ -1,51 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
-
-$sql = "SELECT user,password,country FROM user_list";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		setElement('user'.$i,base64_encode($row['user']));
-		setElement('country'.$i,base64_encode($row['country']));
-		
-		$i++;
-	}
-	setElement('numberOfUsers',base64_encode($i-1));
-}
-
-$sql = "SELECT paragraphs FROM admin_intro";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		setElement('paragraphs',$row['paragraphs']);
-		$i++;
-	}
-	setElement('numberOfParagraphs',base64_encode($i-1));
-}
-
-$sql = "SELECT ticketName,isApproved,fullName,passport,flightNumber,flightCarrier,arrivalDateTime,arrivalCountry,departureCountry,id,account FROM publish1";
-$result = mysqli_query($conn, $sql);
-$i=1;
-if (mysqli_num_rows($result) > 0) {
-	while($row = mysqli_fetch_assoc($result)) {
-		setElement('isApproved'.$i,base64_encode($row['isApproved']));
-		setElement('ticketName'.$i,base64_encode($row['ticketName']));
-		setElement('fullName'.$i,base64_encode($row['fullName']));
-		setElement('passport'.$i,base64_encode($row['passport']));
-		setElement('flightNumber'.$i,base64_encode($row['flightNumber']));
-		setElement('flightCarrier'.$i,base64_encode($row['flightCarrier']));
-		setElement('arrivalDateTime'.$i,base64_encode($row['arrivalDateTime']));
-		setElement('arrivalCountry'.$i,base64_encode($row['arrivalCountry']));
-		setElement('departureCountry'.$i,base64_encode($row['departureCountry']));
-		setElement('id'.$i,base64_encode($row['id']));
-		setElement('account'.$i,base64_encode($row['account']));
-		$i++;
-	}
-	setElement('numberOfTickets',base64_encode($i-1));
-}
-
+include('/home/u979434920/public_html/airsale/api/airsale.php');
 ?>
 
 <!doctype html>
@@ -74,116 +28,6 @@ if (mysqli_num_rows($result) > 0) {
 </script>
 </head>
 <body>
-
-<script>
-function updateTable()
-{
-	document.getElementById('parag').innerHTML=getElement('paragraphs');
-}
-
-function updateUserTable()
-{
-	
-	if(!Number(getCookie('displayed')))
-	{
-		var table=document.getElementById('user-table');
-		var cell, row;
-		for(var i=1; i <= Number( getElement('numberOfUsers')); i++)
-		{
-			row = table.insertRow();
-			cell = row.insertCell();
-			cell.innerHTML = getElement('user'.concat( String(i)));
-			cell = row.insertCell();
-			cell.innerHTML = getElement('country'.concat( String(i)));
-			
-		}
-		
-	}
-	setSessionCookie('displayed','1');
-}
-
-function updateTicketTable(approved)
-{
-	
-	if(!Number(getCookie('displayed_ticket')))
-	{
-		var table=document.getElementById('airTicket-table');
-		var cell, row;
-		for(var i=1; i <= Number( getElement('numberOfTickets')); i++)
-		{
-			if(approved==0 && (!Number( getElement('isApproved'.concat( String(i))))))
-			{
-				row = table.insertRow();
-				cell = row.insertCell();
-				cell.innerHTML = getElement('account'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('fullName'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('passport'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('departureCountry'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('arrivalCountry'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('arrivalDateTime'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('flightCarrier'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('flightNumber'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = '<a class="btn" href="/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
-				cell = row.insertCell();
-				cell.innerHTML = "<a class='btn btn-default' onClick='approve(".concat( getElement('id'.concat(String(i))),")'>Approve</a>");
-			}
-			
-			if(approved==1)
-			{
-				row = table.insertRow();
-				cell = row.insertCell();
-				cell.innerHTML = getElement('account'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('fullName'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('passport'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('departureCountry'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('arrivalCountry'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('arrivalDateTime'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('flightCarrier'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = getElement('flightNumber'.concat( String(i)));
-				cell = row.insertCell();
-				cell.innerHTML = '<a class="btn" href="/airsale/tickets/'.concat(getElement('ticketName'.concat( String(i))),'" >Click to download</a>');
-				cell = row.insertCell();
-				if(!Number( getElement('isApproved'.concat( String(i)))))
-				cell.innerHTML = "<a class='btn btn-default' onClick='approve(".concat( getElement('id'.concat(String(i))),")'>Approve</a>");
-				else cell.innerHTML = "<a class='btn btn-success'>Approved</a>";
-			}
-			
-			
-		}
-		
-	}
-	setSessionCookie('displayed_ticket','1');
-	
-}
-
-function approve( ticket_id)
-{
-	ticket_id=String(ticket_id);
-	setCookie('approve-ticket-id',ticket_id,1);
-	location.replace('/admin/approve.php');
-}
-
-
-$(document).ready(function(e) {
-    deleteCookie('displayed');
-	deleteCookie('displayed_ticket');
-});
-</script>
 
 <nav class='navbar navbar-default navbar-fixed-top' role='navigation'>
 	<div class='container-fluid'>
@@ -278,23 +122,22 @@ $(document).ready(function(e) {
           </div>
           <div class="panel-body">
             <div class='btn-group'>
-                <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(0);">Display all unapproved air tickets and passenger information</button>
-                <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(1);">Display all air tickets and passenger information</button>
+                <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(1);">Display all unapproved air tickets and passenger information</button>
+                <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(0);">Display all air tickets and passenger information</button>
             </div>
             
             <div style='display:none' id='ticket-div'>
             <br>
             <table id='airTicket-table' class='table'>
             <tr>
+            	<th>ID</th>
             	<th>Account name</th>
-            	<th>Passenger full name</th>
-                <th>Passenger passport number</th>
-                <th>Departure country</th>
+                <th>User email</th>
+                <th>User number</th>
                 <th>Arrival country</th>
-                <th>Arrival time</th>
+                <th>Arrival Date</th>
                 <th>Flight Carrier</th>
                 <th>Flight Number</th>
-                <th>Passenger airTicket</th>
                 <th>Approval button</th>
             </tr>
             </table>
@@ -314,3 +157,145 @@ $(document).ready(function(e) {
 </body>
 </html>
   
+  
+<script>
+
+function updateUserTable()
+{
+	
+	if(!Number(getCookie('displayed')))
+	{
+		var table=document.getElementById('user-table');
+		var cell, row;
+		for(var i=1; i <= Number( getElement('numberOfUsers')); i++)
+		{
+			row = table.insertRow();
+			cell = row.insertCell();
+			cell.innerHTML = getElement('user'.concat( String(i)));
+			cell = row.insertCell();
+			cell.innerHTML = getElement('country'.concat( String(i)));
+			
+		}
+		
+	}
+	setSessionCookie('displayed','1');
+}
+
+function updateTicketTable(unapproved)
+{
+		$.post('../api/airsale.php',{JSON:1,action:'explore'},function(data) {
+			JArray=$.parseJSON(data);
+			var table=document.getElementById('airTicket-table');
+			var cell, row;
+			for(var i=0; JArray[i]!= null; i++)
+			{
+				item_id				=			JArray[i]["item_id"];
+				flightNumber 		= 			JArray[i]["result"]["flightNumber"];
+				flightCarrier 		= 			JArray[i]["result"]["flightCarrier"];
+				if(flightNumber == null) flightNumber = 'User did not specify.';
+				arrivalCountry 		=	 		JArray[i]["result"]["arrivalCountry"];
+				if(arrivalCountry == ''||arrivalCountry == ' ') arrivalCountry = 'Currently not available.';
+				arrivalDate		 	= 			JArray[i]["result"]["arrivalDate"];
+				if(arrivalDate == null) arrivalDate = 'User did not specify.';
+				name 				= 			JArray[i]["result"]["name"];
+				price 				= 			JArray[i]["result"]["price"];
+				email				=			JArray[i]["result"]["email"];
+				number				=			JArray[i]["result"]["number"];
+				description			=			JArray[i]["result"]["description"];
+				isApproved			=			JArray[i]["result"]["isApproved"];
+				account				=			JArray[i]["result"]["account"];
+												
+				if(unapproved == 0)
+				{
+					row = table.insertRow();
+					cell = row.insertCell();
+					cell.innerHTML = item_id;
+					cell = row.insertCell();
+					cell.innerHTML = account;
+					cell = row.insertCell();
+					cell.innerHTML = email;
+					cell = row.insertCell();
+					cell.innerHTML = number;
+					cell = row.insertCell();
+					cell.innerHTML = arrivalCountry;
+					cell = row.insertCell();
+					cell.innerHTML = arrivalDate
+					cell = row.insertCell();
+					cell.innerHTML = flightCarrier;
+					cell = row.insertCell();
+					cell.innerHTML = flightNumber;
+					cell = row.insertCell();
+					
+					if(isApproved=='0')
+					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
+					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
+					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>";
+				}
+				
+				if(unapproved == 1)
+				{
+					if(isApproved!='1'){
+					row = table.insertRow();
+					cell = row.insertCell();
+					cell.innerHTML = item_id;
+					cell = row.insertCell();
+					cell.innerHTML = account;
+					cell = row.insertCell();
+					cell.innerHTML = email;
+					cell = row.insertCell();
+					cell.innerHTML = number;
+					cell = row.insertCell();
+					cell.innerHTML = arrivalCountry;
+					cell = row.insertCell();
+					cell.innerHTML = arrivalDate
+					cell = row.insertCell();
+					cell.innerHTML = flightCarrier;
+					cell = row.insertCell();
+					cell.innerHTML = flightNumber;
+					cell = row.insertCell();
+					if(isApproved=='0')
+					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
+					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
+					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>";
+					}
+				}
+				
+				
+			}
+		});	
+}
+
+function approve( item_id)
+{
+	item_id=String(item_id);
+	setSessionCookie('approve_item_id',item_id);
+	$.post('../api/airsale.php',{admin:1,action:'admin_approveViaCookie(approve_item_id)'},function()
+	{
+		setSessionCookie('item_id',item_id);
+		$.post('../api/airsale.php',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Cookie(item_id)'},function(data) {
+			
+			if(data) alert('Approval successful');
+		});
+	});
+	
+}
+
+function reject( item_id)
+{
+	item_id=String(item_id);
+	setSessionCookie('reject_item_id',item_id);
+	$.post('../api/airsale.php',{admin:1,action:'admin_rejectViaCookie(reject_item_id)'},function(data)
+	{
+		if(data) alert('Rejection successful');
+	});
+	
+}
+
+
+
+
+$(document).ready(function(e) {
+    deleteCookie('displayed');
+	deleteCookie('displayed_ticket');
+});
+</script>

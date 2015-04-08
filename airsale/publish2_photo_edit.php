@@ -84,7 +84,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
             </div>
             <div class='btn-group'>
-            <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+            <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
         	</div>
         </div>
         <br>
@@ -100,7 +100,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     	<div class='btn-group-vertical'>
         <a href="/airsale/publish1_edit.php" class='btn btn-default btn-lg'>Step 1: Update/Confirm profile information</a>
         <a href="#" class='btn btn-default btn-lg active'>Step 2: Tell others what I am selling	</a>
-        <a href="/airsale/publish3.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
+        <a href="/airsale/publish3_edit.php" class='btn btn-default btn-lg'>Step 3: Confirm details and strike a deal!</a>
         </div>
     </div>
     </center>
