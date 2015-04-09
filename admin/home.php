@@ -67,54 +67,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <div class='container'  style='padding:100pt 0 0 0'>
     <div class='row'>
         <h1> ADMIN CONCTROL PANEL</h1>
-    
-    <div class='col-md-6'>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">About Page Control Panel</h3>
-          </div>
-          <div class="panel-body">
-            <div class='btn-group '>
-                <button onClick="$('#intro-div').toggle(1000);updateTable();" class='btn btn-default'>Display and edit description paragraphs/pointers</button>
-            </div>
-            
-            <div style='display:none' id='intro-div'>
-            <br>
-            <form action='/airsale/admin/intro_push.php' role='form' method="post">
-            	<label>Description paragraphs/pointers in the database</label><br><br>
-                <textarea class='form-control' rows="10" id='parag' name='paragraphs'></textarea><br><br>
-            	<button type='submit' class='btn btn-lg'>Submit</button>
-            </form>
-            </div>
-          </div>
-        </div>
-    </div>
-    
-    <div class='col-md-6'>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">User list Control Panel</h3>
-          </div>
-          <div class="panel-body">
-            <div class='btn-group'>
-                <button class='btn btn-default' onClick="$('#user-div').toggle(1000);updateUserTable();">Display all user names with countries of residence</button>
-            </div>
-            
-            <div style='display:none' id='user-div'>
-            <br>
-            <table id='user-table' class='table'>
-            <tr>
-            	<th> Users</th>
-                <th> Country of residence</th>
-            </tr>
-            </table>
-            </div>
-            
-          </div>
-        </div>
-    </div>
-    
-    
+           
     <div class='col-md-12'>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -133,7 +86,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             	<th>ID</th>
             	<th>Account name</th>
                 <th>User email</th>
-                <th>User number</th>
+                <th>Item Name</th>
                 <th>Arrival country</th>
                 <th>Arrival Date</th>
                 <th>Flight Carrier</th>
@@ -215,7 +168,7 @@ function updateTicketTable(unapproved)
 					cell = row.insertCell();
 					cell.innerHTML = email;
 					cell = row.insertCell();
-					cell.innerHTML = number;
+					cell.innerHTML = name;
 					cell = row.insertCell();
 					cell.innerHTML = arrivalCountry;
 					cell = row.insertCell();
@@ -243,7 +196,7 @@ function updateTicketTable(unapproved)
 					cell = row.insertCell();
 					cell.innerHTML = email;
 					cell = row.insertCell();
-					cell.innerHTML = number;
+					cell.innerHTML = name;
 					cell = row.insertCell();
 					cell.innerHTML = arrivalCountry;
 					cell = row.insertCell();

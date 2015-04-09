@@ -62,6 +62,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -155,10 +156,6 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </div>
             
             
-            <div class='form-group col-md-6' id='userPicture-div'>
-            <label>Picture of me: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
-            <img id='img1'>
-            </div>
         </div>
     </div>
     
@@ -183,13 +180,18 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
                 </div>
                 
+                <div class='col-md-3 form-group' id='flightCarrierFullName-div'>
+                <label>*Flight carrier FULL name:</label>
+                <input class='form-control' type="text" name='flightCarrierFullName' id='flightCarrierFullName'>
+                </div>
+                
                 <div class='col-md-3 form-group' id='flightNumber-div'>
                 <label>*Flight number:</label>
                 <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
                 </div>
                 
                 
-                <div class='col-md-6 form-group' id='arrivalDate-div'>
+                <div class='col-md-3 form-group' id='arrivalDate-div'>
                 <label>*Arrival Date:</label>
                 <input class='form-control' type='text' name='arrivalDate' id='arrivalDate' placeholder="(Format: YYYY-MM-DD) eg. 2015-03-26">
                 </div>
@@ -336,6 +338,7 @@ function formUpdate()
 		document.getElementById('location').value=JResult['location'];
 		
 		document.getElementById('flightCarrier').value=JResult['flightCarrier'];
+		document.getElementById('flightCarrierFullName').value=JResult['flightCarrierFullName'];
 		document.getElementById('flightNumber').value=JResult['flightNumber'];
 		document.getElementById('arrivalDate').value=JResult['arrivalDate'];
 		document.getElementById('category').selected=JResult['category'];

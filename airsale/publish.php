@@ -60,6 +60,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>

@@ -129,6 +129,19 @@ function getPublishElements($publish_id)
 		
 	}
 }
+function getCarrierFullName($AirlineCode)
+{
+	$airlines=json_decode(file_get_contents('./airlines.json'),true);
+	foreach($airlines["airlines"] as $index => $value)
+	{
+		if($value["iata"] == $AirlineCode) $AirlineCode_index = $index;
+		if($value["fs"] == $AirlineCode) $AirlineCode_index = $index;
+	}
+	$AirlineFullName=$airlines["airlines"][$AirlineCode_index]["name"];
+	if($_POST['debug']) var_dump($AirlineCode,$AirlineCode_index,$AirlineFullName,$airlines);
+	if($AirlineCode_index != NULL)  return $AirlineFullName;
+	else return false;
+}
 
 
 if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_POST['admin']!='1')
@@ -341,6 +354,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
 			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
 			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
+			$flightCarrierFullName = mysqli_escape_string($conn,getCarrierFullName($flightCarrier));
 			$account = $_SESSION['auth'];
 						
 			if(!empty($_FILES['itemPicture']))
@@ -351,25 +365,23 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 				$itemPictureName = mysqli_escape_string($conn,$filename);
 			}
 			
-			$sql="INSERT INTO publish2 (category,
-					name,
-					specifications,
-					price,
-					description,
-					itemPictureName,
-					account,item_id,flightCarrier,flightNumber,arrivalDate,arrivalCountry
+			$sql="INSERT INTO publish2 (
+					category,					name,
+					specifications,				price,
+					description,				itemPictureName,
+					account,					item_id,			
+					flightCarrier,				flightNumber,				
+					arrivalDate,				arrivalCountry,				
+					flightCarrierFullName
 					)
-					VALUES ('$category',
-					'$name',
-					'$specifications',
-					'$price',
-					'$description',
-					'$itemPictureName',
-					'$account',
-					'$item_id',
-					'$flightCarrier',
-					'$flightNumber',
-					'$arrivalDate',''
+					VALUES (
+					'$category',				'$name',
+					'$specifications',			'$price',
+					'$description',				'$itemPictureName',
+					'$account',					'$item_id',
+					'$flightCarrier',			'$flightNumber',
+					'$arrivalDate',				'',
+					'$flightCarrierFullName'
 					)";
 			$status=mysqli_query($conn,$sql);
 					
@@ -394,7 +406,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 				$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
 				'Dear '.$name .", \n".
 				"Thank you very much for using AirSale. \n".
-				"This is to confirm that your new item has been successfully created. It will now be sent for approval by the administrators. This is to verify the existence of the flight that you have entered. Please do note that the format of the flight carrier and flight number MUST BE strictly followed in order for your new item to be approved. You will be notified from this email address once your item is approved\nThank you for choosing us and we wish you good luck. \n \n".
+				"This is to confirm that your new item has been successfully created. It will now be sent for approval by the administrators. This is to verify the existence of the flight that you have entered. Please do note that the format of the flight carrier and flight number MUST BE strictly followed in order for your new item to be approved. You will be notified from this email address once your item is approved\nThank you for choosing us and we wish you the best of luck. \n \n".
 				"Yours sincerely,\n AirSale Team \n".
 				"\n-----------------\n".
 				"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
@@ -510,6 +522,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
 			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
 			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
+			$flightCarrierFullName = mysqli_escape_string($conn,getCarrierFullName($flightCarrier));
 			$account = $_SESSION['auth'];
 			$item_id = $_SESSION['item_id'];
 			if($_POST['debug']) var_dump($_FILES);			
@@ -536,7 +549,8 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
 						isApproved				= '0',
-						arrivalDate				= '$arrivalDate'
+						arrivalDate				= '$arrivalDate',
+						flightCarrierFullName	= '$flightCarrierFullName'
 						WHERE item_id='$item_id'
 						";
 				$status=mysqli_query($conn,$sql);
@@ -561,7 +575,8 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
 						isApproved				= '0',
-						arrivalDate				= '$arrivalDate'
+						arrivalDate				= '$arrivalDate',
+						flightCarrierFullName	= '$flightCarrierFullName'
 						WHERE item_id='$item_id'
 						";
 				$status=mysqli_query($conn,$sql);
@@ -948,6 +963,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
 			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
 			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
+			$flightCarrierFullName = mysqli_escape_string($conn,getCarrierFullName($flightCarrier));
 			$account = $_SESSION['auth'];
 						
 			if(!empty($_FILES['itemPicture']))
@@ -958,25 +974,23 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 				$itemPictureName = mysqli_escape_string($conn,$filename);
 			}
 			
-			$sql="INSERT INTO publish2 (category,
-					name,
-					specifications,
-					price,
-					description,
-					itemPictureName,
-					account,item_id,flightCarrier,flightNumber,arrivalDate,arrivalCountry
+			$sql="INSERT INTO publish2 (
+					category,					name,
+					specifications,				price,
+					description,				itemPictureName,
+					account,					item_id,			
+					flightCarrier,				flightNumber,				
+					arrivalDate,				arrivalCountry,				
+					flightCarrierFullName
 					)
-					VALUES ('$category',
-					'$name',
-					'$specifications',
-					'$price',
-					'$description',
-					'$itemPictureName',
-					'$account',
-					'$item_id',
-					'$flightCarrier',
-					'$flightNumber',
-					'$arrivalDate',''
+					VALUES (
+					'$category',				'$name',
+					'$specifications',			'$price',
+					'$description',				'$itemPictureName',
+					'$account',					'$item_id',
+					'$flightCarrier',			'$flightNumber',
+					'$arrivalDate',				'',
+					'$flightCarrierFullName'
 					)";
 			$status=mysqli_query($conn,$sql);
 			
@@ -1060,6 +1074,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			$flightCarrier = mysqli_escape_string($conn,$_POST["flightCarrier"]);
 			$flightNumber = mysqli_escape_string($conn,$_POST["flightNumber"]);
 			$arrivalDate = mysqli_escape_string($conn,$_POST["arrivalDate"]);
+			$flightCarrierFullName = mysqli_escape_string($conn,getCarrierFullName($flightCarrier));
 			$account = $_SESSION['auth'];
 			$item_id = $_SESSION['item_id'];
 			if($_POST['debug']) var_dump($_FILES);			
@@ -1086,7 +1101,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
 						isApproved				= '0',
-						arrivalDate				= '$arrivalDate'
+						arrivalDate				= '$arrivalDate',
+						flightCarrierFullName	= '$flightCarrierFullName'
 						WHERE item_id='$item_id'
 						";
 				$status=mysqli_query($conn,$sql);
@@ -1107,7 +1123,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 						flightCarrier			= '$flightCarrier',
 						flightNumber			= '$flightNumber',
 						isApproved				= '0',
-						arrivalDate				= '$arrivalDate'
+						arrivalDate				= '$arrivalDate',
+						flightCarrierFullName	= '$flightCarrierFullName'
 						WHERE item_id='$item_id'
 						";
 				$status=mysqli_query($conn,$sql);
@@ -1138,7 +1155,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 								publish2.arrivalCountry,	publish2.flightFileName,
 								publish2.arrivalAirport,	publish2.arrivalCode,
 								publish2.departureCountry,	publish2.departureAirport,
-								publish2.departureCode,	
+								publish2.departureCode,		publish2.flightCarrierFullName,
+								publish2.account,
 								
 								publish2.account,			publish2.item_id,
 								publish2.isApproved,
@@ -1168,6 +1186,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			'arrivalAirport'=>$row['arrivalAirport'],		'arrivalCode'=>$row['arrivalCode'],
 			'departureCountry'=>$row['departureCountry'],	'departureAirport'=>$row['departureAirport'],
 			'departureCode'=>$row['departureCode'],
+			'flightCarrierFullName'=>$row['flightCarrierFullName'],
 			
 			
 			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
@@ -1180,7 +1199,8 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
-			'prefered'=>$row['prefered'] ));
+			'prefered'=>$row['prefered'],				'account'=>$row['account']
+			 ));
 			
 				//		echo json_encode($arr_temp);
 				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
@@ -1212,14 +1232,19 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 								publish2.description,		publish2.itemPictureName,
 								publish2.itemPictureName2,	publish2.itemPictureName3,
 								publish2.itemPictureName4,	publish2.flightCarrier,	
-								publish2.flightNumber,		publish2.arrivalDate,	
+								publish2.flightNumber,		publish2.arrivalDate,
+								publish2.arrivalCountry,	publish2.flightFileName,
+								publish2.arrivalAirport,	publish2.arrivalCode,
+								publish2.departureCountry,	publish2.departureAirport,
+								publish2.departureCode,		publish2.flightCarrierFullName,
+								publish2.account,
+								
 								publish2.account,			publish2.item_id,
 								publish2.isApproved,
 								
-								
 								user_list.number,			user_list.email,
 								user_list.location,			user_list.other,
-								user_list.prefered		
+								user_list.prefered			
 								
 								
 						FROM	publish2
@@ -1239,8 +1264,14 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 						'item_id'=>$in,	
 						'result'=>array( 
 			'flightCarrier'=>$row['flightCarrier'],			'flightNumber'=>$row['flightNumber'],
+			'arrivalCountry'=>$row['arrivalCountry'],		'flightFileName'=>$row['flightFileName'],
+			'arrivalAirport'=>$row['arrivalAirport'],		'arrivalCode'=>$row['arrivalCode'],
+			'departureCountry'=>$row['departureCountry'],	'departureAirport'=>$row['departureAirport'],
+			'departureCode'=>$row['departureCode'],
+			'flightCarrierFullName'=>$row['flightCarrierFullName'],
+			
+			
 			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
-							
 			'category'=>$row['category'],					'name'=>$row['name'],
 			'specifications'=>$row['specifications'],		'price'=>$row['price'],
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
@@ -1250,7 +1281,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
-			'prefered'=>$row['prefered'] ));
+			'prefered'=>$row['prefered']));
 			
 				//		echo json_encode($arr_temp);
 				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
@@ -1434,8 +1465,14 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 								publish2.description,		publish2.itemPictureName,
 								publish2.itemPictureName2,	publish2.itemPictureName3,
 								publish2.itemPictureName4,	publish2.flightCarrier,	
-								publish2.flightNumber,		publish2.arrivalDate,	
+								publish2.flightNumber,		publish2.arrivalDate,
+								publish2.arrivalCountry,	publish2.flightFileName,
+								publish2.arrivalAirport,	publish2.arrivalCode,
+								publish2.departureCountry,	publish2.departureAirport,
+								publish2.departureCode,		publish2.flightCarrierFullName,
+								
 								publish2.account,			publish2.item_id,
+								publish2.isApproved,
 								
 								user_list.number,			user_list.email,
 								user_list.location,			user_list.other,
@@ -1456,17 +1493,24 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 						{
 						$arr = array( 
 			'flightCarrier'=>$row['flightCarrier'],			'flightNumber'=>$row['flightNumber'],
+			'arrivalCountry'=>$row['arrivalCountry'],		'flightFileName'=>$row['flightFileName'],
+			'arrivalAirport'=>$row['arrivalAirport'],		'arrivalCode'=>$row['arrivalCode'],
+			'departureCountry'=>$row['departureCountry'],	'departureAirport'=>$row['departureAirport'],
+			'departureCode'=>$row['departureCode'],			
+			'flightCarrierFullName'=>$row['flightCarrierFullName'],
+			
+			
 			'account'=>$row['account'],						'item_id'=>$row['item_id'],		
-							
 			'category'=>$row['category'],					'name'=>$row['name'],
 			'specifications'=>$row['specifications'],		'price'=>$row['price'],
 			'description'=>$row['description'],				'itemPictureName'=>$row['itemPictureName'],
 			'itemPictureName2'=>$row['itemPictureName2'],	'itemPictureName3'=>$row['itemPictureName3'],
 			'itemPictureName4'=>$row['itemPictureName4'],	'arrivalDate'=>$row['arrivalDate'],
+			'isApproved'=>$row['isApproved'],
 			
 			'number'=>$row['number'],					'email'=>$row['email'],
 			'location'=>$row['location'],				'other'=>$row['other'],
-			'prefered'=>$row['prefered'] );
+			'prefered'=>$row['prefered']);
 			
 				//		echo json_encode($arr_temp);
 				if($_POST['debug']) var_dump($row,$arr,$min_id,$max_id,$in);
@@ -1490,7 +1534,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			$arrivalDate = str_replace('-','/',$_POST['arrivalDate']);
 			$flightCarrier = str_replace(' ','',$_POST['flightCarrier']);
 			$flightNumber = str_replace(' ','',$_POST['flightNumber']);
-			
+			if(getCarrierFullName($flightCarrier)==false) die("0");
 	//		$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.'MI/962'.'/arriving/'.'2015/04/08'.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
 	$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.$flightCarrier.'/'.$flightNumber.'/arriving/'.$arrivalDate.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
 			$curl = curl_init($service_url);
@@ -1499,7 +1543,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			if ($curl_response === false) {
 				$info = curl_getinfo($curl);
 				curl_close($curl);
-				echo 'failed';
+				echo 0;
 			}
 			else 
 			{
@@ -1519,6 +1563,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			
 			$arrivalDate = str_replace('-','/',$row['arrivalDate']);
 			$flightCarrier = str_replace(' ','',$row['flightCarrier']);
+			if(getCarrierFullName($flightCarrier)) die("0");
 			$flightNumber = str_replace(' ','',$row['flightNumber']);
 			if($flightNumber!= NULL)
 			$flightFileName = $flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
@@ -1634,6 +1679,59 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			break;
 		}
 		
+		case 'getCarrierFullName':
+		{
+			$AirlineCode=$_POST['flightCarrier'];
+			if(file_exists('./airlines.json')) 
+			{
+				$airlines=json_decode(file_get_contents('./airlines.json'),true);
+				foreach($airlines["airlines"] as $index => $value)
+				{
+					if($value["fs"] == $AirlineCode) $AirlineCode_index = $index;
+					if($value["iata"] == $AirlineCode) $AirlineCode_index = $index;
+				}
+				$AirlineFullName=$airlines["airlines"][$AirlineCode_index]["name"];
+				if($AirlineCode_index != NULL)
+				echo json_encode($AirlineFullName);
+				else echo 0;
+			}
+			
+			break;
+		}
+		
+		case 'getAllAirlines':
+		{
+			if(file_exists('./airlines.json')) 
+			{
+				echo file_get_contents('./airlines.json');
+			}
+			else echo 0;
+			break;
+		}
+		
+		case 'getUserCredibilityWithAccount':
+		{
+			$account = $_POST['account'];
+			$sql = "SELECT credibility, user FROM user_list WHERE user='$account'";
+			$row = mysqli_fetch_assoc( mysqli_query($conn,$sql));
+			$CredibilityResult = array(
+					'user' => $row['user'],	'credibility' => $row['credibility']		);
+			echo json_encode($CredibilityResult);
+			break;
+		}
+		
+		case 'getUserCredibility':
+		{
+			$account = $_POST['account'];
+			$sql = "SELECT credibility, user FROM user_list";
+			$result = mysqli_query($conn,$sql);
+			while($row = mysqli_fetch_assoc($result) )
+			$CredibilityResult[] = array(
+					'user' => $row['user'],	'credibility' => $row['credibility']		);
+			echo json_encode($CredibilityResult);
+			break;
+		}
+		
 	}//switch	
 }
 
@@ -1676,7 +1774,28 @@ if($_POST['admin']=='1')
 			$approve_item_id = $_COOKIE['approve_item_id'];
 			$sql="UPDATE publish2 SET isApproved='1' WHERE item_id='$approve_item_id'";
 			$status=mysqli_query($conn,$sql);
-			if($status!=0) echo 1;	
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$approve_item_id'"));
+			$account=$row['account'];
+			$item_name=$row['name'];
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT email FROM user_list WHERE user='$account'"));
+			$email = $row['email'];
+			$name=$account;
+			if($status) 
+			{
+				//notify user of the approval
+				$subject = 'AirSale Notification: Item Approved';
+					$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+					'Dear '.$name .", \n".
+					"Thank you very much for using AirSale. \n".
+					"This is to notify you that your recently created item with the name( ".$item_name." ) has been approved. It will now be visible to all potential buyers at the Explore tab.\nThank you for choosing us and we wish you the best of luck. \n \n".
+					"Yours sincerely,\n AirSale Team \n".
+					"\n-----------------\n".
+					"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
+					"\n-----------------\n".
+					"If you did not register at AirSale, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+				mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+				echo 1;	
+			}
 			break;
 		}
 		
@@ -1685,7 +1804,28 @@ if($_POST['admin']=='1')
 			$reject_item_id = $_COOKIE['reject_item_id'];
 			$sql="UPDATE publish2 SET isApproved='2' WHERE item_id='$reject_item_id'";
 			$status=mysqli_query($conn,$sql);
-			if($status!=0) echo 1;	
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$approve_item_id'"));
+			$account=$row['account'];
+			$item_name=$row['name'];
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT email FROM user_list WHERE user='$account'"));
+			$email = $row['email'];
+			$name=$account;
+			if($status) 
+			{
+				//notify user of the rejection
+				$subject = 'AirSale Notification: Item REJECTED';
+					$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+					'Dear '.$name .", \n".
+					"Thank you very much for using AirSale. \n".
+					"We regret to inform you that your recently created item with the name( ".$item_name." ) has been REJECTED. This is most probably because your flight details are incorrect. You will need to update the details of the item from the page 'My Posted Items' to submit it for approval again. \nThank you for choosing us and we wish you the best of luck. \n \n".
+					"Yours sincerely,\n AirSale Team \n".
+					"\n-----------------\n".
+					"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
+					"\n-----------------\n".
+					"If you did not register at AirSale, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+				mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+				echo 1;	
+			}
 			break;
 		}
 	

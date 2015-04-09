@@ -61,6 +61,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -115,61 +116,103 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                   </a>
                 </div><!-- Carousel --></center>
              </div>  
+             
              <div class='row'>
              <br>
-             <table class='table-bordered table-responsive table-hover table'>
-             <tr>
-             	<td>	Price</td>
-             	<td style='width:70%' id='price'>	</td>
-             </tr>
-             <tr>
-             	<td>	Category</td>
-             	<td style='width:70%' id='category'>	</td>
-             </tr>
-             <tr>
-             	<td>	Specifications</td>
-             	<td style='width:70%' id='specifications'>	</td>
-             </tr>
-             <tr>
-             	<td>	Description</td>
-             	<td style='width:70%' id='description'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's prefered hand-over location</td>
-             	<td style='width:70%' id='location'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's contact number</td>
-             	<td style='width:70%' id='number'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's email</td>
-             	<td style='width:70%' id='email'>	</td>
-             </tr>
-             <tr>
-             	<td>	Other method to contact seller</td>
-             	<td style='width:70%' id='other'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's prefered method of contact</td>
-             	<td style='width:70%' id='prefered'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's flight number</td>
-             	<td style='width:70%' id='flightNumber'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's arrival date</td>
-             	<td style='width:70%' id='arrivalDate'>	</td>
-             </tr>
-             <tr>
-             	<td>	Seller's arrival country</td>
-             	<td style='width:70%' id='arrivalCountry'>	</td>
-             </tr>
-             </table>
-             <center>
-             <button class='btn btn-lg btn-default'>Place order</button>
-             </center>
+             <div class='col-md-6'>
+             <div class='panel panel-default'>
+             	<div class='panel-heading'>
+                	<h3>Item and seller's details</h3>
+                </div>
+                <div class='panel-body'>
+                 <table class='table-bordered table-responsive table-hover table'>
+                 <tr>
+                    <td>	Price</td>
+                    <td style='width:70%' id='price'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Category</td>
+                    <td style='width:70%' id='category'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Specifications</td>
+                    <td style='width:70%' id='specifications'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Description</td>
+                    <td style='width:70%' id='description'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Seller's prefered hand-over location</td>
+                    <td style='width:70%' id='location'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Seller's contact number</td>
+                    <td style='width:70%' id='number'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Seller's email</td>
+                    <td style='width:70%' id='email'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Other method to contact seller</td>
+                    <td style='width:70%' id='other'>	</td>
+                 </tr>
+                 <tr>
+                    <td>	Seller's prefered method of contact</td>
+                    <td style='width:70%' id='prefered'>	</td>
+                 </tr>
+                 </table>
+               </div>
+             </div><!--Panel div-->
+             </div>
+             
+             <div class='col-md-6'>
+                 <div class='panel panel-default'>
+                 	<div class='panel-heading'>
+                    	<h3>Seller's flight details.</h3>
+                    </div>
+                 	
+                    <div class='panel-body'>
+                    	<table class='table table-responsive table-bordered table-hover'>
+                         <tr>
+                            <td>	Seller's flight carrier</td>
+                            <td style='width:50%' id='flightCarrier'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's flight number</td>
+                            <td style='width:50%' id='flightNumber'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's departure location</td>
+                            <td style='width:50%' id='departureCountry'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's departure airport</td>
+                            <td style='width:50%' id='departureAirport'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's arrival date</td>
+                            <td style='width:50%' id='arrivalDate'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's arrival location</td>
+                            <td style='width:50%' id='arrivalCountry'>	</td>
+                         </tr>
+                         <tr>
+                            <td>	Seller's arrival airport</td>
+                            <td style='width:50%' id='arrivalAirport'>	</td>
+                         </tr>
+                        </table>
+                    </div>
+                 </div>
+             </div>
+             
+             </div>
+             <div class='row'>
+                 <center>
+                 <button class='btn btn-lg btn-default'>Place order</button>
+                 </center>
              </div>
             </div>
         </div>    
@@ -199,23 +242,46 @@ function details_update()
 	{
 	$.post('http://airsale.lalx.org/api/airsale.php',{JSON:1,action:'itemAtSession_ItemID'},function(data) {
 		JResult=$.parseJSON(data);
+		$.post('../api/airsale.php',{JSON:1,action:'getUserCredibilityWithAccount',account:JResult['account']},function(data) {
+		JCredibility = $.parseJSON(data);
 		document.getElementById('name').innerHTML=JResult['name'];
-		document.getElementById('seller').innerHTML="Seller's user name: "+JResult['account'];
+		document.getElementById('seller').innerHTML="Seller's user name: "+JResult['account'] + "<br> with a credibility rating of: " + JCredibility["credibility"] + "/5  ";
+		for(i=Number(JCredibility["credibility"]);i>=1;i--)  
+		{
+			tag = document.createElement('i');
+			tag.className='fa fa-star';
+			document.getElementById('seller').appendChild(tag);
+		}
+		for(i=5-Number(JCredibility["credibility"]);i>=1;i--)  
+		{
+			tag = document.createElement('i');
+			tag.className='fa fa-star-o';
+			document.getElementById('seller').appendChild(tag);
+		}
 		document.getElementById('email').innerHTML=JResult['email'];
 		document.getElementById('number').innerHTML=JResult['number'];
 		document.getElementById('other').innerHTML=JResult['other'];
 		document.getElementById('prefered').innerHTML=JResult['prefered'];
 		document.getElementById('location').innerHTML=JResult['location'];
 		document.getElementById('flightNumber').innerHTML=JResult['flightNumber'];
+		document.getElementById('flightCarrier').innerHTML=JResult['flightCarrier'];
+		
 		document.getElementById('arrivalDate').innerHTML=JResult['arrivalDate'];
 		document.getElementById('category').innerHTML=JResult['category'];
 		document.getElementById('specifications').innerHTML=JResult['specifications'];
 		document.getElementById('price').innerHTML=JResult['price'];
 		document.getElementById('description').innerHTML=JResult['description'];
+		document.getElementById('arrivalCountry').innerHTML=JResult['arrivalCountry'];
+		document.getElementById('arrivalDate').innerHTML=JResult['arrivalDate'];
+		document.getElementById('arrivalAirport').innerHTML=JResult['arrivalAirport'];
+		document.getElementById('departureCountry').innerHTML=JResult['departureCountry'];
+		document.getElementById('departureAirport').innerHTML=JResult['departureAirport'];
 		document.getElementById('img21').src= './items/'.concat( JResult['itemPictureName'] );
 		document.getElementById('img22').src= './items/'.concat( JResult['itemPictureName2'] );
 		document.getElementById('img23').src= './items/'.concat( JResult['itemPictureName3'] );
 		document.getElementById('img24').src= './items/'.concat( JResult['itemPictureName4'] );
+		
+		});//getting user credibility
 	});
 	
 	});

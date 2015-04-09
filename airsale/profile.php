@@ -61,6 +61,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -206,26 +207,19 @@ $(document).ready(function(e) {
 	else document.getElementById('validation').innerHTML = "Identity has NOT been validated";
 	document.getElementById('transactions').innerHTML=JArray['successfulTransactions'];
 	
-	document.getElementById('credibility').innerHTML = JArray['credibility']+" / 5";
-	span1 = document.createElement('span');span1.className = "fa fa-star-o";
-	span2 = document.createElement('span');span2.className = "fa fa-star-o";
-	span3 = document.createElement('span');span3.className = "fa fa-star-o";
-	span4 = document.createElement('span');span4.className = "fa fa-star-o";
-	span5 = document.createElement('span');span5.className = "fa fa-star-o";
-	switch(JArray['credibility'])
+	document.getElementById('credibility').innerHTML=JArray["credibility"] + "/5  ";
+	for(i=Number(JArray["credibility"]);i>=1;i--)  
 	{
-		case '0': {break;}
-		case '1': {span1.className = "fa fa-star";break;}
-		case '2': {span1.className = "fa fa-star";span2.className = "fa fa-star";break;}
-		case '3': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";break;}
-		case '4': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";span4.className = "fa fa-star";break;}
-		case '5': {span1.className = "fa fa-star";span2.className = "fa fa-star";span3.className = "fa fa-star";span4.className = "fa fa-star";span5.className = "fa fa-star";break;}
+		tag = document.createElement('i');
+		tag.className='fa fa-star';
+		document.getElementById('credibility').appendChild(tag);
 	}
-	document.getElementById('credibility').appendChild(span1);
-	document.getElementById('credibility').appendChild(span2);
-	document.getElementById('credibility').appendChild(span3);
-	document.getElementById('credibility').appendChild(span4);
-	document.getElementById('credibility').appendChild(span5);
+	for(i=5-Number(JArray["credibility"]);i>=1;i--)  
+	{
+		tag = document.createElement('i');
+		tag.className='fa fa-star-o';
+		document.getElementById('credibility').appendChild(tag);
+	}
 	
 	window.setInterval(function() {validateFormRealTime()},100);
 	});

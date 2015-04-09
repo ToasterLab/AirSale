@@ -59,6 +59,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -115,16 +116,21 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     	
         <div class='col-md-3 form-group' id='flightCarrier-div'>
         <label>*Flight carrier(Carrier CODE only. Eg. SQ,MI,VA):</label>
-        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier'>
+        <input class='form-control' type="text" name='flightCarrier' id='flightCarrier' placeholder="eg. MI,SQ,VA">
+        </div>
+        
+        <div class='col-md-3 form-group' id='flightCarrierFullName-div'>
+        <label>*Flight carrier FULL name:</label>
+        <p class='form-control form-control-static' id='flightCarrierFullName' onClick='getCarrierFullName()'><a class='btn' onClick='getCarrierFullName()'>Click here to search for carrier Full name</a></p>
         </div>
         
         <div class='col-md-3 form-group' id='flightNumber-div'>
-        <label>*Flight number:</label>
-        <input class='form-control' type="text" name='flightNumber' id='flightNumber'>
+        <label>*Flight number (NUMBER ONLY):</label>
+        <input class='form-control' type="number" name='flightNumber' id='flightNumber' placeholder="eg. 961,572,942">
         </div>
         
         
-        <div class='col-md-6 form-group' id='arrivalDate-div'>
+        <div class='col-md-3 form-group' id='arrivalDate-div'>
         <label>*Arrival Date:</label>
         <input class='form-control' type='text' name='arrivalDate' id='arrivalDate' placeholder="(Format: YYYY-MM-DD) eg. 2015-03-26">
         </div>
@@ -140,17 +146,17 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
         
         <div class='col-md-3 form-group' id='name-div'>
         <label>*Name of item</label>
-        <input class='form-control' type='text' name='name' id='name'>
+        <input class='form-control' type='text' name='name' id='name' placeholder="eg. SK2 make-up">
         </div>
         
         <div class='col-md-4 form-group' id='specifications-div'>
         <label>*Specifications of item(Volume, brand, etc)</label>
-        <input type='text' class='form-control' name='specifications' id='specifications'>
+        <input type='text' class='form-control' name='specifications' id='specifications' placeholder="eg. 20grams">
         </div>
         
         <div class='col-md-2 form-group' id='price-div'>
         <label>*Price</label>
-        <input type='text' class='form-control' name='price' id='price'>
+        <input type='text' class='form-control' name='price' id='price' placeholder="99.90SGD">
         </div>
         
         <div class='form-group col-md-12' id='description-div'>
@@ -211,7 +217,21 @@ function formValidation()
 	
 	if(error==false) {alert('Please check for any missing fields that are highlighted in red. Please note that compulsory fields are marked with a asterisk (*).');return false;}
 	else return true;
-	
+}
+
+function getCarrierFullName()
+{
+	tag=document.createElement('i');
+	tag.className='fa fa-spinner fa-pulse';
+	document.getElementById('flightCarrierFullName').innerHTML=null;
+	document.getElementById('flightCarrierFullName').appendChild(tag);
+	text = document.createTextNode(" Loading");
+	document.getElementById('flightCarrierFullName').appendChild(text);
+	$.post('../api/airsale.php',{JSON:1,action:'getCarrierFullName',flightCarrier:$('#flightCarrier').val()},function(data) {
+		result = $.parseJSON(data);
+		if(result == '0') document.getElementById('flightCarrierFullName').innerHTML = 'Not found. Click to try again';
+		else document.getElementById('flightCarrierFullName').innerHTML = result;
+	});
 }
 
 </script>

@@ -61,6 +61,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
+            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -176,6 +177,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     <tr>
     	<th style="width:33%"><i class='fa fa-camera'></i> Snapshot and name of the item</th>
         <th><i class='fa fa-dollar'></i> Price</th>
+        <th><i class='fa fa-thumbs-o-up'></i> Seller's credibility</th>
         <th><i class='fa fa-plane'></i> Seller's arrival country</th>
         <th style="width:20%"><i class='fa fa-plane'></i> Seller's arrival date</th>
         <th><i class='fa fa-gears'></i> Action</th>
@@ -206,6 +208,8 @@ function display_data()
 	var cell,row;
 	$.post('../api/airsale.php',{concise:'1',action:'explore'},function(data){
 			JArray = $.parseJSON(data);
+			$.post('../api/airsale.php',{JSON:1,action:'getUserCredibility'},function(data) {
+			JCredibility = $.parseJSON(data);
 			for(i=0;JArray[i]!=null;i++)
 			{
 				if(JArray[i]["result"]["isApproved"]=='1')
@@ -224,7 +228,11 @@ function display_data()
 				number				=			JArray[i]["result"]["number"];
 				description			=			JArray[i]["result"]["description"];
 				itemPictureName 	= 			JArray[i]["result"]["itemPictureName"];
-				
+				account				=			JArray[i]["result"]["account"];
+				for(j=0;JCredibility[j]!=null;j++)
+				{
+					if(JCredibility[j]["user"]==account) credibility=JCredibility[j]["credibility"];
+				}
 				//put them into the table
 				row = table.insertRow();
 				row.id = "row_" + name.replace(/\s/g, '');
@@ -243,7 +251,24 @@ function display_data()
 				price_tag = document.createElement('h2');
 				price_tag.innerHTML='$'+price;
 				cell = row.insertCell();
-				cell.appendChild(price_tag );
+				cell.appendChild(price_tag );				
+				
+				credibility_tag = document.createElement('h4');
+				credibility_tag.innerHTML=credibility + "/5 <br>";
+				for(k=Number(credibility);k>=1;k--)  
+				{
+					tag = document.createElement('i');
+					tag.className='fa fa-star';
+					credibility_tag.appendChild(tag);
+				}
+				for(k=5-Number(credibility);k>=1;k--)  
+				{
+					tag = document.createElement('i');
+					tag.className='fa fa-star-o';
+					credibility_tag.appendChild(tag);
+				}
+				cell = row.insertCell();
+				cell.appendChild(credibility_tag );
 				
 				cell = row.insertCell();
 				arrivalCountry_tag = document.createElement('h3');
@@ -271,10 +296,15 @@ function display_data()
 				action2_tag.setAttribute('title','Contact seller');
 				action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
 				cell.appendChild(action2_tag);
+				
 				}//if isApproved bracket
 			}//'for' closing bracket
+			
+			});//Credibility closing
+
 			$('[data-toggle="popover"]').popover();
 			window.setInterval(function() {search_routine_handle();},100);
+			
 		});
 }
 
