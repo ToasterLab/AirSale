@@ -1561,9 +1561,9 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			break;
 		}
 		
-		case 'getFlightInfoAndInjectIntoSQLforItemWhereID=Cookie(item_id)':
+		case 'getFlightInfoAndInjectIntoSQLforItemWhereID=Post(item_id)':
 		{
-			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$item_id = $_POST['item_id'];	//ONLY PARAMETER NEEDED
 			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
 			$result=mysqli_query($conn,$sql);
 			$row = mysqli_fetch_assoc($result);
@@ -1624,9 +1624,9 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			break;
 		}
 		
-		case 'getFlightInfoFromFileforItemWhereID=Cookie(item_id)':
+		case 'getFlightInfoFromFileforItemWhereID=Post(item_id)':
 		{
-			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$item_id = $_POST['item_id'];	//ONLY PARAMETER NEEDED
 			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
 			$result=mysqli_query($conn,$sql);
 			$row = mysqli_fetch_assoc($result);
@@ -1642,9 +1642,9 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			break;
 		}
 		
-		case 'getFlightInfoFromFileAndInjectIntoSQLforItemWhereID=Cookie(item_id)':
+		case 'getFlightInfoFromFileAndInjectIntoSQLforItemWhereID=Post(item_id)':
 		{
-			$item_id = $_COOKIE['item_id'];	//ONLY PARAMETER NEEDED
+			$item_id = $_POST['item_id'];	//ONLY PARAMETER NEEDED
 			$sql="SELECT arrivalDate,flightCarrier,flightNumber FROM publish2 WHERE item_id='$item_id'";
 			$result=mysqli_query($conn,$sql);
 			$row = mysqli_fetch_assoc($result);
@@ -1836,12 +1836,12 @@ if($_POST['admin']=='1')
 			break;
 		}
 		
-		case 'admin_approveViaCookie(approve_item_id)':
+		case 'admin_approveViaPost(item_id)':
 		{
-			$approve_item_id = $_COOKIE['approve_item_id'];
-			$sql="UPDATE publish2 SET isApproved='1' WHERE item_id='$approve_item_id'";
+			$item_id = $_POST['item_id'];
+			$sql="UPDATE publish2 SET isApproved='1' WHERE item_id='$item_id'";
 			$status=mysqli_query($conn,$sql);
-			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$approve_item_id'"));
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$item_id'"));
 			$account=$row['account'];
 			$item_name=$row['name'];
 			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT email FROM user_list WHERE user='$account'"));
@@ -1863,15 +1863,18 @@ if($_POST['admin']=='1')
 				mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
 				echo 1;	
 			}
+			else echo 0;
 			break;
 		}
 		
-		case 'admin_rejectViaCookie(reject_item_id)':
+		case 'admin_rejectViaPost(item_id)':
 		{
-			$reject_item_id = $_COOKIE['reject_item_id'];
-			$sql="UPDATE publish2 SET isApproved='2' WHERE item_id='$reject_item_id'";
+			$item_id = $_POST['item_id'];
+			if($_POST['reject_reason']!=NULL) $reject_reason = $_POST['reject_reason'];
+			else $reject_reason="Incorrect flight information. Please carefully check your flight number again.";
+			$sql="UPDATE publish2 SET isApproved='2' WHERE item_id='$item_id'";
 			$status=mysqli_query($conn,$sql);
-			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$approve_item_id'"));
+			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT account,name FROM publish2 WHERE item_id='$item_id'"));
 			$account=$row['account'];
 			$item_name=$row['name'];
 			$row=mysqli_fetch_assoc(mysqli_query($conn,"SELECT email FROM user_list WHERE user='$account'"));
@@ -1884,7 +1887,7 @@ if($_POST['admin']=='1')
 					$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
 					'Dear '.$name .", \n".
 					"Thank you very much for using AirSale. \n".
-					"We regret to inform you that your recently created item with the name( ".$item_name." ) has been REJECTED. This is most probably because your flight details are incorrect. You will need to update the details of the item from the page 'My Posted Items' to submit it for approval again. \nThank you for choosing us and we wish you the best of luck. \n \n".
+					"We regret to inform you that your recently created item with the name( ".$item_name." ) has been REJECTED because of the following reason: ".$reject_reason."\n You will need to update the details of the item from the page 'My Posted Items' to submit it for approval again. \nThank you for choosing us and we wish you the best of luck. \n \n".
 					"Yours sincerely,\n AirSale Team \n".
 					"\n-----------------\n".
 					"\nReply to lixi@lalx.org or goto airsale.lalx.org/contact for any enquiries \n".
@@ -1893,9 +1896,19 @@ if($_POST['admin']=='1')
 				mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
 				echo 1;	
 			}
+			else echo 0;
 			break;
 		}
-	
+		
+		case 'admin_deleteViaPost(item_id)':
+		{
+			$item_id = $_POST['item_id'];
+			$sql="DELETE FROM publish2 WHERE item_id='$item_id'";
+			$status=mysqli_query($conn,$sql);
+			if($status) echo 1;
+			else echo 0;
+			break;
+		}
 	}//switch
 }
 ?>

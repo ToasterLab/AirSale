@@ -1,4 +1,5 @@
 <?php
+$_POST['admin']=1;
 include('/home/u979434920/public_html/airsale/api/airsale.php');
 ?>
 
@@ -204,9 +205,9 @@ function updateTicketTable(unapproved)
 					cell = row.insertCell();
 					
 					if(isApproved=='0')
-					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
-					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
-					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>";
+					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
+					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
+					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 				}
 				
 				if(unapproved == 1)
@@ -231,9 +232,9 @@ function updateTicketTable(unapproved)
 					cell.innerHTML = flightNumber;
 					cell = row.insertCell();
 					if(isApproved=='0')
-					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
-					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a>";
-					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>";
+					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
+					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
+					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 					}
 				}
 				
@@ -242,14 +243,12 @@ function updateTicketTable(unapproved)
 		});	
 }
 
-function approve( item_id)
+function approve( var_item_id)
 {
-	item_id=String(item_id);
-	setSessionCookie('approve_item_id',item_id);
-	$.post('../api/airsale.php',{admin:1,action:'admin_approveViaCookie(approve_item_id)'},function()
+	var_item_id=String(var_item_id);
+	$.post('../api/airsale.php',{admin:1,action:'admin_approveViaPost(item_id)',item_id:var_item_id},function()
 	{
-		setSessionCookie('item_id',item_id);
-		$.post('../api/airsale.php',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Cookie(item_id)'},function(data) {
+		$.post('../api/airsale.php',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Post(item_id)',item_id:var_item_id},function(data) {
 			
 			if(data) alert('Approval successful. Changes on this page will be seen only after refeshing the page.');
 			else alert('Approval operation FAILED.');
@@ -258,13 +257,15 @@ function approve( item_id)
 	
 }
 
-function reject( item_id)
+function reject( var_item_id)
 {
-	item_id=String(item_id);
-	setSessionCookie('reject_item_id',item_id);
-	$.post('../api/airsale.php',{admin:1,action:'admin_rejectViaCookie(reject_item_id)'},function(data)
+	var_item_id=String(var_item_id);
+	reject_reason=window.prompt("Reason for rejecting");
+	if(reject_reason=='') reject_reason=null;
+	$.post('../api/airsale.php',{admin:1,action:'admin_rejectViaPost(item_id)',item_id:var_item_id,reject_reason:reject_reason},function(data)
 	{
 		if(data) alert('Rejection successful. Changes on this page will be seen only after refeshing the page.');
+		else alert('Reject operation FAILED.');
 	});
 	
 }
@@ -290,6 +291,14 @@ function updateFeedback()
 	
 }
 
+function item_delete(var_item_id)
+{
+	$.post('/api/airsale.php',{admin:1,action:'admin_deleteViaPost(item_id)',item_id:String(var_item_id)}, function(data){
+	if(data) alert('Delete operation is successful. Changes on this page will be seen only after refeshing the page.');
+	else alert('Delete operation FAILED.');
+});
+	
+}
 
 $(document).ready(function(e) {
     deleteCookie('displayed');
