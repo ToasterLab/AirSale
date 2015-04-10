@@ -138,7 +138,7 @@ function getCarrierFullName($AirlineCode)
 		if($value["fs"] == $AirlineCode) $AirlineCode_index = $index;
 	}
 	$AirlineFullName=$airlines["airlines"][$AirlineCode_index]["name"];
-	if($_POST['debug']) var_dump($AirlineCode,$AirlineCode_index,$AirlineFullName,$airlines);
+	if($_POST['debug']) var_dump($AirlineCode,$AirlineCode_index,$AirlineFullName);
 	if($AirlineCode_index != NULL)  return $AirlineFullName;
 	else return false;
 }
@@ -291,6 +291,7 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 		
 		case 'publish1':
 		{	
+			$account=$_SESSION['auth'];
 			$sql="INSERT INTO item_id (account) VALUES ('$account')";
 			mysqli_query($conn,$sql);
 			$item_id = mysqli_insert_id($conn);
@@ -320,9 +321,6 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 		case 'publish1_edit':
 		{	
 			
-			$sql="INSERT INTO item_id (account) VALUES ('$account')";
-			mysqli_query($conn,$sql);
-			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
 			
 			$number=mysqli_escape_string($conn,$_POST["number"]);
@@ -390,8 +388,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 			}
 			
 			if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
+				if($_POST['debug'])
 				echo "File is valid, and was successfully uploaded.\n";
 			} else {
+				if($_POST['debug'])
 				echo "Possible file upload attack!\n";
 			}
 			echo '<script>location.replace(\'../airsale/publish3.php\')</script>';break;
@@ -468,8 +468,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 						WHERE item_id='$item_id'";
 				$status=mysqli_query($conn,$sql);
 				if (move_uploaded_file($_FILES['itemPicture2']['tmp_name'], $uploadfile2)) {
+					if($_POST['debug'])
 					echo "File is valid, and was successfully uploaded.\n";
 				} else {
+					if($_POST['debug'])
 					echo "Possible file upload attack!\n";
 				}
 			}
@@ -485,9 +487,12 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 						WHERE item_id='$item_id'";
 				$status=mysqli_query($conn,$sql);
 				if (move_uploaded_file($_FILES['itemPicture3']['tmp_name'], $uploadfile3)) {
+					if($_POST['debug'])
 					echo "File is valid, and was successfully uploaded.\n";
 				} else {
+					if($_POST['debug'])
 					echo "Possible file upload attack!\n";
+					
 				}
 			}
 			
@@ -503,8 +508,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 						WHERE item_id='$item_id'";
 				$status=mysqli_query($conn,$sql);
 				if (move_uploaded_file($_FILES['itemPicture4']['tmp_name'], $uploadfile4)) {
+					if($_POST['debug'])
 					echo "File is valid, and was successfully uploaded.\n";
 				} else {
+					if($_POST['debug'])
 					echo "Possible file upload attack!\n";
 				}
 			}
@@ -559,8 +566,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 				}
 				
 				if (move_uploaded_file($_FILES['itemPicture']['tmp_name'], $uploadfile)) {
+					if($_POST['debug'])
 					echo "File is valid, and was successfully uploaded.\n";
 				} else {
+					if($_POST['debug'])
 					echo "Possible file upload attack!\n";
 				}
 			}
@@ -742,11 +751,10 @@ if($_POST['mobile'] != 1 && $_POST['concise'] != 1 && $_POST['JSON'] != 1 && $_P
 			
 					
 			$status=mysqli_query($conn,$sql);
-			if($debug){
+			if($_POST['debug']){
 			if($status) echo "...Data stored...";
 			else die("...Data not stored...Error:" .mysqli_error($conn));
 			}
-			if($status) echo "...Data stored...";
 			
 			//notifing user of successful submission
 			$subject = 'AirSale Acknowledgement: Successful enquiry submission';
@@ -902,6 +910,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 		
 		case 'publish1':
 		{	
+			$account=$_SESSION['auth'];
 			$sql="INSERT INTO item_id (account) VALUES ('$account')";
 			mysqli_query($conn,$sql);
 			$item_id = mysqli_insert_id($conn);
@@ -929,9 +938,6 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 		case 'publish1_edit':
 		{	
 			
-			$sql="INSERT INTO item_id (account) VALUES ('$account')";
-			mysqli_query($conn,$sql);
-			$item_id = mysqli_insert_id($conn);
 			$_SESSION['item_id']=$_COOKIE['edit_item_id'];
 			
 			$number=mysqli_escape_string($conn,$_POST["number"]);
@@ -1136,13 +1142,13 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 		case 'explore':
 		{
 			$arr=array();
-			$sql = "SELECT max(id) FROM item_id";
+			$sql = "SELECT max(item_id) FROM publish2";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$max_id = $row['max(id)'];
+			$max_id = $row['max(item_id)'];
 			
-			$sql = "SELECT min(id) FROM item_id";
+			$sql = "SELECT min(item_id) FROM publish2";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$min_id = $row['min(id)'];
+			$min_id = $row['min(item_id)'];
 	if($_POST['debug']) var_dump($row,$min_id,$max_id);
 			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
@@ -1217,13 +1223,13 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 		case 'seller_history':
 		{
 			$arr=array();
-			$sql = "SELECT max(id) FROM item_id";
+			$sql = "SELECT max(item_id) FROM publish2";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$max_id = $row['max(id)'];
+			$max_id = $row['max(item_id)'];
 			
-			$sql = "SELECT min(id) FROM item_id";
+			$sql = "SELECT min(item_id) FROM publish2";
 			$row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-			$min_id = $row['min(id)'];
+			$min_id = $row['min(item_id)'];
 	if($_POST['debug']) var_dump($row,$min_id,$max_id);
 			for($in=$min_id;  ($min_id<= $in) && ($in <= $max_id) ; $in++)
 			{
@@ -1539,6 +1545,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 	$service_url = 'https://api.flightstats.com/flex/schedules/rest/v1/json/flight/'.$flightCarrier.'/'.$flightNumber.'/arriving/'.$arrivalDate.'?appId=dc456bc3&appKey=3542b23c356d38afa9f190be3306477c';
 			$curl = curl_init($service_url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			if($_POST['debug'])echo ' sending api request. ';
 			$curl_response = curl_exec($curl);		//already JSON encoded
 			if ($curl_response === false) {
 				$info = curl_getinfo($curl);
@@ -1563,7 +1570,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			
 			$arrivalDate = str_replace('-','/',$row['arrivalDate']);
 			$flightCarrier = str_replace(' ','',$row['flightCarrier']);
-			if(getCarrierFullName($flightCarrier)) die("0");
+			if(getCarrierFullName($flightCarrier)==false) die("0");
 			$flightNumber = str_replace(' ','',$row['flightNumber']);
 			if($flightNumber!= NULL)
 			$flightFileName = $flightCarrier.$flightNumber.'_arriving_'.str_replace('-','_',$_POST['arrivalDate']);
@@ -1573,6 +1580,7 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 			$curl = curl_init($service_url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$curl_response = curl_exec($curl);		//already JSON encoded
+			if($_POST['debug'])echo ' sending api request. ';
 			if ($curl_response === false) {
 				$info = curl_getinfo($curl);
 				curl_close($curl);
@@ -1730,6 +1738,65 @@ if($_POST['mobile'] == 1 || $_POST['concise']== 1 || $_POST['JSON']== 1 && $_POS
 					'user' => $row['user'],	'credibility' => $row['credibility']		);
 			echo json_encode($CredibilityResult);
 			break;
+		}
+		
+		case 'getFeedback':
+		{
+			$sql = "SELECT id,name,email,number,comment FROM contact";
+			$result = mysqli_query($conn,$sql);
+			while($row = mysqli_fetch_assoc($result) )
+			$FeedbackResult[] = array(
+					'id' => $row['id'],	'name' => $row['name'],
+					'email' => $row['email'],	'number' => $row['number'],
+					'comment' => $row['comment']		);
+			echo json_encode($FeedbackResult);
+			break;
+		}
+		
+		case 'contact':
+		{
+			$name=mysqli_escape_string($conn,$_POST['name']);
+			$email=mysqli_escape_string($conn,$_POST['email']);
+			$number=mysqli_escape_string($conn,$_POST['number']);
+			$comment=mysqli_escape_string($conn,$_POST['comment']);
+			
+			$sql="INSERT INTO contact (name,
+					email,
+					number,
+					comment)
+					VALUES ('$name',
+					'$email',
+					'$number',
+					'$comment')";
+			
+					
+			$status=mysqli_query($conn,$sql);
+			if($_POST['debug']){
+			if($status) echo "...Data stored...";
+			else die("...Data not stored...Error:" .mysqli_error($conn));
+			}
+			
+			//notifing user of successful submission
+			$subject = 'AirSale Acknowledgement: Successful enquiry submission';
+			$message = "----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+							'Dear '.$name .", \n".
+							"We have received your enquiry submitted at airsale.lalx.org \n".
+							"Thank you very much for your interest and we will get back to you shortly. \n \n".
+							"Yours sincerely, \nAirSale Team \n".
+							"If you did not submit this enquiry, please ignore this email. This happened because someone was careless and typed his/her email wrongly or was trying to be funny.";
+							
+			mail($email,$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+			
+			//notifing admin of successful submission
+			$subject = 'Customer enquiry submission@AirSale';
+			$message = 		"----------THIS IS A MACHINE GENERATED EMAIL. DO NOT REPLY----------\n".
+							"Dear admin, \n".
+							"We have received an enquiry submitted at airsale.lalx.org \n".
+							"Please respond accordingly \n \n".
+							"Yours sincerely, \nLALX Singapore \n".
+							"Enquiry content:\n Customer name: ".$name."\n email: ".$email."\n comment:".$comment;
+			mail('lixi@lalx.org',$subject,$message,"From: notification@lalx.org\r\nReply-To:info@lalx.org");
+			echo "1";break;
 		}
 		
 	}//switch	

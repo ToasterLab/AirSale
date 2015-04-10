@@ -56,7 +56,7 @@
                 </ul>
             
             </li>
-            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>

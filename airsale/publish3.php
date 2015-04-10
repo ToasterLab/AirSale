@@ -62,7 +62,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 </ul>
             
             </li>
-            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -347,7 +347,6 @@ function formUpdate()
 		document.getElementById('price').value=JResult['price'];
 		document.getElementById('description').value=JResult['description'];
 		
-		document.getElementById('img1').src= './users/'.concat( JResult['userPictureName'] );
 		document.getElementById('img21').src= './items/'.concat( JResult['itemPictureName'] );
 		document.getElementById('img22').src= './items/'.concat( JResult['itemPictureName2'] );
 		document.getElementById('img23').src= './items/'.concat( JResult['itemPictureName3'] );

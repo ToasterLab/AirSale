@@ -74,14 +74,15 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <h3 class="panel-title">Air Ticket approval</h3>
           </div>
           <div class="panel-body">
+          <center>
             <div class='btn-group'>
                 <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(1);">Display all unapproved air tickets and passenger information</button>
                 <button class='btn btn-default' onClick="$('#ticket-div').show(1000);updateTicketTable(0);">Display all air tickets and passenger information</button>
             </div>
-            
+            </center>
             <div style='display:none' id='ticket-div'>
             <br>
-            <table id='airTicket-table' class='table'>
+            <table id='airTicket-table' class='table table-hover table-responsive'>
             <tr>
             	<th>ID</th>
             	<th>Account name</th>
@@ -92,6 +93,29 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <th>Flight Carrier</th>
                 <th>Flight Number</th>
                 <th>Approval button</th>
+            </tr>
+            </table>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class='col-md-12'>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Feedback @ AirSale</h3>
+          </div>
+          <div class="panel-body">
+            <div id='feedback-div'>
+            <br>
+            <table id='feedback-table' class='table table-hover table-responsive'>
+            <tr>
+            	<th>ID</th>
+            	<th>Name</th>
+                <th>Email</th>
+                <th>Number</th>
+                <th>Feedback</th>
             </tr>
             </table>
             </div>
@@ -227,7 +251,8 @@ function approve( item_id)
 		setSessionCookie('item_id',item_id);
 		$.post('../api/airsale.php',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Cookie(item_id)'},function(data) {
 			
-			if(data) alert('Approval successful');
+			if(data) alert('Approval successful. Changes on this page will be seen only after refeshing the page.');
+			else alert('Approval operation FAILED.');
 		});
 	});
 	
@@ -239,16 +264,36 @@ function reject( item_id)
 	setSessionCookie('reject_item_id',item_id);
 	$.post('../api/airsale.php',{admin:1,action:'admin_rejectViaCookie(reject_item_id)'},function(data)
 	{
-		if(data) alert('Rejection successful');
+		if(data) alert('Rejection successful. Changes on this page will be seen only after refeshing the page.');
 	});
 	
 }
 
 
+function updateFeedback()
+{
+	$.post('/api/airsale.php',{JSON:1,action:'getFeedback'},function(data) {
+		JArray = $.parseJSON(data);
+		table=document.getElementById('feedback-table');
+		for(ind=0;JArray[ind]!=null;ind++)
+		{
+			row = table.insertRow();
+			
+			row.insertCell().innerHTML = JArray[ind]["id"];
+			row.insertCell().innerHTML = JArray[ind]["name"];
+			row.insertCell().innerHTML = JArray[ind]["email"];
+			row.insertCell().innerHTML = JArray[ind]["number"];
+			row.insertCell().innerHTML = JArray[ind]["comment"];
+		}
+		
+	});
+	
+}
 
 
 $(document).ready(function(e) {
     deleteCookie('displayed');
 	deleteCookie('displayed_ticket');
+	updateFeedback()
 });
 </script>
