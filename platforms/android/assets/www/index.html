@@ -35,7 +35,7 @@
 			});
 			$(document).on("click focus", "input", function() {
 			    $('html, body').animate({
-			        scrollTop: ($(this).offset().top + $("div.navbar-fixed").height())
+			        scrollTop: ($(this).offset().top - $("div.navbar-fixed").height() - 20)
 			    }, 500);
 			});
 		</script>

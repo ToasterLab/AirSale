@@ -19,8 +19,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{departingAirport}}, {{departingCity}}</td>
-                            <td>{{arrivingAirport}}, {{arrivingCity}}</td>
+                            <td><p>{{departingAirport}}</p><p>{{departingCity}}</p></td>
+                            <td><p>{{arrivingAirpor}}</p><p>{{arrivingCity}}</p></td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,14 +84,14 @@
             <label for="specs">Specifications</label>
         </div>
         <div class="input-field col s12">
-            <textarea id="description" class="materialize-textarea validate" ng-model="item.description">
+            <textarea id="description" class="materialize-textarea validate" ng-model="item.description"></textarea>
             <label for="description">Description</label>
         </div>
         <div class="input-field col s12">
-            <input class="file-path validate" type="text"/>
-            <div class="btn blue darken-1">
-                    <span>File</span>
-                     <input type="file" accept="image/*;capture=camera"/>
+            <div class="waves-effect waves-light btn-large blue darken-1">
+                <i class="mdi-editor-insert-photo"></i>
+                <span>File</span>
+                <input type="file" accept="image/*;capture=camera"/>
             </div>
         </div>
         <div class="row center">

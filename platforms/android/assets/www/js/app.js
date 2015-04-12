@@ -138,7 +138,6 @@ airSale.controller('createController', ["$scope","$http","$location","bgData",
             if(!hereIsForm.flightno.$valid){return false}
             $scope.flightNumber = $scope.item.flightno.substring(2)
             $scope.flightCarrier = $scope.item.flightno.substring(0,2).toUpperCase()
-            console.log($scope.arrivalDate)
             $scope.loadingFlightDetails = true
             config = {withCredentials: true}
             $http.post(apiURL, {'action':'getFlightInfo','mobile':1, 
@@ -148,6 +147,7 @@ airSale.controller('createController', ["$scope","$http","$location","bgData",
             .success(function(data){
                 $scope.loadingFlightDetails = false;
                 console.log(data)
+                // issue is api sometimes does not provide departing/arriving airport and city
                 try{
                     $scope.rawFlightDetails = angular.fromJson(data);
                     $scope.airlines = $scope.rawFlightDetails.appendix.airlines
@@ -167,8 +167,6 @@ airSale.controller('createController', ["$scope","$http","$location","bgData",
                     $scope.arrivingAirport = "Check flight number?"
                     $scope.arrivingCity = ""
                 }
-                
-                
             })
         }
         $scope.addItem = function(){
