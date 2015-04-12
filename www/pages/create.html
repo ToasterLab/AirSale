@@ -1,5 +1,9 @@
 <div class="row some-empty-space-above">
 	<form class="col s12" ng-submit="create()" ng-controller="createController" name="createForm" action="#">
+        <div class="input-field col s12">
+            <input type="date" class="datepicker" id="arrivaldate" name="arrivaldate" ng-model="item.arrivaldate">
+            <label for="arrivaldate">Arrival Date</label>
+        </div>
 		<div class="input-field col s12">
         	<input id="flightno" name="flightno" type="text" class="validate" autocomplete="off" ng-model="item.flightno"  ng-model-options="{ debounce: 500 }" ng-change="checkFlight(createForm)" ng-pattern="/^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]?$/" ng-minlength="5" maxlength="5">
         	<label for="flightno">Flight No.</label>
@@ -87,7 +91,7 @@
             <input class="file-path validate" type="text"/>
             <div class="btn blue darken-1">
                     <span>File</span>
-                     <input type="file" />
+                     <input type="file" accept="image/*;capture=camera"/>
             </div>
         </div>
         <div class="row center">

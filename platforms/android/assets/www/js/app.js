@@ -125,11 +125,20 @@ airSale.controller('mainController', ["$scope","$http","$location","bgData",
 
 airSale.controller('createController', ["$scope","$http","$location","bgData",
     function($scope,$http,$location,bgData){
+        jQuery('.datepicker').pickadate({
+            formatSubmit: 'yyyy-mm-dd',
+            hiddenName: true,
+            onClose: function(val) {
+                $scope.arrivalDate = jQuery("input[name='arrivaldate']").val()
+                console.log($scope.arrivalDate)
+            }
+        });
+
         $scope.checkFlight = function(hereIsForm){
             if(!hereIsForm.flightno.$valid){return false}
             $scope.flightNumber = $scope.item.flightno.substring(2)
             $scope.flightCarrier = $scope.item.flightno.substring(0,2).toUpperCase()
-            $scope.arrivalDate = "2015-4-12"
+            console.log($scope.arrivalDate)
             $scope.loadingFlightDetails = true
             config = {withCredentials: true}
             $http.post(apiURL, {'action':'getFlightInfo','mobile':1, 
