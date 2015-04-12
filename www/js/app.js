@@ -1,3 +1,5 @@
+//local storage https://github.com/grevory/angular-local-storage
+
 // DEFINITION
 
 apiURL = 'http://airsale.lalx.org/api/airsale.php'
@@ -123,7 +125,23 @@ airSale.controller('mainController', ["$scope","$http","$location","bgData",
 
 airSale.controller('createController', ["$scope","$http","$location","bgData",
     function($scope,$http,$location,bgData){
-        
+        $scope.flightNumber = "631"
+        $scope.flightCarrier = "SQ"
+        $scope.arrivalDate = "2015/4/12"
+        $scope.checkFlight = function(){
+            $scope.loadingFlightDetails = true
+            config = {withCredentials: true}
+            $http.post(apiURL, {'action':'getFlightInfo','mobile':1, 
+                                'flightCarrier':$scope.flightCarrier,
+                                'flightNumber':$scope.flightNumber,
+                                'arrivalDate':$scope.arrivalDate},config)
+            .success(function(data){
+                data.forEach(function(value, key, newData) {
+                    console.log(newData);
+                    $scope.loadingFlightDetails = false;
+                });
+            })
+        }
     }
 ]);
 
@@ -162,6 +180,10 @@ airSale.controller('itemController',
             });
             $scope.items = data
         });
+
+        $scope.gotoCreate = function(){
+            $location.path("/create")
+        };
     }
 ]);
 
