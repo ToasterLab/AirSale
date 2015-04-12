@@ -125,10 +125,11 @@ airSale.controller('mainController', ["$scope","$http","$location","bgData",
 
 airSale.controller('createController', ["$scope","$http","$location","bgData",
     function($scope,$http,$location,bgData){
-        $scope.flightNumber = "631"
-        $scope.flightCarrier = "SQ"
-        $scope.arrivalDate = "2015/4/12"
-        $scope.checkFlight = function(){
+        $scope.checkFlight = function(hereIsForm){
+            if(!hereIsForm.flightno.$valid){return false}
+            $scope.flightNumber = $scope.item.flightno.substring(2)
+            $scope.flightCarrier = $scope.item.flightno.substring(0,2).toUpperCase()
+            $scope.arrivalDate = "2015-4-12"
             $scope.loadingFlightDetails = true
             config = {withCredentials: true}
             $http.post(apiURL, {'action':'getFlightInfo','mobile':1, 
@@ -136,10 +137,41 @@ airSale.controller('createController', ["$scope","$http","$location","bgData",
                                 'flightNumber':$scope.flightNumber,
                                 'arrivalDate':$scope.arrivalDate},config)
             .success(function(data){
-                data.forEach(function(value, key, newData) {
-                    console.log(newData);
-                    $scope.loadingFlightDetails = false;
-                });
+                $scope.loadingFlightDetails = false;
+                console.log(data)
+                try{
+                    $scope.rawFlightDetails = angular.fromJson(data);
+                    $scope.airlines = $scope.rawFlightDetails.appendix.airlines
+                    /*$scope.airlineBlurb = ""
+                    $scope.airlines.forEach(function(value, index, array){
+                        $scope.airlineBlurb += value.icao + " - "
+                    });*/
+                    //$scope.airlineBlurb.substr(0,($scope.airlineBlurb.length - 3))
+                    $scope.departingAirport = $scope.rawFlightDetails.appendix.airports[0].name
+                    $scope.departingCity = $scope.rawFlightDetails.appendix.airports[0].city
+                    $scope.arrivingAirport = $scope.rawFlightDetails.appendix.airports[1].name
+                    $scope.arrivingCity = $scope.rawFlightDetails.appendix.airports[1].city
+                }
+                catch(e){
+                    $scope.departingAirport = "Flight not found"
+                    $scope.departingCity = ""
+                    $scope.arrivingAirport = "Check flight number?"
+                    $scope.arrivingCity = ""
+                }
+                
+                
+            })
+        }
+        $scope.addItem = function(){
+            config = {withCredentials: true}
+            $http.post(apiURL, {'action':'publish2','mobile':1, 
+                                'name':$scope.item.name,
+                                'description':$scope.item.description,
+                                'specifications':$scope.item.specs
+                                },config)
+            .success(function(data){
+                console.log(data);
+                $scope.rawFlightDetails = data;
             })
         }
     }

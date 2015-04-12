@@ -1,55 +1,73 @@
 <div class="row some-empty-space-above">
 	<form class="col s12" ng-submit="create()" ng-controller="createController" name="createForm" action="#">
 		<div class="input-field col s12">
-        	<input id="flightno" type="text" class="validate" autocomplete="off" ng-model="item.flightno"  ng-model-options="{ debounce: 250 }" ng-change="checkFlight()">
+        	<input id="flightno" name="flightno" type="text" class="validate" autocomplete="off" ng-model="item.flightno"  ng-model-options="{ debounce: 500 }" ng-change="checkFlight(createForm)" ng-pattern="/^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]?$/" ng-minlength="5" maxlength="5">
         	<label for="flightno">Flight No.</label>
         </div>
-        <div class="preloader-wrapper active" ng-show="item.loadingFlightDetails">
-            <div class="spinner-layer spinner-blue">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
+        <div class="input-field col s12">
+            <div class="card-panel white black-text" ng-hide="(loadingFlightDetails == null) || (rawFlightDetails.length == 0) || (loadingFlightDetails)">
+                <table class="resposive">
+                    <thead>
+                        <tr>
+                            <th>FROM</th>
+                            <th>TO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{departingAirport}}, {{departingCity}}</td>
+                            <td>{{arrivingAirport}}, {{arrivingCity}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <div class="preloader-wrapper active" ng-show="loadingFlightDetails">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
 
-            <div class="spinner-layer spinner-red">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
 
-            <div class="spinner-layer spinner-yellow">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
 
-            <div class="spinner-layer spinner-green">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
             </div>
         </div>
