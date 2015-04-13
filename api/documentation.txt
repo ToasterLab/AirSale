@@ -1,0 +1,44 @@
+DOCUMENTATION FOR AIRSALE API:
+
+
+INTRODUCTION:-------------------------------
+
+For mobile application usage or getting a JSON-compatible response, please send either 'mobile:1' or 'JSON:1' or 'concise:1'
+All requests will be rejected without a valid login or signup and a 'please login' message will be returned.
+Upon failure, a '0' will be returned.
+Requests are to be sent via the 'action' variable via the HTTP POST method. All responses are JSON encoded.
+
+
+
+
+USAGE:----------------------------------------
+
+FORMAT OF THIS SECTION: variables that MUST BE passed to the API are called 'variables REQUIRED' whereas variables that CAN be passed are called 'variables neede'.
+Notes and warnings about each variable will be displayed next the the vairable.
+Notes and warnings about the request are available before the variables section.
+
+
+action:login
+    variables REQUIRED: user, password
+
+action:publish2
+    variables needed:
+        category
+        name
+        specifications
+        price
+        description
+        flightCarrier       **MUST BE IN UPPER CASE
+        flightNumber        **MUST BE A NUMBER
+        arrivalDate         **MUST BE IN THE FORMAT  YYYY - MM - DD
+        (file)itemPicture   **MUST NOT BE PASSED AS "file"
+        (file)itemPicture2
+        (file)itemPicture3
+        (file)itemPicture4
+
+action:
+
+
+
+
+
