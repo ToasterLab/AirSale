@@ -8,7 +8,7 @@
         	<input id="flightno" name="flightno" type="text" class="validate" autocomplete="off" ng-model="item.flightno"  ng-model-options="{ debounce: 500 }" ng-change="checkFlight(createForm)" ng-pattern="/^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]?$/" ng-minlength="5" maxlength="5">
         	<label for="flightno">Flight No.</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field col s12" ng-show="loadingFlightDetails != null">
             <div class="card-panel white black-text" ng-hide="(loadingFlightDetails == null) || (rawFlightDetails.length == 0) || (loadingFlightDetails)">
                 <table class="resposive">
                     <thead>
@@ -88,14 +88,18 @@
             <label for="description">Description</label>
         </div>
         <div class="input-field col s12">
-            <div class="waves-effect waves-light btn-large blue darken-1">
-                <i class="mdi-editor-insert-photo"></i>
-                <span>File</span>
-                <input type="file" accept="image/*;capture=camera"/>
+            <input id="price" type="text" class="validate" ng-model="item.price" fcsa-number="{maxDecimals: 2, preventInvalidInput: true, prepend: '$'}">
+            <label for="price">Price</label>
+        </div>
+        <div class="file-field input-field col s12">
+            <input class="file-path validate" type="text" id="photoPath" ng-model="item.photo.path" />
+            <div class="btn-large blue white-text">
+                <span><!--<i class="mdi-editor-insert-photo"></i>-->File</span>
+                <input ng-file-select ng-model="item.photo" type="file" id="photoUpload" accept="image/*;capture=camera" ng-file-change="updateUploadDetails()" ng-multiple="false"/>
             </div>
         </div>
         <div class="row center">
-        	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above" type="submit">
+        	<a class="waves-effect waves-light btn-large blue darken-1 white-text some-empty-space-above" type="submit" ng-click="addItem()">
         		POST<i class="mdi-content-send right"></i>
         	</a>
         </div>

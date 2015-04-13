@@ -4,15 +4,10 @@
 
 apiURL = 'http://airsale.lalx.org/api/airsale.php'
 
-var airSale = angular.module('AirSale', ['ngRoute'], 
+var airSale = angular.module('AirSale', ['ngRoute','angularFileUpload','fcsa-number'], 
     function($httpProvider){
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-    /**
-    * The workhorse; converts an object to x-www-form-urlencoded serialization.
-    * @param {Object} obj
-    * @return {String}
-    */ 
     var param = function(obj) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -55,7 +50,7 @@ var airSale = angular.module('AirSale', ['ngRoute'],
     }
 ]);
 
-// routing
+// routing lol
 airSale.config(function($routeProvider) {
     $routeProvider
         .when('/', {
@@ -123,8 +118,8 @@ airSale.controller('mainController', ["$scope","$http","$location","bgData",
     }
 ]);
 
-airSale.controller('createController', ["$scope","$http","$location","bgData",
-    function($scope,$http,$location,bgData){
+airSale.controller('createController', ["$scope","$http","$location","$upload","bgData",
+    function($scope,$http,$location,$upload,bgData){
         jQuery('.datepicker').pickadate({
             formatSubmit: 'yyyy-mm-dd',
             hiddenName: true,
@@ -170,16 +165,30 @@ airSale.controller('createController', ["$scope","$http","$location","bgData",
             })
         }
         $scope.addItem = function(){
-            config = {withCredentials: true}
-            $http.post(apiURL, {'action':'publish2','mobile':1, 
-                                'name':$scope.item.name,
-                                'description':$scope.item.description,
-                                'specifications':$scope.item.specs
-                                },config)
+            $upload.upload({
+                url: apiURL,
+                fields: {'action':'publish2','mobile':1, 
+                        'name':$scope.item.name,
+                        'description':$scope.item.description,
+                        'specifications':$scope.item.specs
+                        },
+                file: $scope.item.photo[0]
+            }).progress(function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            }).success(function (data, status, headers, config) {
+                console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+            });
+            /*config = {withCredentials: true}
+            $http.post(apiURL, ,config)
             .success(function(data){
                 console.log(data);
                 $scope.rawFlightDetails = data;
-            })
+            })*/
+        }
+        $scope.updateUploadDetails = function(){
+            console.log($scope.item.photo)
+            $scope.item.photo.path = $scope.item.photo[0].name
         }
     }
 ]);
@@ -230,6 +239,8 @@ airSale.controller('loginController',
     ["$scope","$http","$location","$timeout","bgData", 
     function($scope, $http, $location, $timeout, bgData){
         $scope.user = {}
+        $scope.user.username = "huey"
+        $scope.user.password = "ninjapass"
         $scope.toSend = {
             mobile: "1",
             action: "login",

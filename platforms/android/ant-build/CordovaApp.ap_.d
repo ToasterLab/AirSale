@@ -44,6 +44,8 @@
 /home/huey/AirSale/platforms/android/assets/www/components/js/jquery.min.map \
 /home/huey/AirSale/platforms/android/assets/www/components/js/angular-route.min.js.map \
 /home/huey/AirSale/platforms/android/assets/www/components/js/jquery.min.js \
+/home/huey/AirSale/platforms/android/assets/www/components/js/fcsaNumber.min.js \
+/home/huey/AirSale/platforms/android/assets/www/components/js/angular-file-upload-all.min.js \
 /home/huey/AirSale/platforms/android/assets/www/components/font/material-design-icons \
 /home/huey/AirSale/platforms/android/assets/www/components/font/roboto \
 /home/huey/AirSale/platforms/android/assets/www/components/font/material-design-icons/Material-Design-Icons.eot \
