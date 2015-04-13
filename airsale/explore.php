@@ -40,28 +40,28 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/profile' id='nav-log-in'> </a></li>
             <li class='dropdown active'>
             <a class="dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li class="active"><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
+                	<li class="active"><a href='/airsale/explore' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
-                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
+                	<li><a href='/airsale/publish' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
-            
+
             </li>
-            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -88,7 +88,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <li> <a class='btn' id=''><i class='fa fa-arrow-circle-down'></i> From the highest to lowest</a></li>
             </ul>
             </div>
-            
+
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-smile-o'></i> Credibility (Customer rating)<span class='caret'></span></button>
             <ul class='dropdown-menu' role='menu'>
@@ -96,14 +96,14 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <li> <a class='btn' id=''><i class='fa fa-stack fa-thumbs-down fa-circle'></i> From the lowest to highest</a></li>
             </ul>
             </div>
-            
+
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-plane'></i> Flight arrival time<span class='caret'></span></button>
             <ul class='dropdown-menu' role='menu'>
             	<li> <a class='btn' id=''><i class='fa fa-forward'></i> From the closest to today to latest</a></li>
                 <li> <a class='btn' id=''><i class='fa fa-backward'></i> From the latest to closest</a></li>
             </ul>
-            </div>            
+            </div>
         </div><br>
         ------------>
      	<div>
@@ -115,12 +115,12 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </span>
             </div>
       	</div>
-        
+
     </div>
     </div>
-    
+
     </div>
-    
+
     <div class='visible-sm visible-xs'>
     <div class='row'>
     <center>
@@ -133,7 +133,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <li> <a class='btn' id=''><i class='fa fa-arrow-circle-down'></i> From the highest to lowest</a></li>
             </ul>
             </div>
-            
+
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-smile-o'></i> Credibility (Customer rating)<span class='caret'></span></button>
             <ul class='dropdown-menu' role='menu'>
@@ -141,14 +141,14 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
                 <li> <a class='btn' id=''><i class='fa fa-stack fa-thumbs-down fa-circle'></i> From the lowest to highest</a></li>
             </ul>
             </div>
-            
+
             <div class='btn-group'>
             <button class='btn btn-default btn-lg dropdown-toggle' data-toggle="dropdown"><i class='fa fa-plane'></i> Flight arrival time<span class='caret'></span></button>
             <ul class='dropdown-menu' role='menu'>
             	<li> <a class='btn' id=''><i class='fa fa-forward'></i> From the closest to today to latest</a></li>
                 <li> <a class='btn' id=''><i class='fa fa-backward'></i> From the latest to closest</a></li>
             </ul>
-            
+
         </div>
         -------------------------------------->
         <div class='btn-group'>
@@ -159,19 +159,19 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <button type='button' class='btn btn-default' id='search_btn'  onClick="search_routine_handle();">Search</button>
             </span>
             </div>
-      	</div> 
-        
+      	</div>
+
         </div>
-        
-        
-        
+
+
+
         </center>
     </div>
-    
+
     </div>
 </div>
 
-<div class='container' style="text-align:center; padding-top:20pt">    
+<div class='container' style="text-align:center; padding-top:20pt">
 <div class='table-responsive'>
 	<table id='display_table' class='table table-hover table-bordered' >
     <tr>
@@ -193,11 +193,11 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
-  
+
 
 <script>
 $(document).ready(function(e) {
-	
+
 	$('#sticky').sticky({topSpacing:100});
 	display_data();
 });
@@ -206,9 +206,9 @@ function display_data()
 {
 	var table=document.getElementById('display_table');
 	var cell,row;
-	$.post('../api/airsale.php',{concise:'1',action:'explore'},function(data){
+	$.post('../api/airsale',{concise:'1',action:'explore'},function(data){
 			JArray = $.parseJSON(data);
-			$.post('../api/airsale.php',{JSON:1,action:'getUserCredibility'},function(data) {
+			$.post('../api/airsale',{JSON:1,action:'getUserCredibility'},function(data) {
 			JCredibility = $.parseJSON(data);
 			for(i=0;JArray[i]!=null;i++)
 			{
@@ -247,21 +247,21 @@ function display_data()
 				title = document.createElement('h3');
 				title.innerHTML = name;
 				cell.appendChild(title);
-				
+
 				price_tag = document.createElement('h2');
 				price_tag.innerHTML='$'+price;
 				cell = row.insertCell();
-				cell.appendChild(price_tag );				
-				
+				cell.appendChild(price_tag );
+
 				credibility_tag = document.createElement('h4');
 				credibility_tag.innerHTML=credibility + "/5 <br>";
-				for(k=Number(credibility);k>=1;k--)  
+				for(k=Number(credibility);k>=1;k--)
 				{
 					tag = document.createElement('i');
 					tag.className='fa fa-star';
 					credibility_tag.appendChild(tag);
 				}
-				for(k=5-Number(credibility);k>=1;k--)  
+				for(k=5-Number(credibility);k>=1;k--)
 				{
 					tag = document.createElement('i');
 					tag.className='fa fa-star-o';
@@ -269,24 +269,24 @@ function display_data()
 				}
 				cell = row.insertCell();
 				cell.appendChild(credibility_tag );
-				
+
 				cell = row.insertCell();
 				arrivalCountry_tag = document.createElement('h3');
 				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+flightCarrier+ flightNumber + ")";
 				cell.appendChild(arrivalCountry_tag);
-				
+
 				cell = row.insertCell();
 				arrivalDateTime_tag = document.createElement('h3');
 				arrivalDateTime_tag.innerHTML = arrivalDate;
 				cell.appendChild(arrivalDateTime_tag);
-				
+
 				cell = row.insertCell();
 				action1_tag = document.createElement('a');
 				action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
 				action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
 				action1_tag.className = 'btn btn-default';
 				cell.appendChild(action1_tag);
-				
+
 				cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
 				action2_tag = document.createElement('button');
 				action2_tag.innerHTML = '<i class="fa fa-phone"></i> Contact';
@@ -296,15 +296,15 @@ function display_data()
 				action2_tag.setAttribute('title','Contact seller');
 				action2_tag.setAttribute('data-content','number:'+number+ "\nemail:"+email);
 				cell.appendChild(action2_tag);
-				
+
 				}//if isApproved bracket
 			}//'for' closing bracket
-			
+
 			});//Credibility closing
 
 			$('[data-toggle="popover"]').popover();
 			window.setInterval(function() {search_routine_handle();},100);
-			
+
 		});
 }
 
@@ -321,8 +321,8 @@ function search_routine_handle()
 		if(arrivalCountry == null) arrivalCountry = 'Currently not available.';
 		arrivalDate		 	= 			JArray[j]["result"]["arrivalDate"];
 		if(arrivalDate == null) arrivalDate = 'User did not specify.';
-		
-	if(name.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalCountry.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) &&	flightNumber.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalDate.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) || 
+
+	if(name.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalCountry.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) &&	flightNumber.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) && arrivalDate.toLowerCase().indexOf( $('#search_field').val().toLowerCase() ) == (-1) ||
 	(name.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) && arrivalCountry.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) &&	flightNumber.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1) && arrivalDate.toLowerCase().indexOf( $('#search_field_mobile').val().toLowerCase() ) == (-1)))
 		$('#row_'+JArray[j]['result']['name'].replace(/\s/g, '')).css({display:'none'});
 	else $('#row_'+JArray[j]['result']['name'].replace(/\s/g, '')).css({display:' '});
@@ -332,7 +332,7 @@ function search_routine_handle()
 function itemDetails(item_id)
 {
 	setSessionCookie('detail_item_id',String(item_id));
-	window.location='details.php';
+	window.location='details';
 }
 </script>
 

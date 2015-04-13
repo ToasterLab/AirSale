@@ -1,9 +1,8 @@
 <!doctype html>
 <html>
-<head hreflang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="msvalidate.01" content="6738510A8888021CF044447BBD6D0C60" />
 <link rel="stylesheet" href='/css/b.css'>
 <link rel="stylesheet" href='/css/gryphon.css'>
 <link rel="stylesheet" href='/css/gry2.css'>
@@ -11,7 +10,7 @@
 <script src="/js/b.js"></script>
 <script src="/js/gryphon.js"></script>
 <script src="/js/classie.js"></script>
-<title>AirSale</title>
+<title>AirSale ADMIN login</title>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,32 +32,43 @@
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/index.html' class='navbar-brand'> AirSale</a>
+            <a href='/index' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
-            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li class='active'> <a href='/login'><i class='fa fa-key'></i> Login here</a></li>
+            <li> <a href='/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
 </nav>
 
 
-<div>
-	<div class='jumbotron' style="padding-top:100pt">
-    <h1 id='head1' style="display:none"> AirSale<br></h1>
-    <p id='head2' style="display:none"> An innovative platform that makes shopping cheaper and easier!</p>
-    <center>
-    <div class='btn-group' id='head3'  style="display:none" >
-    <a  class='btn btn-primary btn-lg' role='button' href='/about.html'> Learn more</a>
-    <a  class='btn btn-success btn-lg' role='button' href='/login.html'>Log in to start</a>
-    </div>
-    </center>
-    </div>
-</div>
+<div class='jumbotron' style="padding-top:100pt">
+    <h1> ADMIN Log-in to AirSale<br></h1>
+    <div class='container'>
+      <form role="form" action="/api/airsale" method="post" >
+      <input type='hidden' name='admin' value='1'>
+      <input type='hidden' name='action' value='admin_login'>
+      <div class='row'>
+        <div class="form-group col-md-6">
+          <label>ADMIN name:</label>
+          <input class="form-control" name="user" placeholder="Enter user name">
+        </div>
 
+        <div class="form-group col-md-6">
+          <label for="password">ADMIN Password:</label>
+          <input class="form-control" name="password" placeholder="Enter your password" type='password'>
+        </div>
+        <br><br>
+        <center>
+        <button type="submit" class="btn btn-default btn-lg">Submit</button>
+        <label> <br>
+        </center>
+      </form>
+      </div>
+</div>
 
 
 <div class='modal-footer'>
@@ -67,4 +77,3 @@
 
 </body>
 </html>
-  

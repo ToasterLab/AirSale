@@ -1,12 +1,12 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/header/airsale');
 
 //getting data from previous entry
 $paragraphs= base64_encode($_POST["paragraphs"]);
 
 $sql="UPDATE admin_intro SET paragraphs='$paragraphs'";
 
-		
+
 $status=mysqli_query($conn,$sql);
 if($debug){
 if($status) echo "...Data stored...";
@@ -44,7 +44,7 @@ if($status) echo "...Data stored...";
 </script>
 </head>
 
-<h1> Data stored into the server. Click <span><a class='btn' href='/airsale/admin/home.php'> here</a></span> to go back</h1>
+<h1> Data stored into the server. Click <span><a class='btn' href='/airsale/admin/home'> here</a></span> to go back</h1>
 
 
 <div class='modal-footer'>
@@ -53,4 +53,3 @@ if($status) echo "...Data stored...";
 
 </body>
 </html>
-  

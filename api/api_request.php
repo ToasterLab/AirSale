@@ -31,14 +31,14 @@
 <body>
 </body>
 </html>
-  
+
 
 <script>
 $(document).ready(function(e) {
    $('#request').on('click',function(){
-	  $.post('./airsale.php', eval( $('#text').val()), function(data) 
+	  $.post('./airsale', eval( $('#text').val()), function(data)
 	  {
-		 document.getElementById('result').value = data; 
+		 document.getElementById('result').value = data;
 	  });
    });
 });

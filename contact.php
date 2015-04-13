@@ -33,13 +33,13 @@
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/index.html' class='navbar-brand'> AirSale</a>
+            <a href='/index' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
-            <li class='active'> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/login'><i class='fa fa-key'></i> Login here</a></li>
+            <li class='active'> <a href='/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -54,7 +54,7 @@
             <div class='panel-heading'>
                 <h2>Li Xi: chief software developer and co-founder of LALX Singapore</h2>
             </div>
-            
+
             <div class='panel-body'>
                 <h4>Email: lixi@lalx.org</h4>
             </div>
@@ -65,7 +65,7 @@
             <div class='panel-heading'>
                 <h2>Li An: co-founder of LALX Singapore</h2>
             </div>
-            
+
             <div class='panel-body'>
                 <h4>Email: lian@lalx.org</h4>
             </div>
@@ -79,23 +79,23 @@
         <div class='panel-heading'>
             <h2>General enquiries</h2>
         </div>
-            
-        
+
+
         <div class='panel-body'>
             <p>Email: info@lalx.org</p>
-            <form action='/api/airsale.php' enctype="multipart/form-data" method='POST'>
+            <form action='/api/airsale' enctype="multipart/form-data" method='POST'>
             <input type="hidden" name="action" value="contact">
             <div class='row'>
             	<div class='col-md-4'>
                 <label>Your Name:</label>
                 <input type='text' class='form-control' placeholder="Enter your name" name='name' id='name'>
                 </div>
-                
+
                 <div class='col-md-4'>
                 <label>Your email:</label>
                 <input type='email' class='form-control' placeholder="Enter your email" name='email' id='email'>
                 </div>
-                
+
                 <div class='col-md-4'>
                 <label>Your contact number:</label>
                 <input type='number' class='form-control' placeholder="Enter your contact number" name='number' id='number'>
@@ -108,8 +108,8 @@
                 <textarea class='form-control' rows='6' name='comment'></textarea>
             </div>
             </div>
-            
-            
+
+
             <center>
             <br><br>
             <button type='submit' class='btn btn-lg btn-default'>Submit</button>
@@ -131,4 +131,3 @@
 
 </body>
 </html>
-  

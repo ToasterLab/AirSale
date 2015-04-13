@@ -40,28 +40,28 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li  class='active'> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li  class='active'> <a href='/airsale/profile' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
+                	<li><a href='/airsale/explore' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
-                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
+                	<li><a href='/airsale/publish' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
-            
+
             </li>
-            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -96,21 +96,21 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
               <div class='col-sm-6'>
             	<label><i class='fa fa-trophy'></i> Your credibility rating</label>
             	<p class='form-control-static form-control' id='credibility'></p>
-                <label> There are 3 ways to improve your credibility. 1. Validate your identity by uploading a picture of your photo ID with your full-name. 2. Strike a deal with someone and complete the transaction. 3. Pay a deposit of SGD$100 to Airsale. You can withdraw your deposit at any time you wish. <span><a href='./credibility.php'> Click here to learn more about credibility ratings</a></span></label>
+                <label> There are 3 ways to improve your credibility. 1. Validate your identity by uploading a picture of your photo ID with your full-name. 2. Strike a deal with someone and complete the transaction. 3. Pay a deposit of SGD$100 to Airsale. You can withdraw your deposit at any time you wish. <span><a href='./credibility'> Click here to learn more about credibility ratings</a></span></label>
               </div>
               <div class='col-sm-6'>
                 <label><i class='fa fa-cart-plus'></i> Number of successful transactions</label>
             	<p class='form-control-static form-control' id='transactions'></p>
-              </div>            
+              </div>
             </div>
         	</div>
-        
+
         	<div class='panel-body'>
-            <form action='../api/airsale.php' enctype="multipart/form-data" method='POST' onSubmit="return validateForm()">
+            <form action='../api/airsale' enctype="multipart/form-data" method='POST' onSubmit="return validateForm()">
             <input type='hidden' name='action' value='profile_update'>
             <label> If you need to update any field, edit the corresponding field and click submit. Other fields will not be affected. </label><br><br>
             <div class='row'>
-              
+
               <div class='col-sm-4' id='password1-div'>
               <label><i class='fa fa-key'></i> New password</label>
            	  <input type='password' class='form-control' id='password1' name='password'>
@@ -119,32 +119,32 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
               <label><i class='fa fa-key'></i> Confirm password</label>
            	  <input type='password' class='form-control' id='password2'>
               </div>
-              
+
               <div class='col-sm-4'>
                 <label><i class='fa fa-envelope-o'></i> Email</label>
             	<input class='form-control' type='text' id='email' name='email'>
               </div>
-              
+
             </div><br>
-            
+
             <div class='row'>
-              
+
              <div class='col-sm-4 form-group' id='number-div'>
        		 <label><i class='fa fa-phone'></i> Contact number</label>
       		 <input class='form-control' type='text' name='number' id='number' placeholder="Contact Number">
      		 </div>
-             
+
              <div class='col-sm-4'>
              <label><i class='fa fa-globe'></i> Country of residence</label>
            	 <input type='text' class='form-control' id='country' name='country'>
              </div>
-              
+
              <div class='col-sm-4 form-group' id='location-div'>
              <label><i class='fa fa-exchange'></i> Prefered hand-over location</label>
              <input type='text' class='form-control' name='location' id='location' placeholder="eg. Airport">
              </div>
             </div><br>
-            
+
             <div class='row'>
             <div class='col-sm-4 form-group' id='other-div'>
             <label><i class='fa fa-list'></i> Other method to contact me(format: method-account)</label>
@@ -159,7 +159,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <input type='text' class='form-control' name='fullName' id='fullName'>
             </div>
             </div><br>
-                          
+
             <div class='row'>
             <div class='form-group col-xs-12' id='userPicture-div'>
             <label><i class='fa fa-camera'></i> Picture of photo ID: (ONLY picture files are allowed, that is jpg, jpeg, png, etc.)</label>
@@ -170,7 +170,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             <button type='submit' class='btn btn-default btn-lg'>Confirm</button>
             </center><br><br>
             </form>
-            
+
             </div>
         </div>
     </div>
@@ -184,7 +184,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
-  
+
 
 
 <script>
@@ -192,8 +192,8 @@ $(document).ready(function(e) {
 	var JArray;
     document.getElementById('head1').innerHTML = "<span class='glyphicon glyphicon-user'></span>".concat(getCookie('auth'));
 	document.getElementById('name').innerHTML = getCookie('auth');
-	$.post('http://airsale.lalx.org/api/airsale.php',{mobile:1,action:'user_profile'},function(data) {
-	JArray=$.parseJSON(data);	
+	$.post('http://airsale.lalx.org/api/airsale',{mobile:1,action:'user_profile'},function(data) {
+	JArray=$.parseJSON(data);
 	document.getElementById('id').innerHTML = JArray["id"];
 	document.getElementById('email').value = JArray["email"];
 	document.getElementById('country').value = JArray["country"];
@@ -206,21 +206,21 @@ $(document).ready(function(e) {
 	document.getElementById('validation').innerHTML = "Identity is validated by photo ID";
 	else document.getElementById('validation').innerHTML = "Identity has NOT been validated";
 	document.getElementById('transactions').innerHTML=JArray['successfulTransactions'];
-	
+
 	document.getElementById('credibility').innerHTML=JArray["credibility"] + "/5  ";
-	for(i=Number(JArray["credibility"]);i>=1;i--)  
+	for(i=Number(JArray["credibility"]);i>=1;i--)
 	{
 		tag = document.createElement('i');
 		tag.className='fa fa-star';
 		document.getElementById('credibility').appendChild(tag);
 	}
-	for(i=5-Number(JArray["credibility"]);i>=1;i--)  
+	for(i=5-Number(JArray["credibility"]);i>=1;i--)
 	{
 		tag = document.createElement('i');
 		tag.className='fa fa-star-o';
 		document.getElementById('credibility').appendChild(tag);
 	}
-	
+
 	window.setInterval(function() {validateFormRealTime()},100);
 	});
 });

@@ -1,7 +1,7 @@
 <?php
 /*
 © 2015 LALX Singapore programmed by Li Xi together with Huey Lee
-Access URL: airsale.lalx.org/api/airsale.php
+Access URL: airsale.lalx.org/api/airsale
 */
 ob_start();
 /*

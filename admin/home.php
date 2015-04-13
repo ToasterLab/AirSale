@@ -39,26 +39,26 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/profile' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
+                	<li><a href='/airsale/explore' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'> Publish new item</a> </li>
-                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
+                	<li><a href='/airsale/publish' class='btn'> Publish new item</a> </li>
+                    <li><a href='/airsale/posted' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
-            
+
             </li>
         	</ul>
         </div>
@@ -68,7 +68,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 <div class='container'  style='padding:100pt 0 0 0'>
     <div class='row'>
         <h1> ADMIN CONCTROL PANEL</h1>
-           
+
     <div class='col-md-12'>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -97,11 +97,11 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </tr>
             </table>
             </div>
-            
+
           </div>
         </div>
     </div>
-    
+
     <div class='col-md-12'>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -120,11 +120,11 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
             </tr>
             </table>
             </div>
-            
+
           </div>
         </div>
     </div>
-    
+
 </div>
 
 
@@ -134,13 +134,13 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
-  
-  
+
+
 <script>
 
 function updateUserTable()
 {
-	
+
 	if(!Number(getCookie('displayed')))
 	{
 		var table=document.getElementById('user-table');
@@ -152,16 +152,16 @@ function updateUserTable()
 			cell.innerHTML = getElement('user'.concat( String(i)));
 			cell = row.insertCell();
 			cell.innerHTML = getElement('country'.concat( String(i)));
-			
+
 		}
-		
+
 	}
 	setSessionCookie('displayed','1');
 }
 
 function updateTicketTable(unapproved)
 {
-		$.post('../api/airsale.php',{JSON:1,action:'explore'},function(data) {
+		$.post('../api/airsale',{JSON:1,action:'explore'},function(data) {
 			JArray=$.parseJSON(data);
 			var table=document.getElementById('airTicket-table');
 			var cell, row;
@@ -182,7 +182,7 @@ function updateTicketTable(unapproved)
 				description			=			JArray[i]["result"]["description"];
 				isApproved			=			JArray[i]["result"]["isApproved"];
 				account				=			JArray[i]["result"]["account"];
-												
+
 				if(unapproved == 0)
 				{
 					row = table.insertRow();
@@ -203,13 +203,13 @@ function updateTicketTable(unapproved)
 					cell = row.insertCell();
 					cell.innerHTML = flightNumber;
 					cell = row.insertCell();
-					
+
 					if(isApproved=='0')
 					cell.innerHTML = "<a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a>			<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 					if(isApproved=='1') cell.innerHTML = "<a class='btn btn-success'>Approved</a>				<a class='btn btn-danger' onClick='reject("+item_id+")'>Reject</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 				}
-				
+
 				if(unapproved == 1)
 				{
 					if(isApproved!='1'){
@@ -237,24 +237,24 @@ function updateTicketTable(unapproved)
 					if(isApproved=='2') cell.innerHTML = "<a class='btn btn-info'>Rejected</a><a class='btn btn-default' onClick='approve("+item_id+")'>Approve</a><a class='btn btn-danger' onClick='item_delete("+item_id+")'>DELETE</a>";
 					}
 				}
-				
-				
+
+
 			}
-		});	
+		});
 }
 
 function approve( var_item_id)
 {
 	var_item_id=String(var_item_id);
-	$.post('../api/airsale.php',{admin:1,action:'admin_approveViaPost(item_id)',item_id:var_item_id},function()
+	$.post('../api/airsale',{admin:1,action:'admin_approveViaPost(item_id)',item_id:var_item_id},function()
 	{
-		$.post('../api/airsale.php',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Post(item_id)',item_id:var_item_id},function(data) {
-			
+		$.post('../api/airsale',{JSON:1,action:'getFlightInfoAndInjectIntoSQLforItemWhereID=Post(item_id)',item_id:var_item_id},function(data) {
+
 			if(data) alert('Approval successful. Changes on this page will be seen only after refeshing the page.');
 			else alert('Approval operation FAILED.');
 		});
 	});
-	
+
 }
 
 function reject( var_item_id)
@@ -262,42 +262,42 @@ function reject( var_item_id)
 	var_item_id=String(var_item_id);
 	reject_reason=window.prompt("Reason for rejecting");
 	if(reject_reason=='') reject_reason=null;
-	$.post('../api/airsale.php',{admin:1,action:'admin_rejectViaPost(item_id)',item_id:var_item_id,reject_reason:reject_reason},function(data)
+	$.post('../api/airsale',{admin:1,action:'admin_rejectViaPost(item_id)',item_id:var_item_id,reject_reason:reject_reason},function(data)
 	{
 		if(data) alert('Rejection successful. Changes on this page will be seen only after refeshing the page.');
 		else alert('Reject operation FAILED.');
 	});
-	
+
 }
 
 
 function updateFeedback()
 {
-	$.post('/api/airsale.php',{JSON:1,action:'getFeedback'},function(data) {
+	$.post('/api/airsale',{JSON:1,action:'getFeedback'},function(data) {
 		JArray = $.parseJSON(data);
 		table=document.getElementById('feedback-table');
 		for(ind=0;JArray[ind]!=null;ind++)
 		{
 			row = table.insertRow();
-			
+
 			row.insertCell().innerHTML = JArray[ind]["id"];
 			row.insertCell().innerHTML = JArray[ind]["name"];
 			row.insertCell().innerHTML = JArray[ind]["email"];
 			row.insertCell().innerHTML = JArray[ind]["number"];
 			row.insertCell().innerHTML = JArray[ind]["comment"];
 		}
-		
+
 	});
-	
+
 }
 
 function item_delete(var_item_id)
 {
-	$.post('/api/airsale.php',{admin:1,action:'admin_deleteViaPost(item_id)',item_id:String(var_item_id)}, function(data){
+	$.post('/api/airsale',{admin:1,action:'admin_deleteViaPost(item_id)',item_id:String(var_item_id)}, function(data){
 	if(data) alert('Delete operation is successful. Changes on this page will be seen only after refeshing the page.');
 	else alert('Delete operation FAILED.');
 });
-	
+
 }
 
 $(document).ready(function(e) {

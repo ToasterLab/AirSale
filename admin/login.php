@@ -1,5 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/header/airsale');
 
 $UI_user=$_POST['user'];
 $UI_password = $_POST['password'];
@@ -29,8 +29,8 @@ if (mysqli_num_rows($result) > 0) {
 
 <script>
 $(document).ready(function(e) {
-    if(getCookie_raw('auth')!='') location.replace('/admin/home.php');
-	if(getCookie_raw('auth')=='') location.replace('/login_failed.html');
+    if(getCookie_raw('auth')!='') location.replace('/admin/home');
+	if(getCookie_raw('auth')=='') location.replace('/login_failed');
 });
 
 </script>
@@ -49,7 +49,7 @@ $(document).ready(function(e) {
 </script>
 </head>
 
-<h1> You will be redirected to the ADMIN page. If you are not redirected, click <span><a class='btn' href='/airsale/home.php'> here</a></span></h1>
+<h1> You will be redirected to the ADMIN page. If you are not redirected, click <span><a class='btn' href='/airsale/home'> here</a></span></h1>
 
 
 <div class='modal-footer'>
@@ -58,4 +58,3 @@ $(document).ready(function(e) {
 
 </body>
 </html>
-  

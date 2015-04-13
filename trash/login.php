@@ -1,5 +1,5 @@
 <?php
-include('/home/u979434920/public_html/header/airsale.php');
+include('/home/u979434920/public_html/header/airsale');
 session_start();
 
 $UI_user=$_POST['user'];
@@ -12,7 +12,7 @@ if (mysqli_num_rows($result) > 0) {
 }
 else {
 	$_SESSION['auth']='';
-	echo '<script>location.replace(\'login_failed.html\')</script>';
+	echo '<script>location.replace(\'login_failed\')</script>';
 }
 
 ?>
@@ -42,7 +42,7 @@ else {
 </script>
 </head>
 
-<h1> You will be redirected to the main page. If you are not redirected, click <span><a class='btn' href='/airsale/home.php'> here</a></span></h1>
+<h1> You will be redirected to the main page. If you are not redirected, click <span><a class='btn' href='/airsale/home'> here</a></span></h1>
 
 
 <div class='modal-footer'>
@@ -51,4 +51,3 @@ else {
 
 </body>
 </html>
-  

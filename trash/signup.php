@@ -24,7 +24,7 @@ $sql="INSERT INTO ".$table." (user,
 		'$identity_method',
 		'$identity')";
 
-		
+
 $status=mysqli_query($conn,$sql);
 if($debug){
 if($status) echo "...Data stored...";
@@ -50,8 +50,8 @@ setrawcookie('auth',base64_encode($user),time()+1800);
 
 <script>
 $(document).ready(function(e) {
-    if(getCookie_raw('auth')!='') location.replace('/airsale/airsale/home.php');
-	if(getCookie_raw('auth')=='') location.replace('/login_failed.html');
+    if(getCookie_raw('auth')!='') location.replace('/airsale/airsale/home');
+	if(getCookie_raw('auth')=='') location.replace('/login_failed');
 });
 
 </script>
@@ -70,7 +70,7 @@ $(document).ready(function(e) {
 </script>
 </head>
 
-<h1> You will be redirected to the main page. If you are not redirected, click <span><a class='btn' href='/airsale/home.php'> here</a></span></h1>
+<h1> You will be redirected to the main page. If you are not redirected, click <span><a class='btn' href='/airsale/home'> here</a></span></h1>
 
 
 <div class='modal-footer'>
@@ -79,4 +79,3 @@ $(document).ready(function(e) {
 
 </body>
 </html>
-  

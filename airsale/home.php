@@ -40,28 +40,28 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/profile' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
+                	<li><a href='/airsale/explore' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
-                    <li><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
+                	<li><a href='/airsale/publish' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li><a href='/airsale/posted' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
-            
+
             </li>
-            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -71,7 +71,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 	<div class='jumbotron' style="padding-top:100pt">
     <h1 id='head1' style="display:none"> AirSale<br></h1>
     <p id='head2' style="display:none"> An innovative platform that makes shopping cheaper and easier!</p>
-    <center><a  id='head3' style="display:none" class='btn btn-primary btn-lg' role='button' href='/about.html'> Learn more</a></center>
+    <center><a  id='head3' style="display:none" class='btn btn-primary btn-lg' role='button' href='/about'> Learn more</a></center>
     </div>
 </div>
 
@@ -83,4 +83,3 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
-  

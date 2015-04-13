@@ -33,7 +33,7 @@ echo "</pre>"
 <script>
 /*
 $(document).ready(function(e) {
-    location.replace('/admin/home.php');
+    location.replace('/admin/home');
 });
 */
 </script>
@@ -46,11 +46,10 @@ $(document).ready(function(e) {
 
   ga('create', 'UA-61584028-1', 'auto');
   ga('send', 'pageview');
-
 </script>
 </head>
 
-<h1> Click <span><a class='btn' href='/airsale/admin/home.php'> here</a></span> to go back</h1>
+<h1> Click <span><a class='btn' href='/airsale/admin/home'> here</a></span> to go back</h1>
 
 
 <div class='modal-footer'>
@@ -59,4 +58,3 @@ $(document).ready(function(e) {
 
 </body>
 </html>
-  

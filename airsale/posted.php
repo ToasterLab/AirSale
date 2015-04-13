@@ -40,28 +40,28 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/airsale/home.php' class='navbar-brand'> AirSale</a>
+            <a href='/airsale/home' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li> <a href='/airsale/profile.php' id='nav-log-in'> </a></li>
+            <li> <a href='/airsale/profile' id='nav-log-in'> </a></li>
             <li class='dropdown'>
             <a class="dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a buyer!<span class='caret'></span></a>
             	<ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/explore.php' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
-                    <li><a href='/airsale/my_history.php' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
+                	<li><a href='/airsale/explore' class='btn'><i class='fa fa-shopping-cart'></i> Explore</a> </li>
+                    <li><a href='/airsale/my_history' class='btn'><i class='fa fa-history'></i> Past Purchases</a></li>
                 </ul>
             </li>
             <li class='dropdown active'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">I am a seller!<span class='caret'></span></a>
           	 	 <ul class='dropdown-menu' role='menu'>
-                	<li><a href='/airsale/publish.php' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
-                    <li class='active'><a href='/airsale/posted.php' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
+                	<li><a href='/airsale/publish' class='btn'><i class='fa fa-plus-circle'></i> Sell new items</a> </li>
+                    <li class='active'><a href='/airsale/posted' class='btn'><i class='fa fa-history'></i> My Posted Items</a></li>
                 </ul>
-            
+
             </li>
-            <li> <a href='/airsale/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li> <a href='/airsale/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -73,7 +73,7 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
     </div>
 </div>
 
-<div class='container' style="text-align:center; padding-top:20pt">    
+<div class='container' style="text-align:center; padding-top:20pt">
 <div class='table-responsive'>
 	<table id='display_table' class='table table-hover table-bordered' >
     <tr>
@@ -95,11 +95,11 @@ include('/home/u979434920/public_html/airsale/api/airsale.php');
 
 </body>
 </html>
-  
+
 
 <script>
 $(document).ready(function(e) {
-	
+
 	$('#sticky').sticky({topSpacing:100});
 	display_data();
 });
@@ -110,7 +110,7 @@ function display_data()
 	var table=document.getElementById('display_table');
 	var cell,row;
 	var JArray;
-	$.post('../api/airsale.php',{concise:'1',action:'seller_history'},function(data){
+	$.post('../api/airsale',{concise:'1',action:'seller_history'},function(data){
 			JArray = $.parseJSON(data);
 			for(i=0;JArray[i];i++)
 			{
@@ -140,25 +140,25 @@ function display_data()
 				title = document.createElement('h3');
 				title.innerHTML = name;
 				cell.appendChild(title);
-				
+
 				price_tag = document.createElement('h2');
 				price_tag.innerHTML='$'+price;
 				cell = row.insertCell();
 				cell.style.position='relative';
 				cell.appendChild(price_tag );
-				
+
 				cell = row.insertCell();
 				cell.style.position='relative';
 				arrivalCountry_tag = document.createElement('h3');
 				arrivalCountry_tag.innerHTML = arrivalCountry+"(Flight Number: "+flightCarrier+ flightNumber + ")";
 				cell.appendChild(arrivalCountry_tag);
-				
+
 				cell = row.insertCell();
 				cell.style.position='relative';
 				arrivalDateTime_tag = document.createElement('h3');
 				arrivalDateTime_tag.innerHTML = arrivalDate;
 				cell.appendChild(arrivalDateTime_tag);
-				
+
 				cell = row.insertCell();
 				approval_tag = document.createElement('i');
 				if(isApproved == '0') {approval_tag.className='glyphicon glyphicon-time';
@@ -170,37 +170,37 @@ function display_data()
 				if(isApproved == '3') {approval_tag.className='glyphicon glyphicon-flag';
 				approval_text=document.createTextNode(' Suspended. Contact us for more information.');}
 				cell.appendChild(approval_tag);cell.appendChild(approval_text);
-				
+
 				cell = row.insertCell();
 				action1_tag = document.createElement('a');
 				action1_tag.innerHTML = '<i class="fa fa-plus-circle"></i> Details';
 				action1_tag.setAttribute('onClick','itemDetails('+item_id+');');
 				action1_tag.className = 'btn btn-default';
 				cell.appendChild(action1_tag);
-				
+
 				cell.appendChild(document.createElement('br'));cell.appendChild(document.createElement('br'));
 				action2_tag = document.createElement('a');
 				action2_tag.innerHTML = '<i class="fa fa-pencil"></i> Edit';
 				action2_tag.setAttribute("onClick",'itemEdit(' + item_id + ');');
 				action2_tag.className = 'btn btn-info';
 				cell.appendChild(action2_tag);
-				
+
 			}
 	});
 
-	
+
 }
 
 function itemEdit(item_id)
 {
 	setSessionCookie('edit_item_id',item_id);
-	$.post('../api/airsale.php',{action:'setSession(item_id)viaCookie(edit_item_id)'});
-	window.location='publish1_edit.php';
+	$.post('../api/airsale',{action:'setSession(item_id)viaCookie(edit_item_id)'});
+	window.location='publish1_edit';
 }
 function itemDetails(item_id)
 {
 	setSessionCookie('detail_item_id',String(item_id));
-	window.location='details.php';
+	window.location='details';
 }
 
 </script>

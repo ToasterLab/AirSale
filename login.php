@@ -32,13 +32,13 @@
        		<span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a href='/index.html' class='navbar-brand'> AirSale</a>
+            <a href='/index' class='navbar-brand'> AirSale</a>
         </div>
-        
+
         <div id="page-navG" class="collapse navbar-collapse" >
         	<ul class='nav navbar-nav'>
-            <li class='active'> <a href='/login.html'><i class='fa fa-key'></i> Login here</a></li>
-            <li> <a href='/contact.html'><i class='fa fa-phone'></i> Contact</a></li>
+            <li class='active'> <a href='/login'><i class='fa fa-key'></i> Login here</a></li>
+            <li> <a href='/contact'><i class='fa fa-phone'></i> Contact</a></li>
         	</ul>
         </div>
     </div>
@@ -48,14 +48,14 @@
 <div class='jumbotron' style="padding-top:100pt">
     <h1><i class='fa fa-key'></i> Log-in to AirSale<br></h1>
     <div class='container'>
-      <form role="form" action='/api/airsale.php' method="post" >
+      <form role="form" action='/api/airsale' method="post" >
       <input type='hidden' name="action" value='login'>
       <div class='row'>
         <div class="form-group col-md-6">
           <label>User name:</label>
           <input class="form-control" name="user" placeholder="Enter user name">
         </div>
-        
+
         <div class="form-group col-md-6">
           <label for="password">Password:</label>
           <input class="form-control" name="password" placeholder="Enter your password" type='password'>
@@ -64,7 +64,7 @@
         <center>
         <button type="submit" class="btn btn-default btn-lg">Submit</button>
         <label> <br>
-		<a href="/signup.html" class='btn'>Sign up for an account here</a></label>
+		<a href="/signup" class='btn'>Sign up for an account here</a></label>
         </center>
       </form>
       </div>
@@ -77,4 +77,3 @@
 
 </body>
 </html>
-  
