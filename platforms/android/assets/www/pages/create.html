@@ -76,6 +76,12 @@
             </div>
         </div>
         <div class="input-field col s12">
+            <select ng-model="item.category" ng-options="cat.id as cat.title for cat in categories">
+                <option value="" disabled selected>Pick a category</option>
+            </select>
+            <label>Category</label>
+        </div>
+        <div class="input-field col s12">
         	<input id="itemname" type="text" class="validate" autocomplete="off" ng-model="item.name">
         	<label for="itemname">Item Name</label>
         </div>

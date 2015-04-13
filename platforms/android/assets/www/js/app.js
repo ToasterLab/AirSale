@@ -118,8 +118,18 @@ airSale.controller('mainController', ["$scope","$http","$location","bgData",
     }
 ]);
 
-airSale.controller('createController', ["$scope","$http","$location","$upload","bgData",
-    function($scope,$http,$location,$upload,bgData){
+airSale.controller('createController', ["$scope","$http","$location","$upload","$timeout","bgData",
+    function($scope,$http,$location,$upload,$timeout,bgData){
+
+        $scope.categories = [
+            {id: 'food', title: 'Food'},
+            {id: 'tech', title: 'Tech'},
+            {id: 'clothing', title: 'Clothing'},
+            {id: 'beauty', title: 'Beauty'},
+            {id: 'health', title: 'Health'},
+            {id: 'misc', title: 'Misc'}
+        ]
+
         jQuery('.datepicker').pickadate({
             formatSubmit: 'yyyy-mm-dd',
             hiddenName: true,
@@ -129,6 +139,10 @@ airSale.controller('createController', ["$scope","$http","$location","$upload","
             }
         });
 
+        $scope.materialiseTheSelect = function(){
+            jQuery('select').material_select();
+        }
+        
         $scope.checkFlight = function(hereIsForm){
             if(!hereIsForm.flightno.$valid){return false}
             $scope.flightNumber = $scope.item.flightno.substring(2)
@@ -170,26 +184,26 @@ airSale.controller('createController', ["$scope","$http","$location","$upload","
                 fields: {'action':'publish2','mobile':1, 
                         'name':$scope.item.name,
                         'description':$scope.item.description,
-                        'specifications':$scope.item.specs
+                        'specifications':$scope.item.specs,
+                        'flightCarrier':$scope.flightCarrier,
+                        'flightNumber':$scope.flightNumber,
+                        'category':$scope.category
                         },
-                file: $scope.item.photo[0]
+                file: $scope.item.photo[0],
+                fileFormDataName: "itemPicture"
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
             }).success(function (data, status, headers, config) {
-                console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
+                $location.path("/items")
             });
-            /*config = {withCredentials: true}
-            $http.post(apiURL, ,config)
-            .success(function(data){
-                console.log(data);
-                $scope.rawFlightDetails = data;
-            })*/
         }
         $scope.updateUploadDetails = function(){
             console.log($scope.item.photo)
             $scope.item.photo.path = $scope.item.photo[0].name
         }
+        $timeout($scope.materialiseTheSelect, 0);
     }
 ]);
 
@@ -331,3 +345,22 @@ airSale.run(['$rootScope', '$location', 'bgData', function ($rootScope, $locatio
     });
 
 }]);
+
+
+/*provides after-render directive
+define(['angular'], function (angular) {
+  'use strict';
+  return angular.module('app.common.after-render', [])
+    .directive('afterRender', [ '$timeout', function($timeout) {
+    var def = {
+        restrict : 'A', 
+        terminal : true,
+        transclude : false,
+        link : function(scope, element, attrs) {
+            if (attrs) { scope.$eval(attrs.afterRender) }
+            scope.$emit('onAfterRender')
+        }
+    };
+    return def;
+    }]);
+});*/
